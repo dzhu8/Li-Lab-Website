@@ -97,12 +97,12 @@ $join-button-hover: #FF5252;
         font-size: 18px;
         font-weight: 500;
         padding: 8px 16px;
-        border-radius: 8px;
+        border-radius: 8px; 
         transition: all 0.3s ease;
         display: block;
         
         &:hover {
-          background-color: $primary-blue;
+          background-color: $hover-color;
           color: white;
           transform: translateY(-2px);
         }

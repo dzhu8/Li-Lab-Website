@@ -77,7 +77,7 @@
   display: block;
 }
 .header__nav-list a:hover {
-  background-color: #4285f4;
+  background-color: #c1c4c7;
   color: white;
   transform: translateY(-2px);
 }
