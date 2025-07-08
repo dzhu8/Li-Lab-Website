@@ -1,0 +1,233 @@
+// Font import for Avenir Next
+@import url('https://fonts.googleapis.com/css2?family=Avenir+Next:wght@400;500;600;700&display=swap');
+
+// Variables for consistent styling
+$primary-blue: #4285f4;
+$hover-color: #c1c4c7;
+$text-color: #333;
+$shadow-color: rgba(0, 0, 0, 0.1);
+$header-background: #F5F6F7;
+$join-button-coral: #FF6B6B;
+$join-button-hover: #FF5252;
+
+// Header container
+.header {
+  width: 100%;
+  height: 80px;
+  background-color: $header-background;
+  font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-shadow: 0 2px 8px $shadow-color;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  
+  // Header content wrapper
+  &__content {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  // Logo section
+  &__logo {
+    display: flex;
+    align-items: center;
+    margin-right: 60px;
+    
+    &-circle {
+      width: 60px;
+      height: 60px;
+      //border: 2px solid $primary-blue;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 20px;
+      
+      span {
+        font-size: 10px;
+        color: $text-color;
+        text-align: center;
+        line-height: 1.2;
+      }
+    }
+    
+    &-text {
+      h1 {
+        font-size: 28px;
+        font-weight: 600;
+        color: $text-color;
+        margin: 0;
+        line-height: 1.2;
+      }
+      
+      .subtitle {
+        font-size: 18px;
+        color: $text-color;
+        margin: 0;
+        font-weight: 400;
+      }
+    }
+  }
+  
+  // Navigation section
+  &__nav {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    
+    &-list {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      gap: 30px;
+      
+      li {
+        position: relative;
+      }
+      
+      a {
+        text-decoration: none;
+        color: $text-color;
+        font-size: 18px;
+        font-weight: 500;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        display: block;
+        
+        &:hover {
+          background-color: $primary-blue;
+          color: white;
+          transform: translateY(-2px);
+        }
+      }
+    }
+  }
+  
+  // Join button
+  &__join-button {
+    margin-left: auto;
+    
+    .join-btn {
+      background-color: $join-button-coral;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: 'Avenir Next', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      
+      &:hover {
+        background-color: $join-button-hover;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba($join-button-coral, 0.3);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .header {
+    &__content {
+      padding: 0 15px;
+    }
+    
+    &__logo {
+      margin-right: 30px;
+      
+      &-circle {
+        width: 50px;
+        height: 50px;
+        margin-right: 15px;
+        
+        span {
+          font-size: 8px;
+        }
+      }
+      
+      &-text {
+        h1 {
+          font-size: 24px;
+        }
+        
+        .subtitle {
+          font-size: 16px;
+        }
+      }
+    }
+    
+    &__nav {
+      &-list {
+        gap: 20px;
+        
+        a {
+          font-size: 16px;
+          padding: 6px 12px;
+        }
+      }
+    }
+    
+    &__join-button {
+      .join-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    &__nav {
+      &-list {
+        gap: 15px;
+        
+        a {
+          font-size: 14px;
+          padding: 5px 10px;
+        }
+      }
+    }
+    
+    &__join-button {
+      .join-btn {
+        padding: 8px 16px;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+// Main content offset to account for fixed header
+.main-content {
+  margin-top: 80px;
+  padding: 20px;
+}
+
+// Additional utility classes
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+// Smooth scrolling for anchor links
+html {
+  scroll-behavior: smooth;
+}
