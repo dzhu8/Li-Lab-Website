@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Li Lab | About</title>
+    <link rel="stylesheet" href="../css/header.css">
+    <style>
+        body { font-family: 'Avenir Next', sans-serif; margin:0; padding:0; color:#222; }
+        main { padding: calc(80px + 2rem) 6vw 4rem; max-width: 1100px; margin: 0 auto; }
+        h1,h2 { color: #111; }
+        .section { margin-bottom: 3rem; }
+        .section-subtitle { color: #0066cc; font-weight:600; margin-bottom:1rem; }
+        /* Member layout styles - same as template but scoped to about page */
+        .member { display: grid; grid-template-columns: 300px 1fr; gap: 2rem; align-items:center; margin:2rem 0; }
+    /* member--reverse removed: all members use the same layout */
+        .member-photo__inner { width:300px; height:300px; border-radius:50%; background:#f0f0f0; display:flex; align-items:center; justify-content:center; color:#666; font-size:14px; box-shadow:0 8px 20px rgba(0,0,0,0.08); }
+        .member-name { margin:0 0 0.5rem 0; }
+        .member-bio { margin:0; color:#444; }
+
+        /* Responsive */
+        @media (max-width:768px) {
+            .member, .member--reverse { grid-template-columns: 1fr; text-align:center; }
+            .member-photo__inner { margin: 0 auto; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header__content">
+            <div class="header__logo">
+                <div class="header__logo-circle"><span>Temp.<br>Logo</span></div>
+                <div class="header__logo-text"><h1>Li Lab</h1><p class="subtitle">@Whitehead Institute & MIT</p></div>
+            </div>
+            <nav class="header__nav"><ul class="header__nav-list"><li><a href="home.html">Home</a></li></ul></nav>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="section" id="current">
+            <h2>Current</h2>
+            <div id="current-list" aria-live="polite"></div>
+        </section>
+
+        <section class="section" id="alumni">
+            <h2>Alumni</h2>
+            <p>Alumni information will go here.</p>
+        </section>
+    </main>
+
+    <!-- Import the member template -->
+    <!-- We load it directly from the sibling file so editors can reuse it. -->
+    <div style="display:none">
+        <!--# include virtual="member-template.html" -->
+    </div>
+
+    <script>
+        // Simple client-side approach: fetch the template file and extract the template element
+        (async function(){
+            try {
+                const resp = await fetch('member-template.html');
+                const text = await resp.text();
+                // Parse the fetched file and find the template element
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, 'text/html');
+                const tmpl = doc.querySelector('#member-template');
+                if(!tmpl) return;
+
+                const currentList = document.getElementById('current-list');
+
+                // Example data for two placeholder members
+                const members = [
+                    { name: 'Member One', bio: 'Placeholder bio for member one.' },
+                    { name: 'Member Two', bio: 'Placeholder bio for member two.' }
+                ];
+
+                members.forEach((m, idx) => {
+                    const clone = tmpl.content.cloneNode(true);
+                    const wrapper = document.createElement('div');
+                    // wrapper will receive member class
+                    const memberEl = clone.querySelector('.member');
+                    if(!memberEl) return; // safety
+
+                    // fill in details
+                    const nameEl = memberEl.querySelector('.member-name');
+                    const bioEl = memberEl.querySelector('.member-bio');
+                    const photoInner = memberEl.querySelector('.member-photo__inner');
+                    if(nameEl) nameEl.textContent = m.name;
+                    if(bioEl) bioEl.textContent = m.bio;
+                    if(photoInner) photoInner.textContent = '300×300';
+
+                    wrapper.appendChild(memberEl);
+                    currentList.appendChild(wrapper);
+                });
+            } catch (err) {
+                console.error('Failed to load member template:', err);
+            }
+        })();
+    </script>
+</body>
+</html>

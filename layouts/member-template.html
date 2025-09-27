@@ -1,0 +1,46 @@
+<!-- Reusable member template: contains a template with a member card
+     Usage: Clone the template into the about page and fill in data.
+     The template uses a .member--reverse class to flip image/text order.
+-->
+<template id="member-template">
+    <div class="member">
+        <div class="member-photo" aria-hidden="true">
+            <!-- Placeholder circular container for 300x300 image -->
+            <div class="member-photo__inner"></div>
+        </div>
+        <div class="member-text">
+            <h3 class="member-name">Member Name</h3>
+            <p class="member-bio">This is a placeholder for member bio. Replace with real content and images later.</p>
+        </div>
+    </div>
+</template>
+
+<style>
+/* Minimal styles for member template. The about page will also include these styles; duplicated here makes the template self-contained for now. */
+.member {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    align-items: center;
+    margin: 2rem 0;
+}
+.member-photo__inner {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+.member-text .member-name {
+    margin: 0 0 0.5rem 0;
+}
+.member-text .member-bio {
+    margin: 0;
+    color: #444;
+}
+</style>
