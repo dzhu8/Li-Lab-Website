@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Li Lab | Publications</title>
+    <link rel="stylesheet" href="../css/header.css">
+    <style>
+    body { font-family: 'Avenir Next', sans-serif; margin:0; padding:0; color:#222; }
+    /* Expanded max-width so 800px image + text don't get cramped */
+    main { padding: calc(80px + 2rem) 6vw 4rem; max-width: 1600px; margin: 0 auto; }
+        h1,h2 { color: #111; }
+        .section { margin-bottom: 3rem; }
+        /* Publications layout */
+    .pub { display: grid; grid-template-columns: 800px 1fr; gap: 2rem; align-items:center; margin:2rem 0; }
+    /* Default image container: 800x800 (square thumbnails) */
+    .pub-image { width:800px; height:800px; background:#ffffff; display:flex; align-items:center; justify-content:center; color:#666; font-size:14px; box-shadow:0 8px 20px rgba(0,0,0,0.08); overflow:hidden; }
+        /* Ensure images or embedded objects fill the container without distortion */
+        .pub-image img,
+        .pub-image object,
+        .pub-image embed {
+            width:100%;
+            height:100%;
+            display:block;
+            object-fit:cover; /* use contain if you prefer letterboxing instead of cropping */
+        }
+        /* Ensure the anchor wrapper fills the container so its child can cover */
+        .pub-image > a { width:100%; height:100%; display:block; }
+        .pub-title { margin:0 0 0.5rem 0; }
+        .pub-desc { margin:0; color:#444; }
+
+        /* Offset publications to the right compared to the year heading */
+        .pub-year { position: relative; }
+        .pub-year .pub { margin-left: 3.2rem; }
+
+        /* Slightly smaller meta text */
+        .pub-meta { margin:0 0 0.25rem 0; color:#666; font-size:0.95rem; }
+        .pub-link__a { color: #0b66c3; text-decoration: none; }
+        .pub-link__a:hover { text-decoration: underline; }
+
+        @media (max-width:768px) {
+            .pub { grid-template-columns: 1fr; text-align:center; }
+            /* On small screens make the thumbnail wider and keep it square */
+            .pub-image { width:80%; height:auto; aspect-ratio: 1 / 1; margin: 0 auto; }
+            /* Remove offset on small screens */
+            .pub-year .pub { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header__content">
+            <div class="header__logo">
+                <div class="header__logo-circle"><span>Temp.<br>Logo</span></div>
+                <div class="header__logo-text"><h1>Li Lab</h1><p class="subtitle">@Whitehead Institute & MIT</p></div>
+            </div>
+            <nav class="header__nav"><ul class="header__nav-list"><li><a href="home.html">Home</a></li></ul></nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="years-list" class="section"></section>
+    </main>
+
+    <script>
+        // Generate sections for years from the current year back to 2018
+    (async function(){
+            const container = document.getElementById('years-list');
+            // Papers from 2018-2024
+            const currentYear = 2024;
+            // Fetch publication template and use it for each entry
+            try {
+                const tmplResp = await fetch('publication-template.html');
+                const tmplText = await tmplResp.text();
+                const parser = new DOMParser();
+                const tmplDoc = parser.parseFromString(tmplText, 'text/html');
+                const pubTmpl = tmplDoc.querySelector('#publication-template');
+
+                // Helper: ensure a section for the year exists (create or find)
+                const ensureYearSection = (year) => {
+                    year = Number(year);
+                    let sec = container.querySelector(`.pub-year[data-year="${year}"]`);
+                    if (!sec) {
+                        sec = document.createElement('section');
+                        sec.className = 'pub-year section';
+                        sec.setAttribute('data-year', year);
+                        const h3 = document.createElement('h3');
+                        h3.textContent = year;
+                        sec.appendChild(h3);
+
+                        // Insert in descending order (higher year first)
+                        const existing = Array.from(container.querySelectorAll('.pub-year'));
+                        let inserted = false;
+                        for (const ex of existing) {
+                            const ey = parseInt(ex.getAttribute('data-year'), 10);
+                            if (ey < year) {
+                                container.insertBefore(sec, ex);
+                                inserted = true;
+                                break;
+                            }
+                        }
+                        if (!inserted) container.appendChild(sec);
+                    }
+                    return sec;
+                };
+
+                // Helper: add a publication object to a year section using the template
+                const addPublication = (opts) => {
+                    // opts: { year, title, journal, authors, date, desc, imgText }
+                    const year = opts.year || currentYear;
+                    const targetSection = ensureYearSection(year);
+                    const clone2 = pubTmpl.content.cloneNode(true);
+                    const pubEl2 = clone2.querySelector('.pub');
+                    if (!pubEl2) return;
+                    const titleEl2 = pubEl2.querySelector('.pub-title');
+                    const metaEl2 = pubEl2.querySelector('.pub-meta');
+                    const journalEl2 = pubEl2.querySelector('.pub-journal');
+                    const authorsEl2 = pubEl2.querySelector('.pub-authors');
+                    const dateEl2 = pubEl2.querySelector('.pub-date');
+                    const descEl2 = pubEl2.querySelector('.pub-desc');
+                    const imgEl2 = pubEl2.querySelector('.pub-image');
+                    if (titleEl2) titleEl2.textContent = opts.title || 'Untitled publication';
+                    // Build a meta line: journal, date
+                    const journalText = (opts.journal || '').trim();
+                    const dateText = (opts.date || '').trim();
+                    if (metaEl2) {
+                        if (journalText && dateText) metaEl2.textContent = journalText + ', ' + dateText;
+                        else if (journalText) metaEl2.textContent = journalText;
+                        else if (dateText) metaEl2.textContent = dateText;
+                        else metaEl2.textContent = '';
+                    }
+                    if (journalEl2) journalEl2.textContent = '';
+                    if (authorsEl2) authorsEl2.textContent = opts.authors || '';
+                    if (dateEl2) dateEl2.textContent = '';
+                    if (descEl2) descEl2.textContent = opts.desc || '';
+                    // Render thumbnail: prefer opts.imgUrl (image), otherwise if opts.pdf is provided show first page of PDF
+                    if (imgEl2) {
+                        // clear existing placeholder content
+                        imgEl2.textContent = '';
+                        const imgUrl = opts.imgUrl ? String(opts.imgUrl).trim() : '';
+                        const pdf = opts.pdf ? String(opts.pdf).trim() : '';
+                        if (imgUrl) {
+                            const a = document.createElement('a');
+                            a.href = pdf || '#';
+                            a.target = '_blank';
+                            a.rel = 'noopener';
+                            const im = document.createElement('img');
+                            im.src = imgUrl;
+                            im.alt = opts.title || 'Publication image';
+                            a.appendChild(im);
+                            imgEl2.appendChild(a);
+                        } else if (pdf) {
+                            // embed first page using object; link wraps the object so clicking opens pdf
+                            const a = document.createElement('a');
+                            // Hide built-in PDF UI in the click-through as well
+                            a.href = pdf + '#toolbar=0&navpanes=0&statusbar=0';
+                            a.target = '_blank';
+                            a.rel = 'noopener';
+                            const obj = document.createElement('object');
+                            // include #page=1 where supported
+                            obj.data = pdf + '#page=1&toolbar=0&navpanes=0&statusbar=0';
+                            obj.type = 'application/pdf';
+                            obj.innerHTML = 'PDF preview not available';
+                            a.appendChild(obj);
+                            imgEl2.appendChild(a);
+                        } else {
+                            imgEl2.textContent = opts.imgText || 'Image Placeholder';
+                        }
+                    }
+
+                    // Embed link (PubMed or URL) parenthesized into the meta line if provided
+                    const pmid = opts.pmid ? String(opts.pmid).trim() : '';
+                    const link = opts.link ? String(opts.link).trim() : '';
+                    if (metaEl2) {
+                        // remove any existing trailing link node if present (defensive)
+                        const existingLinkSpan = metaEl2.querySelector('.pub-meta-link');
+                        if (existingLinkSpan) existingLinkSpan.remove();
+                        if (pmid || link) {
+                            const sep = document.createTextNode(' ');
+                            const parenOpen = document.createTextNode('(');
+                            const parenClose = document.createTextNode(')');
+                            const linkSpan = document.createElement('span');
+                            linkSpan.className = 'pub-meta-link';
+                            if (pmid) {
+                                const a = document.createElement('a');
+                                a.href = 'https://pubmed.ncbi.nlm.nih.gov/' + encodeURIComponent(pmid) + '/';
+                                a.target = '_blank';
+                                a.rel = 'noopener';
+                                a.textContent = 'PubMed: ' + pmid;
+                                a.className = 'pub-link__a';
+                                linkSpan.appendChild(a);
+                            } else {
+                                const a = document.createElement('a');
+                                a.href = link;
+                                a.target = '_blank';
+                                a.rel = 'noopener';
+                                a.textContent = 'Link';
+                                a.className = 'pub-link__a';
+                                linkSpan.appendChild(a);
+                            }
+                            // append ' (Link)'
+                            metaEl2.appendChild(sep);
+                            metaEl2.appendChild(parenOpen);
+                            metaEl2.appendChild(linkSpan);
+                            metaEl2.appendChild(parenClose);
+                        }
+                    }
+                    targetSection.appendChild(pubEl2);
+                };
+
+                for(let y = currentYear; y >= 2018; y--){
+                    // Ensure year section exists
+                    ensureYearSection(y);
+
+                    // Add publications explicitly per year via switch so entries can be unique
+                    switch (y) {
+                        case 2024:
+                            addPublication(
+                                { 
+                                    year: 2024, 
+                                    title: 'Diffusion barriers imposed by tissue topology shape Hedgehog morphogen gradients', 
+                                    journal: 'PNAS', 
+                                    authors: 'Gavin Schlissel, Miram Meziane, Domenic Narducci, Anders S. Hansen, Pulin Li', 
+                                    date: 'July 15, 2024', 
+                                    desc: 'Here,we used single-molecule imaging in reconstituted morphogen gradients and in tissue explants to determine that Hedgehog diffused extracellularly as a monomer, and rapidly transitioned between membrane-confined and -unconfined states. SCUBE1 expanded Hedgehog gradients by accelerating the transition rates between states without affecting the relative abundance of molecules in each state, supporting a opology-limited diffusion model inwhich cell–cell gaps create diffusion barriers, which Hedgehog can only overcome bypassing through a membrane-unconfined state aided by SCUBE1.', 
+                                    pdf: '../assets/papers/schlissel-et-al-2024.pdf',
+                                    imgText: 'Image Placeholder', 
+                                    pmid: '39190357' 
+                                });
+                            addPublication({ year: 2024, title: 'Publication 2', journal: 'Journal B', authors: 'C. Author, D. Author', date: 'Jan 2024', desc: 'Placeholder publication description', imgText: 'Image Placeholder', link: 'https://example.org/publication/2', pdf: '../assets/papers/sample-paper.pdf' });
+                            break;
+                        case 2023:
+                            addPublication({ year: 2023, title: 'Publication 1', journal: 'Journal C', authors: 'E. Author et al.', date: 'Dec 2023', desc: 'Placeholder publication description', imgText: 'Image Placeholder' });
+                            addPublication({ year: 2023, title: 'Publication 2', journal: 'Journal D', authors: 'F. Author et al.', date: 'Oct 2023', desc: 'Placeholder publication description', imgText: 'Image Placeholder' });
+                            break;
+                        case 2022:
+                            addPublication({ year: 2022, title: 'Publication 1', journal: 'Journal E', authors: 'G. Author et al.', date: 'Nov 2022', desc: 'Placeholder publication description', imgText: 'Image Placeholder' });
+                            addPublication({ year: 2022, title: 'Publication 2', journal: 'Journal F', authors: 'H. Author et al.', date: 'Aug 2022', desc: 'Placeholder publication description', imgText: 'Image Placeholder' });
+                            break;
+                        case 2021:
+                            addPublication({ year: 2021, title: 'Publication 1', journal: 'Journal G', authors: 'I. Author et al.', date: 'May 2021', desc: 'Placeholder publication description', imgText: 'Image Placeholder' });
+                            addPublication({ year: 2021, title: 'Publication 2', journal: 'Journal H', authors: 'J. Author et al.', date: 'Feb 2021', desc: 'Placeholder publication description', imgText: 'Image Placeholder' });
+                            break;
+                        case 2020:
+                            addPublication({ year: 2020, title: 'Publication 1', journal: 'Journal I', authors: 'K. Author et al.', date: 'Sep 2020', desc: 'Placeholder publication description', imgText: 'Image Placeholder' });
+                            addPublication({ year: 2020, title: 'Publication 2', journal: 'Journal J', authors: 'L. Author et al.', date: 'Jun 2020', desc: 'Placeholder publication description', imgText: 'Image Placeholder' });
+                            break;
+                        case 2019:
+                            addPublication({ year: 2019, title: 'Publication 1', journal: 'Journal K', authors: 'M. Author et al.', date: 'Dec 2019', desc: 'Placeholder publication description', imgText: 'Image Placeholder' });
+                            addPublication({ year: 2019, title: 'Publication 2', journal: 'Journal L', authors: 'N. Author et al.', date: 'Oct 2019', desc: 'Placeholder publication description', imgText: 'Image Placeholder' });
+                            break;
+                        case 2018:
+                            addPublication({ year: 2018, title: 'Publication 1', journal: 'Journal M', authors: 'O. Author et al.', date: 'Apr 2018', desc: 'Placeholder publication description', imgText: 'Image Placeholder' });
+                            addPublication({ year: 2018, title: 'Publication 2', journal: 'Journal N', authors: 'P. Author et al.', date: 'Jan 2018', desc: 'Placeholder publication description', imgText: 'Image Placeholder' });
+                            break;
+                        default:
+                            // No entries for other years
+                            break;
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to load publication template:', err);
+            }
+        })();
+    </script>
+</body>
+</html>

@@ -12,9 +12,9 @@
         .section { margin-bottom: 3rem; }
         .section-subtitle { color: #0066cc; font-weight:600; margin-bottom:1rem; }
         /* Member layout styles - same as template but scoped to about page */
-        .member { display: grid; grid-template-columns: 300px 1fr; gap: 2rem; align-items:center; margin:2rem 0; }
+        .member { display: grid; grid-template-columns: 200px 1fr; gap: 2rem; align-items:center; margin:2rem 0; }
     /* member--reverse removed: all members use the same layout */
-        .member-photo__inner { width:300px; height:300px; border-radius:50%; background:#f0f0f0; display:flex; align-items:center; justify-content:center; color:#666; font-size:14px; box-shadow:0 8px 20px rgba(0,0,0,0.08); }
+        .member-photo__inner { width:200px; height:200px; border-radius:50%; background:#f0f0f0; display:flex; align-items:center; justify-content:center; color:#666; font-size:14px; box-shadow:0 8px 20px rgba(0,0,0,0.08); }
         .member-name { margin:0 0 0.5rem 0; }
         .member-bio { margin:0; color:#444; }
 
@@ -69,10 +69,23 @@
 
                 const currentList = document.getElementById('current-list');
 
-                // Example data for two placeholder members
+                // Data for members, takes images from the assets/ folder
                 const members = [
-                    { name: 'Member One', bio: 'Placeholder bio for member one.' },
-                    { name: 'Member Two', bio: 'Placeholder bio for member two.' }
+                    { name: 'Alex Cao', bio: 'Placeholder bio.', img: 'Alex_C.jpg' },
+                    { name: 'Babs', bio: 'Placeholder bio.', img: 'Babs.png' },
+                    { name: 'Diep Nguyen', bio: 'Placeholder bio.', img: 'Diep_N.png' },
+                    { name: 'Gavin Schlissel', bio: 'Placeholder bio.', img: 'Gavin_S.jpg' },
+                    { name: 'Laura Resteghini', bio: 'Placeholder bio.', img: 'Laura_R.png' },
+                    { name: 'Mack Litz', bio: 'Placeholder bio.', img: 'Mack_L.png' },
+                    { name: 'Mark Greenwood', bio: 'Placeholder bio.', img: 'Mark_G.png' },
+                    { name: 'Miram Meziane', bio: 'Placeholder bio.', img: 'Miram_M.png' },
+                    { name: 'Nicholas Hutchins', bio: 'Placeholder bio.', img: 'Nicholas_H.png' },
+                    { name: 'Penny', bio: 'Placeholder bio.', img: 'Penny.png' },
+                    { name: 'Pulin Li', bio: 'Placeholder bio.', img: 'Pulin_Li.jpg' },
+                    { name: 'Lauren Tso', bio: 'Placeholder bio.' },
+                    { name: 'Connor Thomas', bio: 'Placeholder bio.' },
+                    { name: 'Leah Wallach', bio: 'Placeholder bio.' },
+                    { name: 'Daniel Zhu', bio: 'Placeholder bio.' }
                 ];
 
                 members.forEach((m, idx) => {
@@ -88,7 +101,22 @@
                     const photoInner = memberEl.querySelector('.member-photo__inner');
                     if(nameEl) nameEl.textContent = m.name;
                     if(bioEl) bioEl.textContent = m.bio;
-                    if(photoInner) photoInner.textContent = '300×300';
+                    if(photoInner) {
+                        // Insert an <img> element using the file from the assets/ folder.
+                        photoInner.innerHTML = '';
+                        if(m.img){
+                            const img = document.createElement('img');
+                            img.src = '../assets/' + m.img;
+                            img.alt = m.name || 'Member photo';
+                            img.width = 200;
+                            img.height = 200;
+                            img.style.borderRadius = '50%';
+                            img.style.objectFit = 'cover';
+                            photoInner.appendChild(img);
+                        } else {
+                            photoInner.textContent = '200×200';
+                        }
+                    }
 
                     wrapper.appendChild(memberEl);
                     currentList.appendChild(wrapper);
