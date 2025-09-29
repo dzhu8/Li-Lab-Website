@@ -194,33 +194,33 @@
             color: #cccccc;
         }
 
-        /* Research Questions Section - White background */
-        .research-section {
+        /* Publications Section - White background */
+        .publications-section {
             padding: 6rem 6vw;
             background: white;
             color: var(--text-dark);
         }
 
-        .research-container {
+        .publications-container {
             max-width: 1200px;
             margin: 0 auto;
             text-align: center;
         }
 
-        .research-section h2 {
+        .publications-section h2 {
             font-size: clamp(2rem, 4vw, 3rem);
             margin-bottom: 3rem;
             color: var(--accent-color);
         }
 
-        .research-grid {
+        .publications-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 3rem;
             margin-top: 3rem;
         }
 
-        .research-card {
+        .publications-card {
             background: #f8fafc;
             padding: 2.5rem;
             border-radius: 15px;
@@ -229,12 +229,12 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .research-card:hover {
+        .publications-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 32px rgba(0,0,0,0.1);
         }
 
-        .research-card::before {
+        .publications-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -244,18 +244,18 @@
             background: linear-gradient(90deg, var(--accent-color), #4facfe);
         }
 
-        .research-card h3 {
+        .publications-card h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: var(--primary-color);
         }
 
-        .research-card p {
+        .publications-card p {
             color: var(--text-light);
             line-height: 1.6;
         }
 
-        .research-icon {
+        .publications-icon {
             width: 60px;
             height: 60px;
             margin: 0 auto 1.5rem;
@@ -493,10 +493,10 @@
             </div>
             <nav class="header__nav">
                 <ul class="header__nav-list">
-                    <li><a href="#research">Research</a></li>
+                    <li><a href="research.html">Research</a></li>
                     <li><a href="#news">Lab News</a></li>
                     <li><a href="#about">About Us</a></li>
-                    <li><a href="#research">Publications</a></li>
+                    <li><a href="#publications">Publications</a></li>
                 </ul>
             </nav>
             <div class="header__join-button">
@@ -522,14 +522,12 @@
         <!-- About Section -->
         <section class="about-section" id="about">
             <div class="about-container">
-                <h2>Lorem Ipsum.</h2>
-                <p class="subtitle">Lorem Ipsum.</p>
+                <h2>Our Team</h2>
+                <p class="subtitle">May move all the lab member images here instead, not quite sure what to do about this section yet.</p>
                 
                 <div class="about-content">
                     <div class="about-text">
                         <p>Description.</p>
-                        
-                        <p>Description.</strong></p>
                         
                         <a href="about.html" class="btn-primary">More About Us!</a>
                     </div>
@@ -546,20 +544,20 @@
             </div>
         </section>
 
-        <!-- Research Questions Section -->
-        <section class="research-section" id="research">
-            <div class="research-container">
+        <!-- Papers Section -->
+        <section class="publications-section" id="publications">
+            <div class="publications-container">
                 <h2>Highlighted Publications</h2>
                 
-                <div class="research-grid">
-                    <div class="research-card">
-                        <div class="research-icon">🔬</div>
+                <div class="publications-grid">
+                    <div class="publications-card">
+                        <div class="publications-icon">🔬</div>
                         <h3>Publication 1</h3>
                         <p>Description. Also temp. icon</p>
                     </div>
                     
-                    <div class="research-card">
-                        <div class="research-icon">🧠</div>
+                    <div class="publications-card">
+                        <div class="publications-icon">🧠</div>
                         <h3>Publication 2</h3>
                         <p>Description. Also temp. icon</p>
                     </div>
