@@ -1,248 +1,400 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Li Lab | Research</title>
-  <link rel="stylesheet" href="../css/header.css" />
-  <style>
-    :root {
-      --accent-color: #0066cc;
-      --text-dark: #222;
-    }
-    body { font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; margin: 0; color: var(--text-dark); }
-    main { padding: calc(80px + 2rem) 6vw 4rem; max-width: 1400px; margin: 0 auto; }
-    h1 { margin: 0 0 0.5rem 0; }
-    .lead { color: #555; margin: 0 0 2rem 0; }
+     <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>Li Lab | Research</title>
+          <link rel="stylesheet" href="../css/header.css" />
+          <style>
+               :root {
+                    --accent-color: #0066cc;
+                    --text-dark: #222;
+               }
+               body {
+                    font-family:
+                         "Avenir Next",
+                         -apple-system,
+                         BlinkMacSystemFont,
+                         Roboto,
+                         sans-serif;
+                    margin: 0;
+                    color: var(--text-dark);
+               }
+               main {
+                    padding: calc(80px + 2rem) 6vw 4rem;
+                    max-width: 1400px;
+                    margin: 0 auto;
+               }
+               h1 {
+                    margin: 0 0 0.5rem 0;
+                    font-size: 2.5rem;
+               }
+               .lead {
+                    color: #555;
+                    margin: 0 0 2rem 0;
+               }
 
-    /* Topic section layout: images left, text right */
-    .section { margin: 3rem 0; }
-  .topic-grid { display: grid; grid-template-columns: max-content max-content; gap: 2rem; align-items: center; justify-content: center; }
-  .topic-images { display: grid; grid-template-rows: repeat(var(--rows, 1), max-content); grid-template-columns: repeat(var(--cols, 1), max-content); gap: 0.75rem; justify-self: center; }
-  .topic-images .img-cell { background: transparent; /* no border, no shadow so images blend into page */ border: none; border-radius: 10px; overflow: hidden; box-shadow: none; display:flex; align-items:center; justify-content:center; }
-    .topic-images img, .topic-images object, .topic-images embed {
-      width: auto; /* let intrinsic/inline width determine size */
-      height: auto; /* allow inline height to override when provided */
-      object-fit: cover;
-      display: block;
-      max-width: 100%;
-    }
-  .topic-images a { display:block; width:auto; height:auto; outline: none; }
-  /* Remove default focus outline and visual rings (if you want keyboard focus visible, reintroduce a custom :focus rule) */
-  .topic-images a:focus { outline: none; box-shadow: none; }
-  .topic-images a img:focus { outline: none; }
-  .topic-text { max-width: 640px; display: flex; flex-direction: column; justify-content: center; }
-  .topic-text .sec-title { margin: 0 0 0.25rem 0; }
-    .topic-text .sec-meta { margin: 0 0 0.75rem 0; color: #666; }
-    .topic-text .sec-desc { margin: 0; color: #333; }
+               /* Topic section layout: images left, text right */
+               .section {
+                    margin: 6rem 0;
+               }
+               .topic-grid {
+                    display: grid;
+                    grid-template-columns: max-content max-content;
+                    gap: 2rem;
+                    align-items: center;
+                    justify-content: center;
+               }
+               .topic-images {
+                    display: grid;
+                    grid-template-rows: repeat(var(--rows, 1), max-content);
+                    grid-template-columns: repeat(var(--cols, 1), max-content);
+                    gap: 0.75rem;
+                    justify-self: center;
+               }
+               .topic-images .img-cell {
+                    background: transparent; /* no border, no shadow so images blend into page */
+                    border: none;
+                    border-radius: 10px;
+                    overflow: hidden;
+                    box-shadow: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+               }
+               .topic-images img,
+               .topic-images object,
+               .topic-images embed {
+                    width: auto; /* let intrinsic/inline width determine size */
+                    height: auto; /* allow inline height to override when provided */
+                    object-fit: cover;
+                    display: block;
+                    max-width: 100%;
+               }
+               .topic-images a {
+                    display: block;
+                    width: auto;
+                    height: auto;
+                    outline: none;
+               }
+               /* Remove default focus outline and visual rings (if you want keyboard focus visible, reintroduce a custom :focus rule) */
+               .topic-images a:focus {
+                    outline: none;
+                    box-shadow: none;
+               }
+               .topic-images a img:focus {
+                    outline: none;
+               }
+               .topic-text {
+                    max-width: 640px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+               }
+               .topic-text .sec-title {
+                    margin: 0 0 0.25rem 0;
+                    font-size: 1.5rem;
+               }
+               .topic-text .sec-meta {
+                    margin: 0 0 0.75rem 0;
+                    color: #666;
+               }
+               .topic-text .sec-desc {
+                    margin: 0;
+                    color: #333;
+               }
 
-    @media (max-width: 900px) {
-  .topic-grid { grid-template-columns: 1fr; justify-content: stretch; align-items: start; }
-  .topic-images { order: -1; width: 100% !important; }
-  .topic-text { justify-content: flex-start; margin-top: 1rem; }
-    }
-  </style>
-</head>
-<body>
-  <header class="header">
-    <div class="header__content">
-      <div class="header__logo">
-        <div class="header__logo-circle"><span>Temp.<br/>Logo</span></div>
-        <div class="header__logo-text"><h1>Li Lab</h1><p class="subtitle">@Whitehead Institute & MIT</p></div>
-      </div>
-      <nav class="header__nav">
-        <ul class="header__nav-list">
-          <li><a href="home.html">Home</a></li>
-          <li><a href="publications.html">Publications</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+               @media (max-width: 900px) {
+                    .topic-grid {
+                         grid-template-columns: 1fr;
+                         justify-content: stretch;
+                         align-items: start;
+                    }
+                    .topic-images {
+                         order: -1;
+                         width: 100% !important;
+                    }
+                    .topic-text {
+                         justify-content: flex-start;
+                         margin-top: 1rem;
+                    }
+               }
+          </style>
+     </head>
+     <body>
+          <header class="header">
+               <div class="header__content">
+                    <div class="header__logo">
+                         <div class="header__logo-circle">
+                              <span>Temp.<br />Logo</span>
+                         </div>
+                         <div class="header__logo-text">
+                              <h1>Li Lab</h1>
+                              <p class="subtitle">@Whitehead Institute & MIT</p>
+                         </div>
+                    </div>
+                    <nav class="header__nav">
+                         <ul class="header__nav-list">
+                              <li><a href="home.html">Home</a></li>
+                              <li><a href="publications.html">Publications</a></li>
+                         </ul>
+                    </nav>
+               </div>
+          </header>
 
-  <main>
-    <h1>Our Research</h1>
+          <main>
+               <h1>Our Research</h1>
 
-    <div id="research-sections"></div>
-  </main>
+               <div id="research-sections"></div>
+          </main>
 
-  <script>
-    (async function(){
-      const host = document.getElementById('research-sections');
-      try {
-        // Load the section template
-        const tmplResp = await fetch('research-section-template.html');
-        const tmplText = await tmplResp.text();
-        const parser = new DOMParser();
-        const tmplDoc = parser.parseFromString(tmplText, 'text/html');
-        const sectionTmpl = tmplDoc.querySelector('#research-section-template');
-        if (!sectionTmpl) throw new Error('Missing #research-section-template');
+          <script>
+               (async function () {
+                    const host = document.getElementById("research-sections");
+                    try {
+                         // Load the section template
+                         const tmplResp = await fetch("research-section-template.html");
+                         const tmplText = await tmplResp.text();
+                         const parser = new DOMParser();
+                         const tmplDoc = parser.parseFromString(tmplText, "text/html");
+                         const sectionTmpl = tmplDoc.querySelector("#research-section-template");
+                         if (!sectionTmpl) throw new Error("Missing #research-section-template");
 
-        // Helper to create a section
-        // opts: { title, meta, desc, rows, cols, images: [{src, alt, href?}] }
-        const addSection = (opts) => {
-          const frag = sectionTmpl.content.cloneNode(true);
-          const section = frag.querySelector('.research-topic');
-          const images = section.querySelector('.topic-images');
-          const t = section.querySelector('.sec-title');
-          const m = section.querySelector('.sec-meta');
-          const d = section.querySelector('.sec-desc');
-          t.textContent = opts.title || 'Section Title';
-          m.textContent = opts.meta || '';
-          d.textContent = opts.desc || '';
-          const rows = Math.max(1, parseInt(opts.rows || 1, 10));
-          const cols = Math.max(1, parseInt(opts.cols || 1, 10));
-          images.style.setProperty('--rows', rows);
-          images.style.setProperty('--cols', cols);
-          const total = rows * cols;
-          for (let i = 0; i < total; i++) {
-            const cell = document.createElement('div');
-            cell.className = 'img-cell';
-            const info = (opts.images && opts.images[i]) || {};
-            const src = info.src || '';
-            const alt = info.alt || 'Image placeholder';
-            const href = info.href || src || '#';
-            // Orientation handling: left | center | right (default center)
-            const orient = String(info.orientation || 'center').toLowerCase();
-            let justify = 'center';
-            if (orient === 'left') justify = 'flex-start';
-            else if (orient === 'right') justify = 'flex-end';
-            cell.style.justifyContent = justify;
-            if (src) {
-              const a = document.createElement('a');
-              a.href = href;
-              a.target = '_blank';
-              a.rel = 'noopener';
-              const img = document.createElement('img');
-              img.src = src;
-              img.alt = alt;
-              // Allow per-image sizing: width/height can be number (px) or string (e.g. '50%','200px')
-              if (info.width !== undefined && info.width !== null) {
-                img.style.width = (typeof info.width === 'number') ? info.width + 'px' : String(info.width);
-              }
-              if (info.height !== undefined && info.height !== null) {
-                img.style.height = (typeof info.height === 'number') ? info.height + 'px' : String(info.height);
-              }
-              // Optional modern CSS property for aspect ratio (e.g. '16/9' or '4/3')
-              if (info.aspectRatio) {
-                img.style.aspectRatio = String(info.aspectRatio);
-                // If aspectRatio is set, prefer object-fit: contain so it doesn't crop unexpectedly
-                img.style.objectFit = 'contain';
-              }
-              a.appendChild(img);
-              cell.appendChild(a);
-            } else {
-              // Fallback placeholder (SVG data URI)
-              const a = document.createElement('a');
-              a.href = '#';
-              const img = document.createElement('img');
-              img.alt = 'Placeholder';
-              img.src = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%23f5f7fa'/><text x='200' y='160' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>Placeholder</text></svg>";
-              // Apply explicit sizing if provided in info for placeholder
-              if (info.width !== undefined && info.width !== null) {
-                img.style.width = (typeof info.width === 'number') ? info.width + 'px' : String(info.width);
-              }
-              if (info.height !== undefined && info.height !== null) {
-                img.style.height = (typeof info.height === 'number') ? info.height + 'px' : String(info.height);
-              }
-              a.appendChild(img);
-              cell.appendChild(a);
-            }
-            images.appendChild(cell);
-          }
-          host.appendChild(section);
-          // After images are in DOM, size the container based on content width
-          requestAnimationFrame(() => sizeImageContainer(images, cols));
-          // Also recompute when images load (asynchronous intrinsic sizes)
-          images.querySelectorAll('img,object,embed').forEach(media => {
-            if (media.tagName.toLowerCase() === 'img') {
-              media.addEventListener('load', () => sizeImageContainer(images, cols), { once: true });
-            } else {
-              // For object/embed, a generic load handler
-              media.addEventListener('load', () => sizeImageContainer(images, cols), { once: true });
-            }
-          });
-        };
+                         // Helper to create a section
+                         // opts: { title, meta, desc, rows, cols, images: [{src, alt, href?}] }
+                         const addSection = (opts) => {
+                              const frag = sectionTmpl.content.cloneNode(true);
+                              const section = frag.querySelector(".research-topic");
+                              const images = section.querySelector(".topic-images");
+                              const t = section.querySelector(".sec-title");
+                              const m = section.querySelector(".sec-meta");
+                              const d = section.querySelector(".sec-desc");
+                              t.textContent = opts.title || "Section Title";
+                              m.textContent = opts.meta || "";
+                              d.textContent = opts.desc || "";
+                              const rows = Math.max(1, parseInt(opts.rows || 1, 10));
+                              const cols = Math.max(1, parseInt(opts.cols || 1, 10));
+                              images.style.setProperty("--rows", rows);
+                              images.style.setProperty("--cols", cols);
+                              const total = rows * cols;
+                              for (let i = 0; i < total; i++) {
+                                   const cell = document.createElement("div");
+                                   cell.className = "img-cell";
+                                   const info = (opts.images && opts.images[i]) || {};
+                                   const src = info.src || "";
+                                   const alt = info.alt || "Image placeholder";
+                                   const href = info.href || src || "#";
+                                   // Orientation handling: left | center | right (default center)
+                                   const orient = String(info.orientation || "center").toLowerCase();
+                                   let justify = "center";
+                                   if (orient === "left") justify = "flex-start";
+                                   else if (orient === "right") justify = "flex-end";
+                                   cell.style.justifyContent = justify;
+                                   if (src) {
+                                        const a = document.createElement("a");
+                                        a.href = href;
+                                        a.target = "_blank";
+                                        a.rel = "noopener";
+                                        const img = document.createElement("img");
+                                        img.src = src;
+                                        img.alt = alt;
+                                        // Allow per-image sizing: width/height can be number (px) or string (e.g. '50%','200px')
+                                        if (info.width !== undefined && info.width !== null) {
+                                             img.style.width =
+                                                  typeof info.width === "number"
+                                                       ? info.width + "px"
+                                                       : String(info.width);
+                                        }
+                                        if (info.height !== undefined && info.height !== null) {
+                                             img.style.height =
+                                                  typeof info.height === "number"
+                                                       ? info.height + "px"
+                                                       : String(info.height);
+                                        }
+                                        // Optional modern CSS property for aspect ratio (e.g. '16/9' or '4/3')
+                                        if (info.aspectRatio) {
+                                             img.style.aspectRatio = String(info.aspectRatio);
+                                             // If aspectRatio is set, prefer object-fit: contain so it doesn't crop unexpectedly
+                                             img.style.objectFit = "contain";
+                                        }
+                                        a.appendChild(img);
+                                        cell.appendChild(a);
+                                   } else {
+                                        // Fallback placeholder (SVG data URI)
+                                        const a = document.createElement("a");
+                                        a.href = "#";
+                                        const img = document.createElement("img");
+                                        img.alt = "Placeholder";
+                                        img.src =
+                                             "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%23f5f7fa'/><text x='200' y='160' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>Placeholder</text></svg>";
+                                        // Apply explicit sizing if provided in info for placeholder
+                                        if (info.width !== undefined && info.width !== null) {
+                                             img.style.width =
+                                                  typeof info.width === "number"
+                                                       ? info.width + "px"
+                                                       : String(info.width);
+                                        }
+                                        if (info.height !== undefined && info.height !== null) {
+                                             img.style.height =
+                                                  typeof info.height === "number"
+                                                       ? info.height + "px"
+                                                       : String(info.height);
+                                        }
+                                        a.appendChild(img);
+                                        cell.appendChild(a);
+                                   }
+                                   images.appendChild(cell);
+                              }
+                              host.appendChild(section);
+                              // After images are in DOM, size the container based on content width
+                              requestAnimationFrame(() => sizeImageContainer(images, cols));
+                              // Also recompute when images load (asynchronous intrinsic sizes)
+                              images.querySelectorAll("img,object,embed").forEach((media) => {
+                                   if (media.tagName.toLowerCase() === "img") {
+                                        media.addEventListener("load", () => sizeImageContainer(images, cols), {
+                                             once: true,
+                                        });
+                                   } else {
+                                        // For object/embed, a generic load handler
+                                        media.addEventListener("load", () => sizeImageContainer(images, cols), {
+                                             once: true,
+                                        });
+                                   }
+                              });
+                         };
 
-        // Compute and set the width of the topic-images to 1.05 × row content width
-        // Includes image intrinsic/inline widths and grid gaps
-        const sizeImageContainer = (imagesEl, cols) => {
-          try {
-            if (!imagesEl) return;
-            // Get computed gap (assume same for rows/cols)
-            const styles = getComputedStyle(imagesEl);
-            const gapX = parseFloat(styles.columnGap || styles.gap || '0') || 0;
-            // Measure each cell's content width (max content)
-            const cells = Array.from(imagesEl.querySelectorAll('.img-cell'));
-            if (cells.length === 0) return;
-            // Determine per-column widths by scanning the first row with images
-            const columnWidths = new Array(cols).fill(0);
-            cells.forEach((cell, idx) => {
-              const img = cell.querySelector('img,object,embed');
-              let w = 0;
-              if (img) {
-                // Prefer explicit inline width style or attribute; fallback to natural width or bounding width
-                const styleW = img.style.width && img.style.width.endsWith('px') ? parseFloat(img.style.width) : null;
-                const attrW = img.getAttribute('width') ? parseFloat(img.getAttribute('width')) : null;
-                const naturalW = (img.naturalWidth && !isNaN(img.naturalWidth)) ? img.naturalWidth : null;
-                const boundW = img.getBoundingClientRect().width || 0;
-                w = styleW || attrW || naturalW || boundW;
-              } else {
-                w = cell.getBoundingClientRect().width || 0;
-              }
-              const col = idx % cols;
-              columnWidths[col] = Math.max(columnWidths[col], w);
-            });
-            // Sum widest per-column widths and add gaps between columns
-            const totalCols = Math.min(cols, columnWidths.length);
-            const contentWidth = columnWidths.slice(0, totalCols).reduce((a,b)=>a+b,0) + gapX * Math.max(0, totalCols - 1);
-            const targetWidth = Math.ceil(contentWidth * 1.05);
-            imagesEl.style.width = targetWidth + 'px';
-            imagesEl.style.maxWidth = '100%';
-          } catch (e) {
-            // Fail silently to avoid breaking the page
-          }
-        };
+                         // Compute and set the width of the topic-images to 1.05 × row content width
+                         // Includes image intrinsic/inline widths and grid gaps
+                         const sizeImageContainer = (imagesEl, cols) => {
+                              try {
+                                   if (!imagesEl) return;
+                                   // Get computed gap (assume same for rows/cols)
+                                   const styles = getComputedStyle(imagesEl);
+                                   const gapX = parseFloat(styles.columnGap || styles.gap || "0") || 0;
+                                   // Measure each cell's content width (max content)
+                                   const cells = Array.from(imagesEl.querySelectorAll(".img-cell"));
+                                   if (cells.length === 0) return;
+                                   // Determine per-column widths by scanning the first row with images
+                                   const columnWidths = new Array(cols).fill(0);
+                                   cells.forEach((cell, idx) => {
+                                        const img = cell.querySelector("img,object,embed");
+                                        let w = 0;
+                                        if (img) {
+                                             // Prefer explicit inline width style or attribute; fallback to natural width or bounding width
+                                             const styleW =
+                                                  img.style.width && img.style.width.endsWith("px")
+                                                       ? parseFloat(img.style.width)
+                                                       : null;
+                                             const attrW = img.getAttribute("width")
+                                                  ? parseFloat(img.getAttribute("width"))
+                                                  : null;
+                                             const naturalW =
+                                                  img.naturalWidth && !isNaN(img.naturalWidth)
+                                                       ? img.naturalWidth
+                                                       : null;
+                                             const boundW = img.getBoundingClientRect().width || 0;
+                                             w = styleW || attrW || naturalW || boundW;
+                                        } else {
+                                             w = cell.getBoundingClientRect().width || 0;
+                                        }
+                                        const col = idx % cols;
+                                        columnWidths[col] = Math.max(columnWidths[col], w);
+                                   });
+                                   // Sum widest per-column widths and add gaps between columns
+                                   const totalCols = Math.min(cols, columnWidths.length);
+                                   const contentWidth =
+                                        columnWidths.slice(0, totalCols).reduce((a, b) => a + b, 0) +
+                                        gapX * Math.max(0, totalCols - 1);
+                                   const targetWidth = Math.ceil(contentWidth * 1.05);
+                                   imagesEl.style.width = targetWidth + "px";
+                                   imagesEl.style.maxWidth = "100%";
+                              } catch (e) {
+                                   // Fail silently to avoid breaking the page
+                              }
+                         };
 
-        // Two placeholder sections using a 2x1 image grid
-        addSection({
-          title: 'The Biophysics of Cell-Cell Communication',
-          meta: 'How are tissue patterns formed and regulated?',
-          desc: 'Within a tissue, a cell’s position is critically linked to its fate. How does a cell determine its position relative to other cells to ensure tissue patterns properly develop? In developing tissues, this problem is partly solved by a group of secreted signaling molecules called morphogens. Morphogens move through the extracellular space and establish concentration gradients, acting like a GPS system. However, the physical and biological mechanisms that govern morphogen movement and gradient formation remain poorly understood. We are reconstituting diverse cell-cell communication systems that are amenable to high-resolution imaging and high-throughput genetic perturbation, to quantitatively understand how cells modulate and decode positional information. We are also asking how the natural diversity of extracellular environments in different organs modulates cell-cell communication in developing systems.',
-          rows: 2,
-          cols: 1,
-          images: [
-            { src: '../assets/research/sender-receiver.png', alt: 'Gradient assay cartoon', href: '../assets/research/sender-receiver.png', width: 150, height: 225, orientation: 'right' },
-            { src: "../assets/research/diffusion_assay.gif", alt: 'Gradient assay GIF', href: '../assets/research/diffusion_assay.gif', width: 300, height: 225 }
-          ]
-        });
+                         addSection({
+                              title: "The Biophysics of Cell-Cell Communication",
+                              meta: "How are tissue patterns formed and regulated?",
+                              desc: "Within a tissue, a cell’s position is critically linked to its fate. How does a cell determine its position relative to other cells to ensure tissue patterns properly develop? In developing tissues, this problem is partly solved by a group of secreted signaling molecules called morphogens. Morphogens move through the extracellular space and establish concentration gradients, acting like a GPS system. However, the physical and biological mechanisms that govern morphogen movement and gradient formation remain poorly understood. We are reconstituting diverse cell-cell communication systems that are amenable to high-resolution imaging and high-throughput genetic perturbation, to quantitatively understand how cells modulate and decode positional information. We are also asking how the natural diversity of extracellular environments in different organs modulates cell-cell communication in developing systems.",
+                              rows: 2,
+                              cols: 1,
+                              images: [
+                                   {
+                                        src: "../assets/research/sender-receiver.png",
+                                        alt: "Gradient assay cartoon",
+                                        href: "../assets/research/sender-receiver.png",
+                                        width: 150,
+                                        height: 225,
+                                        orientation: "right",
+                                   },
+                                   {
+                                        src: "../assets/research/diffusion_assay.gif",
+                                        alt: "Gradient assay GIF",
+                                        href: "../assets/research/diffusion_assay.gif",
+                                        width: 300,
+                                        height: 225,
+                                   },
+                              ],
+                         });
 
-        addSection({
-          title: 'Topic Title Two',
-          meta: 'Another placeholder subtitle',
-          desc: 'Another brief description. Images can be local paths like ../assets/research/figure1.png.',
-          rows: 2,
-          cols: 1,
-          images: [
-            { src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23f0fff4' width='400' height='400'/><text x='200' y='210' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>2x1 Image C</text></svg>", alt: 'Placeholder C' },
-            { src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23fef7ff' width='400' height='400'/><text x='200' y='210' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>2x1 Image D</text></svg>", alt: 'Placeholder D' }
-          ]
-        });
+                         addSection({
+                              title: "Molecular Mechanisms in Lung Organogenesis",
+                              meta: "Lung branching is complex yet stereotyped- what underlies this precision?",
+                              desc: "In the developing lung, communication between the epithelium and mesenchyme is essential for proper formation. How does mesenchymal diversity emerge in and around the lung, and how does communication between the lung and the surrounding mesenchyme influence the developmental process? More specifically, we investigate questions such as: is branching largely governed by lung-intrinsic mechanisms, or lung-extrinsic signals? From which cell types do the diverse endothelial and mesenchymal lineages in the lung emerge? Can this diversity be recapitulated in culture to create models by which to study this diversity? We employ a combination of ex vivo tissue explant models, tissue-level perturbations, fluorescence microscopy and single-cell genomics to comprehensively characterize this dynamic process.",
+                              rows: 2,
+                              cols: 1,
+                              images: [
+                                   {
+                                        src: "../assets/research/Lung_bifurcation.png",
+                                        alt: "Explant!",
+                                        href: "../assets/research/Lung_bifurcation.png",
+                                        width: 300,
+                                        height: 225,
+                                   },
+                                   {
+                                        src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23fef7ff' width='400' height='400'/><text x='200' y='210' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>2x1 Image D</text></svg>",
+                                        alt: "Placeholder D",
+                                   },
+                              ],
+                         });
 
-        // Resize all sections on window resize to keep sizing accurate
-        const onResize = () => {
-          document.querySelectorAll('.topic-images').forEach(imagesEl => {
-            const styles = getComputedStyle(imagesEl);
-            // Infer columns by counting items and reading --cols if available
-            const declCols = parseInt(imagesEl.style.getPropertyValue('--cols') || '0', 10);
-            const inferredCols = declCols || Math.max(1, Math.round((styles.gridTemplateColumns || '').split(' ').length)) || 1;
-            sizeImageContainer(imagesEl, inferredCols);
-          });
-        };
-        window.addEventListener('resize', onResize);
-      } catch (err) {
-        console.error('Failed to render research sections:', err);
-      }
-    })();
-  </script>
-</body>
- </html>
+                         addSection({
+                              title: "Molecular Mechanisms of Lung Organogenesis",
+                              meta: "Lung branching is complex yet stereotyped- what underlies this precision?",
+                              desc: "In the developing lung, communication between the epithelium and mesenchyme is essential for proper formation. We employ a combination of ",
+                              rows: 2,
+                              cols: 1,
+                              images: [
+                                   {
+                                        src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23f0fff4' width='400' height='400'/><text x='200' y='210' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>2x1 Image C</text></svg>",
+                                        alt: "Placeholder C",
+                                   },
+                                   {
+                                        src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23fef7ff' width='400' height='400'/><text x='200' y='210' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>2x1 Image D</text></svg>",
+                                        alt: "Placeholder D",
+                                   },
+                              ],
+                         });
+
+                         // Resize all sections on window resize to keep sizing accurate
+                         const onResize = () => {
+                              document.querySelectorAll(".topic-images").forEach((imagesEl) => {
+                                   const styles = getComputedStyle(imagesEl);
+                                   // Infer columns by counting items and reading --cols if available
+                                   const declCols = parseInt(imagesEl.style.getPropertyValue("--cols") || "0", 10);
+                                   const inferredCols =
+                                        declCols ||
+                                        Math.max(1, Math.round((styles.gridTemplateColumns || "").split(" ").length)) ||
+                                        1;
+                                   sizeImageContainer(imagesEl, inferredCols);
+                              });
+                         };
+                         window.addEventListener("resize", onResize);
+                    } catch (err) {
+                         console.error("Failed to render research sections:", err);
+                    }
+               })();
+          </script>
+     </body>
+</html>

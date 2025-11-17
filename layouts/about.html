@@ -1,172 +1,228 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Li Lab | About</title>
-    <link rel="stylesheet" href="../css/header.css">
-    <style>
-        body { font-family: 'Avenir Next', sans-serif; margin:0; padding:0; color:#222; }
-        main { padding: calc(80px + 2rem) 6vw 4rem; max-width: 1100px; margin: 0 auto; }
-        h1,h2 { color: #111; }
-        h2 { font-size: 2.4rem; }
-        .section { margin-bottom: 3rem; }
-        .section-subtitle { color: #0066cc; font-weight:600; margin-bottom:1rem; }
-        /* Member layout styles - same as template but scoped to about page */
-        .member { display: grid; grid-template-columns: 200px 1fr; gap: 2rem; align-items:center; margin:2rem 0; }
-    /* member--reverse removed: all members use the same layout */
-        .member-photo__inner { width:200px; height:200px; border-radius:50%; background:#f0f0f0; display:flex; align-items:center; justify-content:center; color:#666; font-size:14px; box-shadow:0 8px 20px rgba(0,0,0,0.08); }
-        .member-name { margin:0 0 0.5rem 0; }
-        .member-bio { margin:0; color:#444; }
+     <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>Li Lab | About</title>
+          <link rel="stylesheet" href="../css/header.css" />
+          <style>
+               body {
+                    font-family: "Avenir Next", sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: #222;
+               }
+               main {
+                    padding: calc(80px + 2rem) 6vw 4rem;
+                    max-width: 1100px;
+                    margin: 0 auto;
+               }
+               h1,
+               h2 {
+                    color: #111;
+               }
+               h2 {
+                    font-size: 2.4rem;
+               }
+               .section {
+                    margin-bottom: 3rem;
+               }
+               .section-subtitle {
+                    color: #0066cc;
+                    font-weight: 600;
+                    margin-bottom: 1rem;
+               }
+               /* Member layout styles - same as template but scoped to about page */
+               .member {
+                    display: grid;
+                    grid-template-columns: 200px 1fr;
+                    gap: 2rem;
+                    align-items: center;
+                    margin: 2rem 0;
+               }
+               /* member--reverse removed: all members use the same layout */
+               .member-photo__inner {
+                    width: 200px;
+                    height: 200px;
+                    border-radius: 50%;
+                    background: #f0f0f0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #666;
+                    font-size: 14px;
+                    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+               }
+               .member-name {
+                    margin: 0 0 0.5rem 0;
+               }
+               .member-bio {
+                    margin: 0;
+                    color: #444;
+               }
 
-        /* Responsive */
-        @media (max-width:768px) {
-            .member, .member--reverse { grid-template-columns: 1fr; text-align:center; }
-            .member-photo__inner { margin: 0 auto; }
-        }
-    </style>
-</head>
-<body>
-    <header class="header">
-        <div class="header__content">
-            <div class="header__logo">
-                <div class="header__logo-circle"><span>Temp.<br>Logo</span></div>
-                <div class="header__logo-text"><h1>Li Lab</h1><p class="subtitle">@Whitehead Institute & MIT</p></div>
-            </div>
-            <nav class="header__nav"><ul class="header__nav-list"><li><a href="home.html">Home</a></li></ul></nav>
-        </div>
-    </header>
-
-    <main>
-
-        <section class="section" id="current">
-            <h2>Current</h2>
-            <div id="current-list" aria-live="polite"></div>
-        </section>
-
-        <section class="section" id="alumni">
-            <h2>Alumni</h2>
-            <div id="alumni-list" aria-live="polite"></div>
-        </section>
-    </main>
-
-    <!-- Import the member template -->
-    <!-- We load it directly from the sibling file so editors can reuse it. -->
-    <div style="display:none">
-        <!--# include virtual="member-template.html" -->
-    </div>
-
-    <script>
-        // Simple client-side approach: fetch the template file and extract the template element
-        (async function(){
-            try {
-                const resp = await fetch('member-template.html');
-                const text = await resp.text();
-                // Parse the fetched file and find the template element
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(text, 'text/html');
-                const tmpl = doc.querySelector('#member-template');
-                if(!tmpl) return;
-
-                const currentList = document.getElementById('current-list');
-
-                // Data for members, takes images from the assets/ folder
-                const members = [
-                    { name: 'Alex Cao', bio: 'Placeholder bio.', img: 'Alex.jpg' },
-                    { name: 'Babs', bio: 'Placeholder bio.', img: 'Babs.png' },
-                    { name: 'Diep Nguyen', bio: 'Placeholder bio.', img: 'Diep.jpg' },
-                    { name: 'Gavin Schlissel', bio: 'Placeholder bio.', img: 'Gavin.jpeg' },
-                    { name: 'Laura Resteghini', bio: 'Placeholder bio.', img: 'Laura_R.png' },
-                    { name: 'Mack Litz', bio: 'Placeholder bio.', img: 'Mack.jpg' },
-                    { name: 'Mark Greenwood', bio: 'Placeholder bio.' },
-                    { name: 'Miram Meziane', bio: 'Placeholder bio.', img: 'Miram.jpg' },
-                    { name: 'Nicholas Hutchins', bio: 'Placeholder bio.', img: 'Nicholas_H.png' },
-                    { name: 'Penny', bio: 'Placeholder bio.', img: 'Penny.png' },
-                    { name: 'Pulin Li', bio: 'Placeholder bio.', img: 'Pulin_Li.jpg' },
-                    { name: 'Patrick Lim', bio: 'Placeholder bio.', img: 'patrick.jpg' },
-                    { name: 'Lauren Tso', bio: 'Placeholder bio.' },
-                    { name: 'Connor Thomas', bio: 'Placeholder bio.', img: 'Connor.jpg' },
-                    { name: 'Leah Wallach', bio: 'Placeholder bio.' },
-                    { name: 'Daniel Zhu', bio: 'Placeholder bio.' },
-                    { name: 'Bailey Tischer', bio: 'Placeholder bio.' }
-                ];
-
-                members.forEach((m, idx) => {
-                    const clone = tmpl.content.cloneNode(true);
-                    const wrapper = document.createElement('div');
-                    // wrapper will receive member class
-                    const memberEl = clone.querySelector('.member');
-                    if(!memberEl) return; // safety
-
-                    // fill in details
-                    const nameEl = memberEl.querySelector('.member-name');
-                    const bioEl = memberEl.querySelector('.member-bio');
-                    const photoInner = memberEl.querySelector('.member-photo__inner');
-                    if(nameEl) nameEl.textContent = m.name;
-                    if(bioEl) bioEl.textContent = m.bio;
-                    if(photoInner) {
-                        // Insert an <img> element using the file from the assets/ folder.
-                        photoInner.innerHTML = '';
-                        if(m.img){
-                            const img = document.createElement('img');
-                            img.src = '../assets/' + m.img;
-                            img.alt = m.name || 'Member photo';
-                            img.width = 200;
-                            img.height = 200;
-                            img.style.borderRadius = '50%';
-                            img.style.objectFit = 'cover';
-                            photoInner.appendChild(img);
-                        } else {
-                            photoInner.textContent = '200×200';
-                        }
+               /* Responsive */
+               @media (max-width: 768px) {
+                    .member,
+                    .member--reverse {
+                         grid-template-columns: 1fr;
+                         text-align: center;
                     }
-
-                    wrapper.appendChild(memberEl);
-                    currentList.appendChild(wrapper);
-                });
-
-                const alumniList = document.getElementById('alumni-list');
-                const alumni = [
-                    // Add alumni here, e.g., { name: 'John Doe', bio: 'Former member.', img: 'john.jpg' }
-                ];
-
-                alumni.forEach((m, idx) => {
-                    const clone = tmpl.content.cloneNode(true);
-                    const wrapper = document.createElement('div');
-                    // wrapper will receive member class
-                    const memberEl = clone.querySelector('.member');
-                    if(!memberEl) return; // safety
-
-                    // fill in details
-                    const nameEl = memberEl.querySelector('.member-name');
-                    const bioEl = memberEl.querySelector('.member-bio');
-                    const photoInner = memberEl.querySelector('.member-photo__inner');
-                    if(nameEl) nameEl.textContent = m.name;
-                    if(bioEl) bioEl.textContent = m.bio;
-                    if(photoInner) {
-                        // Insert an <img> element using the file from the assets/ folder.
-                        photoInner.innerHTML = '';
-                        if(m.img){
-                            const img = document.createElement('img');
-                            img.src = '../assets/' + m.img;
-                            img.alt = m.name || 'Alumni photo';
-                            img.width = 200;
-                            img.height = 200;
-                            img.style.borderRadius = '50%';
-                            img.style.objectFit = 'cover';
-                            photoInner.appendChild(img);
-                        } else {
-                            photoInner.textContent = '200×200';
-                        }
+                    .member-photo__inner {
+                         margin: 0 auto;
                     }
+               }
+          </style>
+     </head>
+     <body>
+          <header class="header">
+               <div class="header__content">
+                    <div class="header__logo">
+                         <div class="header__logo-circle">
+                              <span>Temp.<br />Logo</span>
+                         </div>
+                         <div class="header__logo-text">
+                              <h1>Li Lab</h1>
+                              <p class="subtitle">@Whitehead Institute & MIT</p>
+                         </div>
+                    </div>
+                    <nav class="header__nav">
+                         <ul class="header__nav-list">
+                              <li><a href="home.html">Home</a></li>
+                         </ul>
+                    </nav>
+               </div>
+          </header>
 
-                    wrapper.appendChild(memberEl);
-                    alumniList.appendChild(wrapper);
-                });
-            } catch (err) {
-                console.error('Failed to load member template:', err);
-            }
-        })();
-    </script>
-</body>
+          <main>
+               <section class="section" id="current">
+                    <h2>Current</h2>
+                    <div id="current-list" aria-live="polite"></div>
+               </section>
+
+               <section class="section" id="alumni">
+                    <h2>Alumni</h2>
+                    <div id="alumni-list" aria-live="polite"></div>
+               </section>
+          </main>
+
+          <!-- Import the member template -->
+          <!-- We load it directly from the sibling file so editors can reuse it. -->
+          <div style="display: none">
+               <!--# include virtual="member-template.html" -->
+          </div>
+
+          <script>
+               // Simple client-side approach: fetch the template file and extract the template element
+               (async function () {
+                    try {
+                         const resp = await fetch("member-template.html");
+                         const text = await resp.text();
+                         // Parse the fetched file and find the template element
+                         const parser = new DOMParser();
+                         const doc = parser.parseFromString(text, "text/html");
+                         const tmpl = doc.querySelector("#member-template");
+                         if (!tmpl) return;
+
+                         const currentList = document.getElementById("current-list");
+
+                         // Data for members, takes images from the assets/ folder
+                         const members = [
+                              { name: "Alex Cao", bio: "Placeholder bio.", img: "Alex.jpg" },
+                              { name: "Babs", bio: "Placeholder bio.", img: "Babs.png" },
+                              { name: "Diep Nguyen", bio: "Placeholder bio.", img: "Diep.jpg" },
+                              { name: "Gavin Schlissel", bio: "Placeholder bio.", img: "Gavin.jpeg" },
+                              { name: "Laura Resteghini", bio: "Placeholder bio.", img: "Laura_R.png" },
+                              { name: "Mack Litz", bio: "Placeholder bio.", img: "Mack.jpg" },
+                              { name: "Mark Greenwood", bio: "Placeholder bio." },
+                              { name: "Miram Meziane", bio: "Placeholder bio.", img: "Miram.jpg" },
+                              { name: "Nicholas Hutchins", bio: "Placeholder bio.", img: "Nicholas_H.png" },
+                              { name: "Penny", bio: "Placeholder bio.", img: "Penny.png" },
+                              { name: "Pulin Li", bio: "Placeholder bio.", img: "Pulin_Li.jpg" },
+                              { name: "Patrick Lim", bio: "Placeholder bio.", img: "patrick.jpg" },
+                              { name: "Lauren Tso", bio: "Placeholder bio." },
+                              { name: "Connor Thomas", bio: "Placeholder bio.", img: "Connor.jpg" },
+                              { name: "Leah Wallach", bio: "Placeholder bio." },
+                              { name: "Daniel Zhu", bio: "Placeholder bio." },
+                              { name: "Bailey Tischer", bio: "Placeholder bio." },
+                         ];
+
+                         members.forEach((m, idx) => {
+                              const clone = tmpl.content.cloneNode(true);
+                              const wrapper = document.createElement("div");
+                              // wrapper will receive member class
+                              const memberEl = clone.querySelector(".member");
+                              if (!memberEl) return; // safety
+
+                              // fill in details
+                              const nameEl = memberEl.querySelector(".member-name");
+                              const bioEl = memberEl.querySelector(".member-bio");
+                              const photoInner = memberEl.querySelector(".member-photo__inner");
+                              if (nameEl) nameEl.textContent = m.name;
+                              if (bioEl) bioEl.textContent = m.bio;
+                              if (photoInner) {
+                                   // Insert an <img> element using the file from the assets/ folder.
+                                   photoInner.innerHTML = "";
+                                   if (m.img) {
+                                        const img = document.createElement("img");
+                                        img.src = "../assets/" + m.img;
+                                        img.alt = m.name || "Member photo";
+                                        img.width = 200;
+                                        img.height = 200;
+                                        img.style.borderRadius = "50%";
+                                        img.style.objectFit = "cover";
+                                        photoInner.appendChild(img);
+                                   } else {
+                                        photoInner.textContent = "200×200";
+                                   }
+                              }
+
+                              wrapper.appendChild(memberEl);
+                              currentList.appendChild(wrapper);
+                         });
+
+                         const alumniList = document.getElementById("alumni-list");
+                         const alumni = [
+                              // Add alumni here, e.g., { name: 'John Doe', bio: 'Former member.', img: 'john.jpg' }
+                         ];
+
+                         alumni.forEach((m, idx) => {
+                              const clone = tmpl.content.cloneNode(true);
+                              const wrapper = document.createElement("div");
+                              // wrapper will receive member class
+                              const memberEl = clone.querySelector(".member");
+                              if (!memberEl) return; // safety
+
+                              // fill in details
+                              const nameEl = memberEl.querySelector(".member-name");
+                              const bioEl = memberEl.querySelector(".member-bio");
+                              const photoInner = memberEl.querySelector(".member-photo__inner");
+                              if (nameEl) nameEl.textContent = m.name;
+                              if (bioEl) bioEl.textContent = m.bio;
+                              if (photoInner) {
+                                   // Insert an <img> element using the file from the assets/ folder.
+                                   photoInner.innerHTML = "";
+                                   if (m.img) {
+                                        const img = document.createElement("img");
+                                        img.src = "../assets/" + m.img;
+                                        img.alt = m.name || "Alumni photo";
+                                        img.width = 200;
+                                        img.height = 200;
+                                        img.style.borderRadius = "50%";
+                                        img.style.objectFit = "cover";
+                                        photoInner.appendChild(img);
+                                   } else {
+                                        photoInner.textContent = "200×200";
+                                   }
+                              }
+
+                              wrapper.appendChild(memberEl);
+                              alumniList.appendChild(wrapper);
+                         });
+                    } catch (err) {
+                         console.error("Failed to load member template:", err);
+                    }
+               })();
+          </script>
+     </body>
 </html>

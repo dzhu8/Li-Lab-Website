@@ -38,6 +38,10 @@ const members = [
 
 ## Adding Publications
 
+There are two ways to add publications to the Publications page (`src/layouts/publications.html`):
+
+### Method 1: Manual Addition
+
 To add publications to the Publications page (`src/layouts/publications.html`):
 
 1. **Prepare the PDF** (optional but recommended):
@@ -110,3 +114,39 @@ To add publications to the Publications page (`src/layouts/publications.html`):
    - Save `publications.html`
    - Refresh the Publications page in your browser
    - Publications are automatically sorted by year (newest first)
+
+
+### Method 2: Using the Google Scholar Fetcher Tool (Note this isn't really polished yet)
+
+The Google Scholar fetcher tool (`src/app/fetch_scholar_publications.js`) helps you discover and retrieve publication information from Google Scholar.
+
+1. **Install required dependencies**:
+   ```bash
+   cd src/app
+   npm install
+   npx playwright install chromium
+   ```
+
+2. **Run the fetcher script**:
+   ```bash
+   # Fetch all publications
+   node fetch_scholar_publications.js
+   
+   # Fetch publications from 2020 onwards
+   node fetch_scholar_publications.js --start 2020
+   
+   # Fetch publications between 2020 and 2024
+   node fetch_scholar_publications.js --start 2020 --end 2024
+   ```
+
+3. **Interactive selection**:
+   - The script will fetch all publications from the Google Scholar URL
+   - For each publication, you'll see the title, authors, and year
+   - Answer "yes" or "no" to open the paper page in a separate browser window
+   - The browser window opens the publication details page where you can find download links, DOI, etc.
+
+4. **After finding a paper to add**:
+   - Download the PDF and save it to `src/assets/papers/` (e.g., `author-year.pdf`)
+   - Note the publication details (title, authors, journal, date, DOI)
+   - Follow Method 1 above to manually add it to the website
+
