@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <title>Redirecting to Home</title>
   <!-- Immediate meta refresh to the actual homepage -->
-  <meta http-equiv="refresh" content="0; url=layouts/home.html">
+  <meta http-equiv="refresh" content="0; url=src/layouts/home.html">
   <meta name="robots" content="noindex">
   <script>
     // JavaScript fallback for older browsers / to ensure a hard redirect
     (function() {
-      var target = 'layouts/home.html';
+      var target = 'src/layouts/home.html';
       try {
         window.location.replace(target);
       } catch (e) {
@@ -19,6 +19,6 @@
   </script>
 </head>
 <body>
-  <p>Redirecting to <a href="layouts/home.html">home</a>. If you are not redirected automatically, click the link.</p>
+  <p>Redirecting to <a href="src/layouts/home.html">home</a>. If you are not redirected automatically, click the link.</p>
 </body>
 </html>
