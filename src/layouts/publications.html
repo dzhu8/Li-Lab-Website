@@ -138,11 +138,9 @@
           </main>
 
           <script>
-               // Generate sections for years from the current year back to 2018
+               // Generate publication entries
                (async function () {
                     const container = document.getElementById("years-list");
-                    // Papers from 2018-2024
-                    const currentYear = 2024;
                     // Fetch publication template and use it for each entry
                     try {
                          const tmplResp = await fetch("publication-template.html");
@@ -182,7 +180,7 @@
                          // Helper: add a publication object to a year section using the template
                          const addPublication = (opts) => {
                               // opts: { year, title, journal, authors, date, desc, imgText }
-                              const year = opts.year || currentYear;
+                              const year = opts.year || 2025;
                               const targetSection = ensureYearSection(year);
                               const clone2 = pubTmpl.content.cloneNode(true);
                               const pubEl2 = clone2.querySelector(".pub");
@@ -225,18 +223,20 @@
                                         a.appendChild(im);
                                         imgEl2.appendChild(a);
                                    } else if (pdf) {
-                                        // embed first page using object; link wraps the object so clicking opens pdf
+                                        // embed first page using iframe; link wraps the iframe so clicking opens pdf
                                         const a = document.createElement("a");
                                         // Hide built-in PDF UI in the click-through as well
                                         a.href = pdf + "#toolbar=0&navpanes=0&statusbar=0";
                                         a.target = "_blank";
                                         a.rel = "noopener";
-                                        const obj = document.createElement("object");
+                                        const iframe = document.createElement("iframe");
                                         // include #page=1 where supported
-                                        obj.data = pdf + "#page=1&toolbar=0&navpanes=0&statusbar=0";
-                                        obj.type = "application/pdf";
-                                        obj.innerHTML = "PDF preview not available";
-                                        a.appendChild(obj);
+                                        iframe.src = pdf + "#page=1&toolbar=0&navpanes=0&statusbar=0";
+                                        iframe.width = "100%";
+                                        iframe.height = "100%";
+                                        iframe.style.border = "none";
+                                        iframe.innerHTML = "PDF preview not available";
+                                        a.appendChild(iframe);
                                         imgEl2.appendChild(a);
                                    } else {
                                         imgEl2.textContent = opts.imgText || "Image Placeholder";
@@ -284,162 +284,42 @@
                               targetSection.appendChild(pubEl2);
                          };
 
-                         for (let y = currentYear; y >= 2018; y--) {
-                              // Ensure year section exists
-                              ensureYearSection(y);
+                         // Add publications for 2025
+                         addPublication({
+                              year: 2025,
+                              title: "A tissue-scale strategy for sensing threats in barrier organs",
+                              journal: "bioRxiv",
+                              authors: "Diep H. Nguyen, Jiakun Tian, Sean-Luc Shanahan, Connie Kangni Wang, Tyler Jacks, Xiao Wang, Pulin Li",
+                              date: "March 19, 2025",
+                              desc: "Here, by analyzing influenza infection in the lung using single-molecule imaging and spatial transcriptomics, we discovered a tiered threat-sensing strategy at the tissue scale, where the probability of detecting and responding to infection is lowest in the outermost epithelia and highest in the inner stroma. This strategy emerges from spatially graded PRR expression that results in cell-type-specific probabilities of threat-sensing across the tissue, a design broadly adopted by barrier organs. Selectively increasing PRR expression in lung epithelia in vivo exacerbated tissue damage upon inflammatory challenge. These results reveal a spatially tiered strategy to tolerate threats restricted within the epithelia, and yet enable progressively potent immune responses as threats invade deeper into the tissue.",
+                              imgText: "Tiered sensing",
+                              pdf: "../assets/papers/nguyen-et-al-2025.pdf",
+                         });
 
-                              // Add publications here
-                              // Add publications explicitly per year via switch so entries can be unique
-                              switch (y) {
-                                   case 2024:
-                                        addPublication({
-                                             year: 2024,
-                                             title: "Diffusion barriers imposed by tissue topology shape Hedgehog morphogen gradients",
-                                             journal: "PNAS",
-                                             authors: "Gavin Schlissel, Miram Meziane, Domenic Narducci, Anders S. Hansen, Pulin Li",
-                                             date: "July 15, 2024",
-                                             desc: "Here,we used single-molecule imaging in reconstituted morphogen gradients and in tissue explants to determine that Hedgehog diffused extracellularly as a monomer, and rapidly transitioned between membrane-confined and -unconfined states. SCUBE1 expanded Hedgehog gradients by accelerating the transition rates between states without affecting the relative abundance of molecules in each state, supporting a opology-limited diffusion model inwhich cell–cell gaps create diffusion barriers, which Hedgehog can only overcome bypassing through a membrane-unconfined state aided by SCUBE1.",
-                                             pdf: "../assets/papers/schlissel-et-al-2024.pdf",
-                                             imgText: "Image Placeholder",
-                                             pmid: "39190357",
-                                        });
-                                        addPublication({
-                                             year: 2024,
-                                             title: "Publication 2",
-                                             journal: "Journal B",
-                                             authors: "C. Author, D. Author",
-                                             date: "Jan 2024",
-                                             desc: "Placeholder publication description",
-                                             imgText: "Image Placeholder",
-                                             link: "https://example.org/publication/2",
-                                             pdf: "../assets/papers/sample-paper.pdf",
-                                        });
-                                        break;
-                                   case 2023:
-                                        addPublication({
-                                             year: 2023,
-                                             title: "Publication 1",
-                                             journal: "Journal C",
-                                             authors: "E. Author et al.",
-                                             date: "Dec 2023",
-                                             desc: "Placeholder publication description",
-                                             imgText: "Image Placeholder",
-                                        });
-                                        addPublication({
-                                             year: 2023,
-                                             title: "Publication 2",
-                                             journal: "Journal D",
-                                             authors: "F. Author et al.",
-                                             date: "Oct 2023",
-                                             desc: "Placeholder publication description",
-                                             imgText: "Image Placeholder",
-                                        });
-                                        break;
-                                   case 2022:
-                                        addPublication({
-                                             year: 2022,
-                                             title: "Publication 1",
-                                             journal: "Journal E",
-                                             authors: "G. Author et al.",
-                                             date: "Nov 2022",
-                                             desc: "Placeholder publication description",
-                                             imgText: "Image Placeholder",
-                                        });
-                                        addPublication({
-                                             year: 2022,
-                                             title: "Publication 2",
-                                             journal: "Journal F",
-                                             authors: "H. Author et al.",
-                                             date: "Aug 2022",
-                                             desc: "Placeholder publication description",
-                                             imgText: "Image Placeholder",
-                                        });
-                                        break;
-                                   case 2021:
-                                        addPublication({
-                                             year: 2021,
-                                             title: "Publication 1",
-                                             journal: "Journal G",
-                                             authors: "I. Author et al.",
-                                             date: "May 2021",
-                                             desc: "Placeholder publication description",
-                                             imgText: "Image Placeholder",
-                                        });
-                                        addPublication({
-                                             year: 2021,
-                                             title: "Publication 2",
-                                             journal: "Journal H",
-                                             authors: "J. Author et al.",
-                                             date: "Feb 2021",
-                                             desc: "Placeholder publication description",
-                                             imgText: "Image Placeholder",
-                                        });
-                                        break;
-                                   case 2020:
-                                        addPublication({
-                                             year: 2020,
-                                             title: "Publication 1",
-                                             journal: "Journal I",
-                                             authors: "K. Author et al.",
-                                             date: "Sep 2020",
-                                             desc: "Placeholder publication description",
-                                             imgText: "Image Placeholder",
-                                        });
-                                        addPublication({
-                                             year: 2020,
-                                             title: "Publication 2",
-                                             journal: "Journal J",
-                                             authors: "L. Author et al.",
-                                             date: "Jun 2020",
-                                             desc: "Placeholder publication description",
-                                             imgText: "Image Placeholder",
-                                        });
-                                        break;
-                                   case 2019:
-                                        addPublication({
-                                             year: 2019,
-                                             title: "Publication 1",
-                                             journal: "Journal K",
-                                             authors: "M. Author et al.",
-                                             date: "Dec 2019",
-                                             desc: "Placeholder publication description",
-                                             imgText: "Image Placeholder",
-                                        });
-                                        addPublication({
-                                             year: 2019,
-                                             title: "Publication 2",
-                                             journal: "Journal L",
-                                             authors: "N. Author et al.",
-                                             date: "Oct 2019",
-                                             desc: "Placeholder publication description",
-                                             imgText: "Image Placeholder",
-                                        });
-                                        break;
-                                   case 2018:
-                                        addPublication({
-                                             year: 2018,
-                                             title: "Publication 1",
-                                             journal: "Journal M",
-                                             authors: "O. Author et al.",
-                                             date: "Apr 2018",
-                                             desc: "Placeholder publication description",
-                                             imgText: "Image Placeholder",
-                                        });
-                                        addPublication({
-                                             year: 2018,
-                                             title: "Publication 2",
-                                             journal: "Journal N",
-                                             authors: "P. Author et al.",
-                                             date: "Jan 2018",
-                                             desc: "Placeholder publication description",
-                                             imgText: "Image Placeholder",
-                                        });
-                                        break;
-                                   default:
-                                        // No entries for other years
-                                        break;
-                              }
-                         }
+                         addPublication({
+                              year: 2025,
+                              title: "Reconstructing signaling histories of single cells via perturbation screens and transfer learning",
+                              journal: "bioRxiv",
+                              authors: "Nicholas T. Hutchins, Miram Meziane, Claire Lu, Maisam Mitalipova, David Fischer, Pulin Li",
+                              date: "March 17, 2025",
+                              desc: "Here, we present an integrated experimental-computational framework that learns signaling response signatures from a high-throughput in vitro perturbation atlas and infers combinatorial signaling activities in in vivo cell types. We generated signaling perturbation atlas across diverse cell types/states through multiplexed sequential combinatorial screens on human pluripotent stem cells. Using the atlas to train IRIS, a neural networkbased model, and predicting on mouse embryo scRNAseq atlas, we discovered global features of combinatorial signaling code usage over time, identified biologically meaningful heterogeneity of signaling states within each cell type, and reconstructed signaling histories along diverse cell lineages.",
+                              imgText: "IRIS",
+                              pdf: "../assets/papers/hutchins-et-al-2025.pdf",
+                         });
+
+                         // Add publications for 2024
+                         addPublication({
+                              year: 2024,
+                              title: "Diffusion barriers imposed by tissue topology shape Hedgehog morphogen gradients",
+                              journal: "PNAS",
+                              authors: "Gavin Schlissel, Miram Meziane, Domenic Narducci, Anders S. Hansen, Pulin Li",
+                              date: "July 15, 2024",
+                              desc: "Here,we used single-molecule imaging in reconstituted morphogen gradients and in tissue explants to determine that Hedgehog diffused extracellularly as a monomer, and rapidly transitioned between membrane-confined and -unconfined states. SCUBE1 expanded Hedgehog gradients by accelerating the transition rates between states without affecting the relative abundance of molecules in each state, supporting a opology-limited diffusion model inwhich cell–cell gaps create diffusion barriers, which Hedgehog can only overcome bypassing through a membrane-unconfined state aided by SCUBE1.",
+                              pdf: "../assets/papers/schlissel-et-al-2024.pdf",
+                              imgText: "Hedgehog diffusion",
+                              pmid: "39190357",
+                         });
+
                     } catch (err) {
                          console.error("Failed to load publication template:", err);
                     }

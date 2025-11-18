@@ -35,9 +35,7 @@
                     min-height: 100vh;
                     background: white;
                     color: var(--text-dark);
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                    gap: 2rem;
+                    display: flex;
                     align-items: center;
                     padding: calc(var(--header-height) + 2rem) 6vw 2rem;
                     position: relative;
@@ -57,6 +55,9 @@
 
                .hero-content {
                     max-width: 600px;
+                    flex: 0 0 50%;
+                    padding-right: 4rem;
+                    z-index: 1;
                }
 
                .hero h1 {
@@ -80,20 +81,19 @@
                }
 
                .hero-image {
-                    position: relative;
-                    max-width: 500px;
-                    margin: 0 auto;
+                    position: absolute;
+                    top: 0;
+                    left: calc(50% - 10vw);
+                    bottom: 0;
+                    right: 0;
+                    display: flex;
+                    align-items: stretch;
                }
 
                .hero-image img {
                     width: 100%;
-                    height: auto;
-                    transform: perspective(1000px) rotateY(-5deg);
-                    transition: transform 0.3s ease;
-               }
-
-               .hero-image:hover img {
-                    transform: perspective(1000px) rotateY(0deg);
+                    height: 100%;
+                    object-fit: cover;
                }
 
                .btn-primary {
@@ -522,8 +522,8 @@
 
                     <div class="hero-image">
                          <img
-                              src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23f0f8ff' width='400' height='400'/><circle cx='150' cy='150' r='60' fill='%23e6f3ff' stroke='%23cce7ff' stroke-width='2'/><circle cx='250' cy='200' r='40' fill='%23d9f0ff' stroke='%23b3d9ff' stroke-width='2'/><path d='M100,250 Q200,200 300,250' stroke='%2399ccff' stroke-width='3' fill='none'/><text x='200' y='350' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>Image Placeholder</text></svg>"
-                              alt="Insect Research Illustration"
+                              src="../assets/home_gallery/Gut_image.jpg"
+                              alt="Fresh from the KI image awards"
                          />
                     </div>
                </section>
@@ -670,14 +670,7 @@
                     });
                });
 
-               // Parallax effect for hero image
-               window.addEventListener("scroll", () => {
-                    const scrolled = window.pageYOffset;
-                    const heroImage = document.querySelector(".hero-image img");
-                    if (heroImage) {
-                         heroImage.style.transform = `perspective(1000px) rotateY(-5deg) translateY(${scrolled * 0.1}px)`;
-                    }
-               });
+               // Parallax effect disabled
 
                // Intersection Observer for animations
                const observerOptions = {
