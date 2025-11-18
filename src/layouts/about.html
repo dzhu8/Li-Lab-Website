@@ -11,11 +11,27 @@
                     margin: 0;
                     padding: 0;
                     color: #222;
+                    position: relative;
                }
                main {
                     padding: calc(80px + 2rem) 6vw 4rem;
                     max-width: 1100px;
                     margin: 0 auto;
+               }
+               /* Film reel container positioned on right side */
+               .film-reel-container {
+                    position: fixed;
+                    right: 3vw;
+                    top: 50%;
+                    transform: translateY(-50%) rotate(8.5deg);
+                    width: 600px;
+                    height: 1100px;
+                    overflow: hidden;
+                    z-index: 10;
+                    pointer-events: none;
+               }
+               .film-reel-container canvas {
+                    display: block;
                }
                h1,
                h2 {
@@ -71,10 +87,19 @@
                     .member-photo__inner {
                          margin: 0 auto;
                     }
+                    /* Hide film reel on mobile to avoid overlap */
+                    .film-reel-container {
+                         display: none;
+                    }
                }
           </style>
      </head>
      <body>
+          <!-- Film reel animation container (fixed right side) -->
+          <div class="film-reel-container">
+               <canvas id="reelCanvas"></canvas>
+          </div>
+
           <header class="header">
                <div class="header__content">
                     <div class="header__logo">
@@ -112,6 +137,21 @@
                <!--# include virtual="member-template.html" -->
           </div>
 
+          <!-- Film reel animation script -->
+          <script src="../app/animate_reel.js"></script>
+          <script>
+               // Initialize and start film reel animation
+               (async function() {
+                    try {
+                         const canvas = document.getElementById('reelCanvas');
+                         await initAnimation(canvas); // Load reel and frame images
+                         startAnimation(); // Begin infinite scroll animation
+                    } catch (error) {
+                         console.error('Failed to initialize film reel animation:', error);
+                    }
+               })();
+          </script>
+
           <script>
                // Simple client-side approach: fetch the template file and extract the template element
                (async function () {
@@ -134,7 +174,7 @@
                               { name: "Mack Litz", bio: "Placeholder bio.", img: "Mack.jpg" },
                               { name: "Mark Greenwood", bio: "Placeholder bio." },
                               { name: "Miram Meziane", bio: "Placeholder bio.", img: "Miram.jpg" },
-                              { name: "Nicholas Hutchins", bio: "Placeholder bio.", img: "Nicholas_H.png" },
+                              { name: "Nicholas Hutchins", bio: "Placeholder bio." },
                               { name: "Pulin Li", bio: "Placeholder bio.", img: "Pulin_Li.jpg" },
                               { name: "Patrick Lim", bio: "Placeholder bio.", img: "patrick.jpg" },
                               { name: "Lauren Tso", bio: "Placeholder bio." },
