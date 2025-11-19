@@ -113,51 +113,116 @@
      transform: translateY(0);
 }
 
+/* Mobile Menu Toggle */
+.header__toggle {
+     display: none;
+     flex-direction: column;
+     cursor: pointer;
+     gap: 5px;
+     z-index: 1001;
+     padding: 10px;
+}
+
+.header__toggle span {
+     width: 25px;
+     height: 3px;
+     background-color: #333;
+     transition: all 0.3s ease;
+     border-radius: 2px;
+}
+
+/* Animation for hamburger to X */
+.header__toggle.active span:nth-child(1) {
+     transform: rotate(45deg) translate(5px, 6px);
+}
+
+.header__toggle.active span:nth-child(2) {
+     opacity: 0;
+}
+
+.header__toggle.active span:nth-child(3) {
+     transform: rotate(-45deg) translate(5px, -6px);
+}
+
 @media (max-width: 768px) {
      .header__content {
           padding: 0 15px;
+          justify-content: space-between;
      }
      .header__logo {
-          margin-right: 30px;
+          margin-right: auto; /* Allow logo to take available space */
      }
      .header__logo-circle {
-          width: 50px;
-          height: 50px;
-          margin-right: 15px;
+          width: 40px;
+          height: 40px;
+          margin-right: 10px;
      }
      .header__logo-circle span {
           font-size: 8px;
      }
      .header__logo-text h1 {
-          font-size: 24px;
+          font-size: 20px;
      }
      .header__logo-text .subtitle {
-          font-size: 16px;
-     }
-     .header__nav-list {
-          gap: 20px;
-     }
-     .header__nav-list a {
-          font-size: 16px;
-          padding: 6px 12px;
-     }
-     .header__join-button .join-btn {
-          padding: 10px 20px;
-          font-size: 14px;
-     }
-}
-@media (max-width: 480px) {
-     .header__nav-list {
-          gap: 15px;
-     }
-     .header__nav-list a {
-          font-size: 14px;
-          padding: 5px 10px;
-     }
-     .header__join-button .join-btn {
-          padding: 8px 16px;
           font-size: 12px;
      }
+     
+     .header__toggle {
+          display: flex;
+          margin-left: 15px;
+     }
+
+     .header__nav {
+          position: fixed;
+          top: 80px;
+          left: 0;
+          width: 100%;
+          background-color: #f5f6f7;
+          flex-direction: column;
+          padding: 0;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.3s ease-out;
+          display: block; /* Override flex */
+     }
+
+     .header__nav.active {
+          max-height: 400px; /* Adjust based on content */
+     }
+
+     .header__nav-list {
+          flex-direction: column;
+          gap: 0;
+          width: 100%;
+     }
+
+     .header__nav-list li {
+          width: 100%;
+          text-align: center;
+     }
+
+     .header__nav-list a {
+          padding: 15px;
+          border-bottom: 1px solid #e0e0e0;
+          border-radius: 0;
+          width: 100%;
+          box-sizing: border-box;
+     }
+
+     .header__join-button {
+          display: none; /* Hide from header strip */
+     }
+     
+     /* Optional: Add join button to the nav list via JS or HTML if needed, 
+        but for now we'll just hide it or maybe the user wants it in the dropdown.
+        The user said "buttons in the top toolbar should convert to an accordion dropdown".
+        I'll assume the join button should also be accessible. 
+        I'll add a class to show it in the nav if I move it there, 
+        but since I can't easily move DOM elements with just CSS, 
+        I'll rely on the user adding it to the list or I'll add it to the list in HTML 
+        and hide it on desktop.
+     */
 }
 .main-content {
      margin-top: 80px;

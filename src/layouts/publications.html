@@ -110,6 +110,42 @@
                     .pub-year .pub {
                          margin-left: 0;
                     }
+                    
+                    /* Mobile Menu Styles (copied from header.css/home.html logic if not present in header.css) */
+                    /* Since header.css handles the nav styles, we just need the toggle button styles if not in header.css */
+                    /* We added .header__toggle to header.css, so it should work if linked. */
+                    
+                    /* PDF View Mobile Logic */
+                    .pub-desktop-view {
+                         display: block;
+                         width: 100%;
+                         height: 100%;
+                    }
+                    .pub-mobile-view {
+                         display: none;
+                         width: 100%;
+                         height: 100%;
+                         align-items: center;
+                         justify-content: center;
+                         background: #f0f0f0;
+                         text-align: center;
+                         padding: 1rem;
+                         box-sizing: border-box;
+                    }
+                    
+                    @media (max-width: 768px) {
+                         .pub-desktop-view {
+                              display: none;
+                         }
+                         .pub-mobile-view {
+                              display: flex;
+                         }
+                         /* Ensure the container maintains aspect ratio or height */
+                         .pub-image {
+                              height: auto;
+                              aspect-ratio: 1/1;
+                         }
+                    }
                }
           </style>
      </head>
@@ -125,7 +161,12 @@
                               <p class="subtitle">@Whitehead Institute & MIT</p>
                          </div>
                     </div>
-                    <nav class="header__nav">
+                    <div class="header__toggle" id="mobile-menu-toggle">
+                         <span></span>
+                         <span></span>
+                         <span></span>
+                    </div>
+                    <nav class="header__nav" id="header-nav">
                          <ul class="header__nav-list">
                               <li><a href="home.html">Home</a></li>
                          </ul>
@@ -212,7 +253,17 @@
                                    imgEl2.textContent = "";
                                    const imgUrl = opts.imgUrl ? String(opts.imgUrl).trim() : "";
                                    const pdf = opts.pdf ? String(opts.pdf).trim() : "";
+
+                                   // Create Desktop View Container
+                                   const desktopDiv = document.createElement("div");
+                                   desktopDiv.className = "pub-desktop-view";
+
+                                   // Create Mobile View Container
+                                   const mobileDiv = document.createElement("div");
+                                   mobileDiv.className = "pub-mobile-view";
+
                                    if (imgUrl) {
+                                        // If explicit image provided, use it for both
                                         const a = document.createElement("a");
                                         a.href = pdf || "#";
                                         a.target = "_blank";
@@ -221,9 +272,11 @@
                                         im.src = imgUrl;
                                         im.alt = opts.title || "Publication image";
                                         a.appendChild(im);
-                                        imgEl2.appendChild(a);
+                                        
+                                        desktopDiv.appendChild(a);
+                                        mobileDiv.appendChild(a.cloneNode(true));
                                    } else if (pdf) {
-                                        // embed first page using iframe; link wraps the iframe so clicking opens pdf
+                                        // Desktop: Iframe
                                         const a = document.createElement("a");
                                         // Hide built-in PDF UI in the click-through as well
                                         a.href = pdf + "#toolbar=0&navpanes=0&statusbar=0";
@@ -237,10 +290,37 @@
                                         iframe.style.border = "none";
                                         iframe.innerHTML = "PDF preview not available";
                                         a.appendChild(iframe);
-                                        imgEl2.appendChild(a);
+                                        desktopDiv.appendChild(a);
+
+                                        // Mobile: Placeholder/Text (simulating "image of first page" as best as possible without generation)
+                                        const mobileLink = document.createElement("a");
+                                        mobileLink.href = pdf;
+                                        mobileLink.target = "_blank";
+                                        mobileLink.rel = "noopener";
+                                        mobileLink.style.textDecoration = "none";
+                                        mobileLink.style.color = "#555";
+                                        mobileLink.style.display = "flex";
+                                        mobileLink.style.flexDirection = "column";
+                                        mobileLink.style.alignItems = "center";
+                                        mobileLink.style.justifyContent = "center";
+                                        mobileLink.style.width = "100%";
+                                        mobileLink.style.height = "100%";
+
+                                        const mobileContent = document.createElement("div");
+                                        mobileContent.innerHTML = `
+                                             <div style="font-size: 4rem; margin-bottom: 0.5rem;">📄</div>
+                                             <div style="font-weight: 500;">${opts.imgText || "View PDF"}</div>
+                                        `;
+                                        mobileLink.appendChild(mobileContent);
+                                        mobileDiv.appendChild(mobileLink);
                                    } else {
-                                        imgEl2.textContent = opts.imgText || "Image Placeholder";
+                                        // Fallback
+                                        desktopDiv.textContent = opts.imgText || "Image Placeholder";
+                                        mobileDiv.textContent = opts.imgText || "Image Placeholder";
                                    }
+                                   
+                                   imgEl2.appendChild(desktopDiv);
+                                   imgEl2.appendChild(mobileDiv);
                               }
 
                               // Embed link (PubMed or URL) parenthesized into the meta line if provided
@@ -324,6 +404,17 @@
                          console.error("Failed to load publication template:", err);
                     }
                })();
+
+               // Mobile Menu Toggle
+               const mobileToggle = document.getElementById("mobile-menu-toggle");
+               const headerNav = document.getElementById("header-nav");
+
+               if (mobileToggle && headerNav) {
+                    mobileToggle.addEventListener("click", () => {
+                         mobileToggle.classList.toggle("active");
+                         headerNav.classList.toggle("active");
+                    });
+               }
           </script>
      </body>
 </html>

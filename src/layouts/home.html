@@ -479,6 +479,75 @@
                     margin-top: 0;
                     padding: 0;
                }
+
+               /* Mobile Styles */
+               @media (max-width: 768px) {
+                    .mobile-only {
+                         display: block !important;
+                    }
+                    
+                    /* Hero Section Mobile Adjustments */
+                    .hero {
+                         padding: 0;
+                         height: 100vh;
+                         display: flex;
+                         flex-direction: column;
+                         justify-content: center;
+                         position: relative;
+                         overflow: hidden;
+                    }
+
+                    .hero-image {
+                         position: absolute;
+                         top: 0;
+                         left: 0;
+                         width: 100%;
+                         height: 100%;
+                         z-index: 0;
+                         opacity: 1; /* Ensure image is visible */
+                    }
+
+                    .hero-image img {
+                         object-fit: cover;
+                         object-position: center;
+                    }
+
+                    .hero-content {
+                         position: relative;
+                         z-index: 1;
+                         flex: 0 0 auto;
+                         width: 85%;
+                         max-width: 500px;
+                         margin: 0 auto;
+                         padding: 2rem;
+                         background: rgba(255, 255, 255, 0.85);
+                         backdrop-filter: blur(10px);
+                         -webkit-backdrop-filter: blur(10px);
+                         border-radius: 20px;
+                         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                         text-align: center;
+                    }
+
+                    .hero h1 {
+                         font-size: 2rem;
+                         margin-bottom: 1rem;
+                    }
+
+                    .hero-description {
+                         font-size: 1rem;
+                         margin-bottom: 1.5rem;
+                         color: #333; /* Ensure text is dark enough */
+                    }
+                    
+                    /* Hide the original join button container on mobile since we moved it to nav */
+                    .header__join-button {
+                         display: none;
+                    }
+               }
+               
+               .mobile-only {
+                    display: none;
+               }
           </style>
      </head>
      <body>
@@ -493,12 +562,18 @@
                               <p class="subtitle">@Whitehead Institute & MIT</p>
                          </div>
                     </div>
-                    <nav class="header__nav">
+                    <div class="header__toggle" id="mobile-menu-toggle">
+                         <span></span>
+                         <span></span>
+                         <span></span>
+                    </div>
+                    <nav class="header__nav" id="header-nav">
                          <ul class="header__nav-list">
                               <li><a href="research.html">Research</a></li>
                               <li><a href="#news">Lab News</a></li>
                               <li><a href="#about">About Us</a></li>
                               <li><a href="#publications">Publications</a></li>
+                              <li class="mobile-only"><a href="#join">Join the Lab</a></li>
                          </ul>
                     </nav>
                     <div class="header__join-button">
@@ -694,6 +769,25 @@
                     el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
                     observer.observe(el);
                });
+
+               // Mobile Menu Toggle
+               const mobileToggle = document.getElementById("mobile-menu-toggle");
+               const headerNav = document.getElementById("header-nav");
+
+               if (mobileToggle && headerNav) {
+                    mobileToggle.addEventListener("click", () => {
+                         mobileToggle.classList.toggle("active");
+                         headerNav.classList.toggle("active");
+                    });
+
+                    // Close menu when clicking a link
+                    headerNav.querySelectorAll("a").forEach(link => {
+                         link.addEventListener("click", () => {
+                              mobileToggle.classList.remove("active");
+                              headerNav.classList.remove("active");
+                         });
+                    });
+               }
           </script>
      </body>
 </html>

@@ -3,5 +3,6 @@ node_modules/
 deprecated/
 
 .prettierrc
+.vscode/
 
 **/*test*
