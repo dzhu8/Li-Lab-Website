@@ -18,6 +18,10 @@
                     max-width: 1100px;
                     margin: 0 auto;
                }
+               /* Restrict section width to create space for film reel while keeping left alignment */
+               .section {
+                    max-width: 650px;
+               }
                /* Film reel container positioned on right side */
                .film-reel-container {
                     position: fixed;
@@ -55,6 +59,12 @@
                     gap: 2rem;
                     align-items: center;
                     margin: 2rem 0;
+                    padding: 2rem;
+                    background: rgba(255, 255, 255, 0.95);
+                    border-radius: 20px;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+                    position: relative;
+                    z-index: 20;
                }
                /* member--reverse removed: all members use the same layout */
                .member-photo__inner {
@@ -72,9 +82,52 @@
                .member-name {
                     margin: 0 0 0.5rem 0;
                }
-               .member-bio {
-                    margin: 0;
-                    color: #444;
+               
+               .member-info-grid {
+                    display: grid;
+                    gap: 0.5rem;
+                    margin-bottom: 1.5rem;
+                    font-size: 0.95rem;
+               }
+               .member-info-item {
+                    display: flex;
+                    gap: 0.5rem;
+                    align-items: baseline;
+               }
+               .member-label {
+                    font-weight: 700;
+                    color: #000;
+                    flex-shrink: 0;
+               }
+               .member-value {
+                    color: #333;
+               }
+
+               .member-social {
+                    display: flex;
+                    gap: 1rem;
+                    align-items: center;
+               }
+               .social-link {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 24px;
+                    height: 24px;
+                    opacity: 0.7;
+                    transition: opacity 0.2s ease, transform 0.2s ease;
+               }
+               .social-link:hover {
+                    opacity: 1;
+                    transform: translateY(-2px);
+               }
+               .social-link img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+               }
+               .social-link[href=""], .social-link:not([href]) {
+                    display: none;
                }
 
                /* Responsive */
@@ -86,6 +139,17 @@
                     }
                     .member-photo__inner {
                          margin: 0 auto;
+                    }
+                    .member-info-item {
+                         flex-direction: column;
+                         text-align: center;
+                         gap: 0.2rem;
+                    }
+                    .member-label {
+                         display: block;
+                    }
+                    .member-social {
+                         justify-content: center;
                     }
                     /* Hide film reel on mobile to avoid overlap */
                     .film-reel-container {
@@ -167,21 +231,103 @@
                          const currentList = document.getElementById("current-list");
 
                          // Data for members, takes images from the assets/ folder
+                         // Added fields: position, program, beforeMit, interests, social: { gmail, linkedin, scholar, website }
                          const members = [
-                              { name: "Alex Cao", bio: "Placeholder bio.", img: "Alex.jpg" },
-                              { name: "Gavin Schlissel", bio: "Placeholder bio.", img: "Gavin.jpeg" },
-                              { name: "Laura Resteghini", bio: "Placeholder bio.", img: "Laura_R.png" },
-                              { name: "Mack Litz", bio: "Placeholder bio.", img: "Mack.jpg" },
-                              { name: "Mark Greenwood", bio: "Placeholder bio." },
-                              { name: "Miram Meziane", bio: "Placeholder bio.", img: "Miram.jpg" },
-                              { name: "Nicholas Hutchins", bio: "Placeholder bio." },
-                              { name: "Pulin Li", bio: "Placeholder bio.", img: "Pulin_Li.jpg" },
-                              { name: "Patrick Lim", bio: "Placeholder bio.", img: "patrick.jpg" },
-                              { name: "Lauren Tso", bio: "Placeholder bio." },
-                              { name: "Connor Thomas", bio: "Placeholder bio.", img: "Connor.jpg" },
-                              { name: "Leah Wallach", bio: "Placeholder bio." },
-                              { name: "Daniel Zhu", bio: "Placeholder bio.", img: "Daniel.jpg" },
-                              { name: "Bailey Tischer", bio: "Placeholder bio." },
+                              { 
+                                   name: "Alex Cao", 
+                                   img: "Alex.jpg",
+                                   position: "PhD Student",
+                                   program: "MIT Biology",
+                                   beforeMit: "Brandeis University",
+                                   interests: "How do extracellular protein interactions regulate specificity of cell communication? ",
+                                   social: {}
+                              },
+                              { 
+                                   name: "Gavin Schlissel", 
+                                   img: "Gavin.jpeg", 
+                                   position: "Postdoctoral Associate",
+                                   beforeMit: "PhD, UC Berkeley",
+                                   interests: "How do signaling proteins travel between cells?"
+                              },
+                              { 
+                                   name: "Laura Resteghini", 
+                                   img: "Laura_R.png",
+                                   position: "Lab Administrator" 
+                              },
+                              { 
+                                   name: "Mack Litz", 
+                                   img: "Mack.jpg",
+                                   position: "PhD Student",
+                                   program: "MIT Computational and Systems Biology",
+                                   beforeMit: "Smith College",
+                                   interests: "How does mesenchyme diversity shape the developing lung?"
+                              },
+                              { 
+                                   name: "Mark Greenwood",
+                                   img: "Mark.jpg",
+                                   position: "Postdoctoral Associate",
+                                   beforeMit: "PhD, University of Cambridge",
+                                   interests: ""
+                              },
+                              { 
+                                   name: "Miram Meziane", 
+                                   img: "Miram.jpg",
+                                   position: "PhD Student",
+                                   program: "MIT Biology",
+                                   beforeMit: "McGill University",
+                                   interests: "How do complex vascular patterns emerge in developing organs?"
+                              },
+                              { 
+                                   name: "Nicholas Hutchins",
+                                   img: "Nicholas.png",
+                                   position: "PhD Student",
+                                   program: "MIT Biological Engineering",
+                                   beforeMit: "California Institute of Technology, Twist Biosciences",
+                                   interests: "How do cells communicate and interpret sequential information?"
+                              },
+                              { 
+                                   name: "Pulin Li", 
+                                   img: "Pulin_Li.jpg",
+                                   position: "Principal Investigator"
+                              },
+                              { 
+                                   name: "Patrick Lim", 
+                                   img: "patrick.jpg",
+                                   position: "Postdoctoral Associate",
+                                   beforeMit: "PhD, The Hebrew University of Jerusalem",
+                                   interests: ""
+                              },
+                              { name: "Lauren Tso" },
+                              { 
+                                   name: "Connor Thomas", 
+                                   img: "Connor.jpg",
+                                   position: "PhD Student",
+                                   program: "MIT Biology",
+                                   beforeMit: "University of Colorado, Boulder",
+                                   interests: ""
+                              },
+                              { 
+                                   name: "Leah Wallach",
+                                   img: "Leah.jpg",
+                                   position: "PhD Student",
+                                   program: "MIT Biology",
+                                   beforeMit: "University of Chicago",
+                                   interests: ""
+                              },
+                              { 
+                                   name: "Daniel Zhu", 
+                                   img: "Daniel.jpg",
+                                   position: "PhD Student",
+                                   program: "MIT Biological Engineering",
+                                   beforeMit: "BS Molecular Biology & BSE Electrical Engineering, University of Wyoming",
+                                   interests: "How does cell-cell interaction shape the transcriptional landscape of receiving cells?",
+                                   social: {
+                                        linkedin: "https://www.linkedin.com/in/daniel-zhu-449681175/",
+                                        website: "https://danielyzhu.com",
+                                   }
+                                   
+                              },
+                              { name: "Bailey Tischer" },
                          ];
 
                          members.forEach((m, idx) => {
@@ -193,10 +339,65 @@
 
                               // fill in details
                               const nameEl = memberEl.querySelector(".member-name");
-                              const bioEl = memberEl.querySelector(".member-bio");
                               const photoInner = memberEl.querySelector(".member-photo__inner");
+                              
+                              // New fields
+                              const posEl = memberEl.querySelector(".member-position");
+                              const progEl = memberEl.querySelector(".member-program");
+                              const beforeEl = memberEl.querySelector(".member-before-mit");
+                              const nowEl = memberEl.querySelector(".member-now");
+                              const intEl = memberEl.querySelector(".member-interests");
+                              
+                              // Social links
+                              const gmailLink = memberEl.querySelector(".social-gmail");
+                              const linkedinLink = memberEl.querySelector(".social-linkedin");
+                              const scholarLink = memberEl.querySelector(".social-scholar");
+                              const webLink = memberEl.querySelector(".social-website");
+
                               if (nameEl) nameEl.textContent = m.name;
-                              if (bioEl) bioEl.textContent = m.bio;
+                              
+                              if (posEl) {
+                                   posEl.textContent = m.position || "";
+                                   if (!m.position) posEl.parentElement.style.display = "none";
+                              }
+                              if (progEl) {
+                                   progEl.textContent = m.program || "";
+                                   if (!m.program) progEl.parentElement.style.display = "none";
+                              }
+                              if (beforeEl) {
+                                   beforeEl.textContent = m.beforeMit || "";
+                                   if (!m.beforeMit) beforeEl.parentElement.style.display = "none";
+                              }
+                              if (nowEl) {
+                                   nowEl.textContent = m.now || "";
+                                   if (!m.now) nowEl.parentElement.style.display = "none";
+                              }
+                              if (intEl) {
+                                   intEl.textContent = m.interests || "";
+                                   if (!m.interests) intEl.parentElement.style.display = "none";
+                              }
+
+                              // Handle social links
+                              if (m.social) {
+                                   if (gmailLink && m.social.gmail) gmailLink.href = "mailto:" + m.social.gmail;
+                                   else if (gmailLink) gmailLink.style.display = "none";
+
+                                   if (linkedinLink && m.social.linkedin) linkedinLink.href = m.social.linkedin;
+                                   else if (linkedinLink) linkedinLink.style.display = "none";
+
+                                   if (scholarLink && m.social.scholar) scholarLink.href = m.social.scholar;
+                                   else if (scholarLink) scholarLink.style.display = "none";
+
+                                   if (webLink && m.social.website) webLink.href = m.social.website;
+                                   else if (webLink) webLink.style.display = "none";
+                              } else {
+                                   // Hide all if no social object
+                                   if (gmailLink) gmailLink.style.display = "none";
+                                   if (linkedinLink) linkedinLink.style.display = "none";
+                                   if (scholarLink) scholarLink.style.display = "none";
+                                   if (webLink) webLink.style.display = "none";
+                              }
+
                               if (photoInner) {
                                    // Insert an <img> element using the file from the assets/ folder.
                                    photoInner.innerHTML = "";
@@ -219,7 +420,13 @@
                          });
 
                          const alumniList = document.getElementById("alumni-list");
-                         const alumni = [{ name: "Diep Nguyen", bio: "Placeholder bio.", img: "Diep.jpg" }];
+                         const alumni = [
+                              { 
+                                   name: "Diep Nguyen", 
+                                   img: "Diep.jpg", 
+                                   now: "Postdoctoral Associate at Memorial Sloan Kettering Cancer Center, Rudensky Lab", 
+                              }
+                         ];
 
                          alumni.forEach((m, idx) => {
                               const clone = tmpl.content.cloneNode(true);
@@ -230,10 +437,65 @@
 
                               // fill in details
                               const nameEl = memberEl.querySelector(".member-name");
-                              const bioEl = memberEl.querySelector(".member-bio");
                               const photoInner = memberEl.querySelector(".member-photo__inner");
+                              
+                              // New fields
+                              const posEl = memberEl.querySelector(".member-position");
+                              const progEl = memberEl.querySelector(".member-program");
+                              const beforeEl = memberEl.querySelector(".member-before-mit");
+                              const nowEl = memberEl.querySelector(".member-now");
+                              const intEl = memberEl.querySelector(".member-interests");
+                              
+                              // Social links
+                              const gmailLink = memberEl.querySelector(".social-gmail");
+                              const linkedinLink = memberEl.querySelector(".social-linkedin");
+                              const scholarLink = memberEl.querySelector(".social-scholar");
+                              const webLink = memberEl.querySelector(".social-website");
+
                               if (nameEl) nameEl.textContent = m.name;
-                              if (bioEl) bioEl.textContent = m.bio;
+                              
+                              if (posEl) {
+                                   posEl.textContent = m.position || "";
+                                   if (!m.position) posEl.parentElement.style.display = "none";
+                              }
+                              if (progEl) {
+                                   progEl.textContent = m.program || "";
+                                   if (!m.program) progEl.parentElement.style.display = "none";
+                              }
+                              if (beforeEl) {
+                                   beforeEl.textContent = m.beforeMit || "";
+                                   if (!m.beforeMit) beforeEl.parentElement.style.display = "none";
+                              }
+                              if (nowEl) {
+                                   nowEl.textContent = m.now || "";
+                                   if (!m.now) nowEl.parentElement.style.display = "none";
+                              }
+                              if (intEl) {
+                                   intEl.textContent = m.interests || "";
+                                   if (!m.interests) intEl.parentElement.style.display = "none";
+                              }
+
+                              // Handle social links
+                              if (m.social) {
+                                   if (gmailLink && m.social.gmail) gmailLink.href = "mailto:" + m.social.gmail;
+                                   else if (gmailLink) gmailLink.style.display = "none";
+
+                                   if (linkedinLink && m.social.linkedin) linkedinLink.href = m.social.linkedin;
+                                   else if (linkedinLink) linkedinLink.style.display = "none";
+
+                                   if (scholarLink && m.social.scholar) scholarLink.href = m.social.scholar;
+                                   else if (scholarLink) scholarLink.style.display = "none";
+
+                                   if (webLink && m.social.website) webLink.href = m.social.website;
+                                   else if (webLink) webLink.style.display = "none";
+                              } else {
+                                   // Hide all if no social object
+                                   if (gmailLink) gmailLink.style.display = "none";
+                                   if (linkedinLink) linkedinLink.style.display = "none";
+                                   if (scholarLink) scholarLink.style.display = "none";
+                                   if (webLink) webLink.style.display = "none";
+                              }
+
                               if (photoInner) {
                                    // Insert an <img> element using the file from the assets/ folder.
                                    photoInner.innerHTML = "";

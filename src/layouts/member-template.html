@@ -10,9 +10,45 @@
           </div>
           <div class="member-text">
                <h3 class="member-name">Member Name</h3>
-               <p class="member-bio">
-                    This is a placeholder for member bio. Replace with real content and images later.
-               </p>
+               
+               <div class="member-info-grid">
+                    <div class="member-info-item">
+                         <span class="member-label">Position:</span>
+                         <span class="member-value member-position"></span>
+                    </div>
+                    <div class="member-info-item">
+                         <span class="member-label">Program:</span>
+                         <span class="member-value member-program"></span>
+                    </div>
+                    <div class="member-info-item">
+                         <span class="member-label">Before MIT:</span>
+                         <span class="member-value member-before-mit"></span>
+                    </div>
+                    <div class="member-info-item">
+                         <span class="member-label">Now:</span>
+                         <span class="member-value member-now"></span>
+                    </div>
+                    <div class="member-info-item">
+                         <span class="member-label">Scientific Interests:</span>
+                         <span class="member-value member-interests"></span>
+                    </div>
+               </div>
+
+               <div class="member-social">
+                    <!-- Links will be populated by JS. Hidden if href is empty. -->
+                    <a href="" class="social-link social-gmail" target="_blank" rel="noopener noreferrer" title="Email">
+                         <img src="../assets/icons/Gmail_icon_(2020).svg" alt="Email" />
+                    </a>
+                    <a href="" class="social-link social-linkedin" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+                         <img src="../assets/icons/LinkedIn_icon.svg" alt="LinkedIn" />
+                    </a>
+                    <a href="" class="social-link social-scholar" target="_blank" rel="noopener noreferrer" title="Google Scholar">
+                         <img src="../assets/icons/google-scholar-svgrepo-com.svg" alt="Google Scholar" />
+                    </a>
+                    <a href="" class="social-link social-website" target="_blank" rel="noopener noreferrer" title="Personal Website">
+                         <img src="../assets/icons/web.svg" alt="Website" />
+                    </a>
+               </div>
           </div>
      </div>
 </template>
@@ -23,8 +59,17 @@
           display: grid;
           grid-template-columns: 200px 1fr;
           gap: 2rem;
-          align-items: center;
-          margin: 2rem 0;
+          align-items: start;
+          margin: 3rem 0;
+          padding: 2rem;
+          background: rgba(255, 255, 255, 0.95);
+          border-radius: 20px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+          position: relative;
+          z-index: 20;
+     }
+     .member:last-child {
+          margin-bottom: 0;
      }
      .member-photo__inner {
           width: 200px;
@@ -37,12 +82,84 @@
           color: #666;
           font-size: 14px;
           box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+          overflow: hidden;
+     }
+     .member-photo__inner img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
      }
      .member-text .member-name {
-          margin: 0 0 0.5rem 0;
+          margin: 0 0 1rem 0;
+          font-size: 1.8rem;
+          color: #222;
      }
-     .member-text .member-bio {
-          margin: 0;
-          color: #444;
+     
+     .member-info-grid {
+          display: grid;
+          gap: 0.5rem;
+          margin-bottom: 1.5rem;
+          font-size: 0.95rem;
+     }
+     .member-info-item {
+          display: flex;
+          gap: 0.5rem;
+          align-items: baseline;
+     }
+     .member-label {
+          font-weight: 700;
+          color: #000;
+          flex-shrink: 0;
+     }
+     .member-value {
+          color: #333;
+     }
+
+     .member-social {
+          display: flex;
+          gap: 1rem;
+          align-items: center;
+     }
+     .social-link {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 24px;
+          height: 24px;
+          opacity: 0.7;
+          transition: opacity 0.2s ease, transform 0.2s ease;
+     }
+     .social-link:hover {
+          opacity: 1;
+          transform: translateY(-2px);
+     }
+     .social-link img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+     }
+     /* Hide link if no href (handled by JS usually, but good to have CSS fallback if we use :empty pseudo-class, though href="" isn't empty) */
+     .social-link[href=""], .social-link:not([href]) {
+          display: none;
+     }
+
+     @media (max-width: 768px) {
+          .member {
+               grid-template-columns: 1fr;
+               text-align: center;
+               justify-items: center;
+               gap: 1.5rem;
+          }
+          .member-info-item {
+               flex-direction: column;
+               text-align: center;
+               gap: 0.2rem;
+          }
+          .member-label {
+               display: block;
+          }
+          .member-social {
+               justify-content: center;
+          }
      }
 </style>

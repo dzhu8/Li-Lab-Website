@@ -94,6 +94,31 @@
                     text-decoration: underline;
                }
 
+               /* PDF View Logic */
+               .pub-desktop-view {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+               }
+               /* Ensure anchor inside fills the view */
+               .pub-desktop-view a {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+               }
+
+               .pub-mobile-view {
+                    display: none;
+                    width: 100%;
+                    height: 100%;
+                    align-items: center;
+                    justify-content: center;
+                    background: #f0f0f0;
+                    text-align: center;
+                    padding: 1rem;
+                    box-sizing: border-box;
+               }
+
                @media (max-width: 768px) {
                     .pub {
                          grid-template-columns: 1fr;
@@ -114,37 +139,15 @@
                     /* Mobile Menu Styles (copied from header.css/home.html logic if not present in header.css) */
                     /* Since header.css handles the nav styles, we just need the toggle button styles if not in header.css */
                     /* We added .header__toggle to header.css, so it should work if linked. */
-                    
-                    /* PDF View Mobile Logic */
+               }
+
+               /* Switch to mobile view (icon) only on very small screens */
+               @media (max-width: 1200px) {
                     .pub-desktop-view {
-                         display: block;
-                         width: 100%;
-                         height: 100%;
+                         display: none;
                     }
                     .pub-mobile-view {
-                         display: none;
-                         width: 100%;
-                         height: 100%;
-                         align-items: center;
-                         justify-content: center;
-                         background: #f0f0f0;
-                         text-align: center;
-                         padding: 1rem;
-                         box-sizing: border-box;
-                    }
-                    
-                    @media (max-width: 768px) {
-                         .pub-desktop-view {
-                              display: none;
-                         }
-                         .pub-mobile-view {
-                              display: flex;
-                         }
-                         /* Ensure the container maintains aspect ratio or height */
-                         .pub-image {
-                              height: auto;
-                              aspect-ratio: 1/1;
-                         }
+                         display: flex;
                     }
                }
           </style>
