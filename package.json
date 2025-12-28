@@ -2,10 +2,7 @@
      "name": "li-lab-site",
      "version": "1.0.0",
      "description": "Tools for managing publications on the Li Lab website",
-     "scripts": {
-          "fetch": "node ./src/app/fetch_scholar_publications.js",
-          "install-playwright": "npx playwright install chromium"
-     },
+     "scripts": {},
      "keywords": [
           "google-scholar",
           "publications",

@@ -21,13 +21,14 @@
                     color: var(--text-dark);
                }
                main {
-                    padding: calc(80px + 2rem) 6vw 4rem;
+                    padding: 0;
+                    margin-top: 0;
+               }
+               h1.page-title {
+                    padding: calc(80px + 4rem) 6vw 2rem;
                     max-width: 1400px;
                     margin: 0 auto;
-               }
-               h1 {
-                    margin: 0 0 0.5rem 0;
-                    font-size: 2.5rem;
+                    font-size: 3.5rem;
                }
                .lead {
                     color: #555;
@@ -35,13 +36,48 @@
                }
 
                /* Topic section layout: images left, text right */
-               .section {
-                    margin: 6rem 0;
+               .research-topic-wrapper {
+                    position: relative;
+                    padding: 6rem 6vw;
+                    margin: 0;
+                    min-height: 60vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: #000; /* Default black screen */
+                    background-size: cover;
+                    background-position: center;
+                    overflow: hidden;
                }
+
+               .research-topic-wrapper::before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: inherit;
+                    z-index: 0;
+               }
+
+               .research-card {
+                    position: relative;
+                    z-index: 1;
+                    background: rgba(255, 255, 255, 1.0);
+                    backdrop-filter: blur(10px);
+                    -webkit-backdrop-filter: blur(10px);
+                    border-radius: 20px;
+                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                    padding: 3rem;
+                    max-width: 1200px;
+                    width: 100%;
+               }
+
                .topic-grid {
                     display: grid;
-                    grid-template-columns: max-content max-content;
-                    gap: 2rem;
+                    grid-template-columns: max-content 1fr;
+                    gap: 4rem;
                     align-items: center;
                     justify-content: center;
                }
@@ -105,10 +141,14 @@
                }
 
                @media (max-width: 900px) {
+                    .research-card {
+                         padding: 2rem;
+                    }
                     .topic-grid {
                          grid-template-columns: 1fr;
                          justify-content: stretch;
                          align-items: start;
+                         gap: 2rem;
                     }
                     .topic-images {
                          order: -1;
@@ -143,7 +183,7 @@
           </header>
 
           <main>
-               <h1>Our Research</h1>
+               <h1 class="page-title">Our Research</h1>
 
                <div id="research-sections"></div>
           </main>
@@ -161,14 +201,19 @@
                          if (!sectionTmpl) throw new Error("Missing #research-section-template");
 
                          // Helper to create a section
-                         // opts: { title, meta, desc, rows, cols, images: [{src, alt, href?}] }
+                         // opts: { title, meta, desc, rows, cols, bgImage, images: [{src, alt, href?}] }
                          const addSection = (opts) => {
                               const frag = sectionTmpl.content.cloneNode(true);
-                              const section = frag.querySelector(".research-topic");
-                              const images = section.querySelector(".topic-images");
-                              const t = section.querySelector(".sec-title");
-                              const m = section.querySelector(".sec-meta");
-                              const d = section.querySelector(".sec-desc");
+                              const wrapper = frag.querySelector(".research-topic-wrapper");
+                              const images = frag.querySelector(".topic-images");
+                              const t = frag.querySelector(".sec-title");
+                              const m = frag.querySelector(".sec-meta");
+                              const d = frag.querySelector(".sec-desc");
+
+                              if (opts.bgImage) {
+                                   wrapper.style.backgroundImage = `url('${opts.bgImage}')`;
+                              }
+
                               t.textContent = opts.title || "Section Title";
                               m.textContent = opts.meta || "";
                               d.textContent = opts.desc || "";
@@ -245,7 +290,7 @@
                                    }
                                    images.appendChild(cell);
                               }
-                              host.appendChild(section);
+                              host.appendChild(frag);
                               // After images are in DOM, size the container based on content width
                               requestAnimationFrame(() => sizeImageContainer(images, cols));
                               // Also recompute when images load (asynchronous intrinsic sizes)
@@ -313,6 +358,7 @@
                               }
                          };
 
+                         // Research Section Content- add/edit section details here
                          addSection({
                               title: "The Biophysics of Cell-Cell Communication",
                               meta: "How are tissue patterns formed and regulated?",
