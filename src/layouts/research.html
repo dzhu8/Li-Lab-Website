@@ -35,6 +35,35 @@
                     margin: 0 0 2rem 0;
                }
 
+               .page-subtitle {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding-left: 6vw;
+                    padding-right: 6vw;
+                    color: #555;
+                    margin-bottom: 2rem;
+                    font-size: 1.2rem;
+               }
+
+               .subsection-title {
+                    max-width: 1400px;
+                    margin: 3rem auto 1rem auto;
+                    padding-left: 6vw;
+                    padding-right: 6vw;
+                    font-size: 2rem;
+                    color: #555;
+                    font-weight: 600;
+               }
+               .subsection-subtitle {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding-left: 6vw;
+                    padding-right: 6vw;
+                    color: #555;
+                    margin-bottom: 2rem;
+                    font-size: 1.0rem;
+               }
+
                /* Topic section layout: images left, text right */
                .research-topic-wrapper {
                     position: relative;
@@ -77,7 +106,7 @@
                .topic-grid {
                     display: grid;
                     grid-template-columns: max-content 1fr;
-                    gap: 4rem;
+                    gap: 0.5rem;
                     align-items: center;
                     justify-content: center;
                }
@@ -184,7 +213,21 @@
 
           <main>
                <h1 class="page-title">Our Research</h1>
+               <p class="page-subtitle">Tissues are ecosystems of cells that constantly communicate with one another. This 
+                    communication must be precisely regulated in space and time to generate tissue form during development, 
+                    maintain function during homeostasis, and enable adaptive responses to physiological stress. We seek to 
+                    understand how and why cell–cell communication is spatially and temporally patterned, and how these patterns 
+                    shape tissue organization and function.</p>
 
+               <h2 class="subsection-title">Approaches</h2>
+               <p class="subsection-subtitle">Biological patterns emerge from interactions spanning a wide range of spatial and 
+                    temporal scales—from the assembly of nanometer-scale protein complexes at the cell surface to the formation 
+                    of tissue structures hundreds of microns across, and from millisecond-scale molecular dynamics to the days-long 
+                    processes of organ morphogenesis. To uncover the fundamental principles that bridge these scales and give rise 
+                    to life’s intricate architecture, we develop integrated bottom-up and top-down approaches inspired by 
+                    developmental biology, synthetic biology, biophysics, and computational biology. Ultimately, our goal is to 
+                    build predictive, mechanistic models of cell–cell communication that can inform tissue engineering strategies 
+                    and therapeutic intervention.</p>
                <div id="research-sections"></div>
           </main>
 
@@ -360,9 +403,9 @@
 
                          // Research Section Content- add/edit section details here
                          addSection({
-                              title: "The Biophysics of Cell-Cell Communication",
+                              title: "Reconstituting Tissue-Scale Patterns of Cell-Cell Communication",
                               meta: "How are tissue patterns formed and regulated?",
-                              desc: "Within a tissue, a cell’s position is critically linked to its fate. How does a cell determine its position relative to other cells to ensure tissue patterns properly develop? In developing tissues, this problem is partly solved by a group of secreted signaling molecules called morphogens. Morphogens move through the extracellular space and establish concentration gradients, acting like a GPS system. However, the physical and biological mechanisms that govern morphogen movement and gradient formation remain poorly understood. We are reconstituting diverse cell-cell communication systems that are amenable to high-resolution imaging and high-throughput genetic perturbation, to quantitatively understand how cells modulate and decode positional information. We are also asking how the natural diversity of extracellular environments in different organs modulates cell-cell communication in developing systems.",
+                              desc: "Although tissues vary widely in form and function, they rely on a conserved set of signaling pathways to establish spatial organization. We study how molecular components of these pathways act together to establish and regulate tissue-scale patterns. Using a unique bottom-up reconstitution approach, we engineer “blank-slate” cells to recreate patterns, such as morphogen gradients and planar polarity, in a petri dish. This approach allows us to observe and perturb communication across scales, from single molecules to hundreds of interacting cells, to reconstruct the regulatory logic of tissue patterning. ",
                               rows: 2,
                               cols: 1,
                               images: [
@@ -385,9 +428,24 @@
                          });
 
                          addSection({
-                              title: "Molecular Mechanisms in Lung Organogenesis",
-                              meta: "Lung branching is complex yet stereotyped- what underlies this precision?",
-                              desc: "In the developing lung, communication between the epithelium and mesenchyme is essential for proper formation. How does mesenchymal diversity emerge in and around the lung, and how does communication between the lung and the surrounding mesenchyme influence the developmental process? More specifically, we investigate questions such as: is branching largely governed by lung-intrinsic mechanisms, or lung-extrinsic signals? From which cell types do the diverse endothelial and mesenchymal lineages in the lung emerge? Can this diversity be recapitulated in culture to create models by which to study this diversity? We employ a combination of ex vivo tissue explant models, tissue-level perturbations, fluorescence microscopy and single-cell genomics to comprehensively characterize this dynamic process.",
+                              title: "Mapping Spatial Patterns of Cell-Cell Communication in Natural Tissues",
+                              desc: "Understanding natural tissue patterning is essential for deciphering development and engineering stem-cell derived tissues. Therefore, another focus of the lab is to map spatiotemporal patterns of cell-cell communication in natural tissues. We combine high-throughput signaling perturbation screens with machine-learning models to infer signaling pathway activities in individual cells from natural tissues. This approach, called IRIS (Intracellular Response to Infer Signaling activity), identifies pathway-specific transcriptional “fingerprints” shared across cell types, enabling inference of signaling states at a scale previously inaccessible (Hutchins et al., bioRxiv, 2025). ",
+                              rows: 1,
+                              cols: 1,
+                              images: [
+                                   {
+                                        src: "../assets/research/IRIS.png",
+                                        alt: "IRIS workflow",
+                                        width: 450,
+                                        height: 460
+                                   },
+                              ],
+                         });
+
+                         addSection({
+                              title: "Stromal Patterning in Lung Development ",
+                              meta: "How does the stroma influence the timing of lung development?",
+                              desc: "During organ development, stromal tissues play a key role in shaping form and function, yet their patterning principles remain poorly understood. We investigate how diverse stromal cell types emerge and organize spatially in the developing lung, and how stromal-epithelial communication regulates the form and timing of lung morphogenesis. These insights will inform the development of more realistic organoid models.",
                               rows: 2,
                               cols: 1,
                               images: [
@@ -397,24 +455,6 @@
                                         href: "../assets/research/Lung_bifurcation.png",
                                         width: 300,
                                         height: 225,
-                                   },
-                                   {
-                                        src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23fef7ff' width='400' height='400'/><text x='200' y='210' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>2x1 Image D</text></svg>",
-                                        alt: "Placeholder D",
-                                   },
-                              ],
-                         });
-
-                         addSection({
-                              title: "Molecular Mechanisms of Lung Organogenesis",
-                              meta: "Lung branching is complex yet stereotyped- what underlies this precision?",
-                              desc: "In the developing lung, communication between the epithelium and mesenchyme is essential for proper formation. We employ a combination of ",
-                              rows: 2,
-                              cols: 1,
-                              images: [
-                                   {
-                                        src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23f0fff4' width='400' height='400'/><text x='200' y='210' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>2x1 Image C</text></svg>",
-                                        alt: "Placeholder C",
                                    },
                                    {
                                         src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23fef7ff' width='400' height='400'/><text x='200' y='210' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>2x1 Image D</text></svg>",
