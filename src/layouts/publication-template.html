@@ -16,6 +16,12 @@
      </div>
 </template>
 
+<template id="citation-template">
+     <div class="citation-entry">
+          <p class="citation-content"></p>
+     </div>
+</template>
+
 <style>
      /* Minimal styles to match publications page */
      .pub {
@@ -80,5 +86,21 @@
           height: 100%;
           object-fit: cover;
           display: block;
+     }
+
+     /* Citation styles */
+     .citation-entry {
+          margin-bottom: 1.5rem;
+          line-height: 1.4;
+     }
+     .citation-content {
+          margin: 0;
+     }
+     .citation-link {
+          color: #0b66c3;
+          text-decoration: none;
+     }
+     .citation-link:hover {
+          text-decoration: underline;
      }
 </style>
