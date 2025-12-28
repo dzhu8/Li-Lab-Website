@@ -25,7 +25,6 @@
                     margin-top: 0;
                }
                h1.page-title {
-                    padding: calc(80px + 4rem) 6vw 2rem;
                     max-width: 1400px;
                     margin: 0 auto;
                     font-size: 3.5rem;
@@ -38,8 +37,6 @@
                .page-subtitle {
                     max-width: 1400px;
                     margin: 0 auto;
-                    padding-left: 6vw;
-                    padding-right: 6vw;
                     color: #555;
                     margin-bottom: 2rem;
                     font-size: 1.2rem;
@@ -48,8 +45,6 @@
                .subsection-title {
                     max-width: 1400px;
                     margin: 3rem auto 1rem auto;
-                    padding-left: 6vw;
-                    padding-right: 6vw;
                     font-size: 2rem;
                     color: #555;
                     font-weight: 600;
@@ -57,8 +52,6 @@
                .subsection-subtitle {
                     max-width: 1400px;
                     margin: 0 auto;
-                    padding-left: 6vw;
-                    padding-right: 6vw;
                     color: #555;
                     margin-bottom: 2rem;
                     font-size: 1.0rem;
@@ -212,22 +205,26 @@
           </header>
 
           <main>
-               <h1 class="page-title">Our Research</h1>
-               <p class="page-subtitle">Tissues are ecosystems of cells that constantly communicate with one another. This 
-                    communication must be precisely regulated in space and time to generate tissue form during development, 
-                    maintain function during homeostasis, and enable adaptive responses to physiological stress. We seek to 
-                    understand how and why cell–cell communication is spatially and temporally patterned, and how these patterns 
-                    shape tissue organization and function.</p>
+               <div class="research-topic-wrapper" style="min-height: auto; padding-top: calc(80px + 4rem);">
+                    <div class="research-card">
+                         <h1 class="page-title" style="padding: 0; margin-bottom: 2rem;">Our Research</h1>
+                         <p class="page-subtitle" style="padding: 0;">Tissues are ecosystems of cells that constantly communicate with one another. This 
+                              communication must be precisely regulated in space and time to generate tissue form during development, 
+                              maintain function during homeostasis, and enable adaptive responses to physiological stress. We seek to 
+                              understand how and why cell–cell communication is spatially and temporally patterned, and how these patterns 
+                              shape tissue organization and function.</p>
 
-               <h2 class="subsection-title">Approaches</h2>
-               <p class="subsection-subtitle">Biological patterns emerge from interactions spanning a wide range of spatial and 
-                    temporal scales—from the assembly of nanometer-scale protein complexes at the cell surface to the formation 
-                    of tissue structures hundreds of microns across, and from millisecond-scale molecular dynamics to the days-long 
-                    processes of organ morphogenesis. To uncover the fundamental principles that bridge these scales and give rise 
-                    to life’s intricate architecture, we develop integrated bottom-up and top-down approaches inspired by 
-                    developmental biology, synthetic biology, biophysics, and computational biology. Ultimately, our goal is to 
-                    build predictive, mechanistic models of cell–cell communication that can inform tissue engineering strategies 
-                    and therapeutic intervention.</p>
+                         <h2 class="subsection-title" style="padding: 0;">Approaches</h2>
+                         <p class="subsection-subtitle" style="padding: 0;">Biological patterns emerge from interactions spanning a wide range of spatial and 
+                              temporal scales—from the assembly of nanometer-scale protein complexes at the cell surface to the formation 
+                              of tissue structures hundreds of microns across, and from millisecond-scale molecular dynamics to the days-long 
+                              processes of organ morphogenesis. To uncover the fundamental principles that bridge these scales and give rise 
+                              to life’s intricate architecture, we develop integrated bottom-up and top-down approaches inspired by 
+                              developmental biology, synthetic biology, biophysics, and computational biology. Ultimately, our goal is to 
+                              build predictive, mechanistic models of cell–cell communication that can inform tissue engineering strategies 
+                              and therapeutic intervention.</p>
+                    </div>
+               </div>
                <div id="research-sections"></div>
           </main>
 
@@ -443,7 +440,7 @@
                          });
 
                          addSection({
-                              title: "Stromal Patterning in Lung Development ",
+                              title: "Stromal Patterning in Lung Development",
                               meta: "How does the stroma influence the timing of lung development?",
                               desc: "During organ development, stromal tissues play a key role in shaping form and function, yet their patterning principles remain poorly understood. We investigate how diverse stromal cell types emerge and organize spatially in the developing lung, and how stromal-epithelial communication regulates the form and timing of lung morphogenesis. These insights will inform the development of more realistic organoid models.",
                               rows: 2,
@@ -459,6 +456,24 @@
                                    {
                                         src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23fef7ff' width='400' height='400'/><text x='200' y='210' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>2x1 Image D</text></svg>",
                                         alt: "Placeholder D",
+                                   },
+                              ],
+                         });
+
+                         addSection({
+                              title: "Spatial and Temporal Organization of Cell-Cell Communication during Tissue Stress",
+                              meta: "How does the immune system balance host protection and collateral damage at the onset of innate immune sensing?",
+                              desc: "Adult organs experience diverse stresses and must coordinate adaptive responses across cell types. We hypothesize that tissues leverage spatial and temporal patterns of communication to accurately sense the level of stress and optimize stress responses accordingly. We have examined two types of stressors, viral infection and systemic stress mediated by epinephrine. In the case of infection, we uncovered a tiered immune-sensing design in barrier organs: epithelial cells have the lowest probability of activating pattern-recognition receptor pathways, while endothelial cells have the highest probability the probability (Nguyen et al., bioRxiv, 2025). We propose that this spatial design helps balancing host protection with collateral damage caused by immune activation.",
+                              rows: 2,
+                              cols: 1,
+                              images: [
+                                   {
+                                        src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23fef7ff' width='400' height='400'/><text x='200' y='210' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>2x1 Image D</text></svg>",
+                                        alt: "Placeholder A",
+                                   },
+                                   {
+                                        src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23fef7ff' width='400' height='400'/><text x='200' y='210' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>2x1 Image D</text></svg>",
+                                        alt: "Placeholder B",
                                    },
                               ],
                          });
