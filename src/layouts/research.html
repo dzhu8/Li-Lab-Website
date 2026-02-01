@@ -45,28 +45,28 @@
                .subsection-title {
                     max-width: 1400px;
                     margin: 3rem auto 1rem auto;
-                    font-size: 2rem;
+                    font-size: 3.5rem;
                     color: #555;
-                    font-weight: 600;
+                    font-weight: 700;
                }
                .subsection-subtitle {
                     max-width: 1400px;
                     margin: 0 auto;
                     color: #555;
-                    margin-bottom: 2rem;
-                    font-size: 1.0rem;
+                    margin-bottom: 1rem;
+                    font-size: 1.2rem;
                }
 
                /* Topic section layout: images left, text right */
                .research-topic-wrapper {
                     position: relative;
-                    padding: 6rem 6vw;
+                    padding: 0rem 6vw;
                     margin: 0;
-                    min-height: 60vh;
+                    min-height: auto;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    background-color: #000; /* Default black screen */
+                    background-color: #fff; /* Default black screen */
                     background-size: cover;
                     background-position: center;
                     overflow: hidden;
@@ -86,29 +86,26 @@
                .research-card {
                     position: relative;
                     z-index: 1;
-                    background: rgba(255, 255, 255, 1.0);
-                    backdrop-filter: blur(10px);
-                    -webkit-backdrop-filter: blur(10px);
-                    border-radius: 20px;
-                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-                    padding: 3rem;
+                    background: transparent;
+                    padding: 1.5rem 0;
                     max-width: 1200px;
                     width: 100%;
                }
 
                .topic-grid {
                     display: grid;
-                    grid-template-columns: max-content 1fr;
-                    gap: 0.5rem;
+                    grid-template-columns: 480px 1fr;
+                    gap: 3rem;
                     align-items: center;
                     justify-content: center;
                }
                .topic-images {
                     display: grid;
                     grid-template-rows: repeat(var(--rows, 1), max-content);
-                    grid-template-columns: repeat(var(--cols, 1), max-content);
+                    grid-template-columns: repeat(var(--cols, 1), 1fr);
                     gap: 0.75rem;
-                    justify-self: center;
+                    justify-self: stretch;
+                    width: 100%;
                }
                .topic-images .img-cell {
                     background: transparent; /* no border, no shadow so images blend into page */
@@ -198,6 +195,9 @@
                     <nav class="header__nav">
                          <ul class="header__nav-list">
                               <li><a href="home.html">Home</a></li>
+                              <li><a href="research.html">Research</a></li>
+                              <li><a href="home.html#news">Lab News</a></li>
+                              <li><a href="about.html">About Us</a></li>
                               <li><a href="publications.html">Publications</a></li>
                          </ul>
                     </nav>
@@ -269,11 +269,11 @@
                                    const src = info.src || "";
                                    const alt = info.alt || "Image placeholder";
                                    const href = info.href || src || "#";
-                                   // Orientation handling: left | center | right (default center)
-                                   const orient = String(info.orientation || "center").toLowerCase();
-                                   let justify = "center";
+                                   // Orientation handling: left | center | right (default right)
+                                   const orient = String(info.orientation || "right").toLowerCase();
+                                   let justify = "flex-end";
                                    if (orient === "left") justify = "flex-start";
-                                   else if (orient === "right") justify = "flex-end";
+                                   else if (orient === "center") justify = "center";
                                    cell.style.justifyContent = justify;
                                    if (src) {
                                         const a = document.createElement("a");
@@ -331,9 +331,10 @@
                                    images.appendChild(cell);
                               }
                               host.appendChild(frag);
-                              // After images are in DOM, size the container based on content width
-                              requestAnimationFrame(() => sizeImageContainer(images, cols));
+                              // Size container functionality removed to enforce fixed width from CSS
+                              // requestAnimationFrame(() => sizeImageContainer(images, cols));
                               // Also recompute when images load (asynchronous intrinsic sizes)
+                              /*
                               images.querySelectorAll("img,object,embed").forEach((media) => {
                                    if (media.tagName.toLowerCase() === "img") {
                                         media.addEventListener("load", () => sizeImageContainer(images, cols), {
@@ -346,6 +347,7 @@
                                         });
                                    }
                               });
+                              */
                          };
 
                          // Compute and set the width of the topic-images to 1.05 × row content width
@@ -401,7 +403,6 @@
                          // Research Section Content- add/edit section details here
                          addSection({
                               title: "Reconstituting Tissue-Scale Patterns of Cell-Cell Communication",
-                              meta: "How are tissue patterns formed and regulated?",
                               desc: "Although tissues vary widely in form and function, they rely on a conserved set of signaling pathways to establish spatial organization. We study how molecular components of these pathways act together to establish and regulate tissue-scale patterns. Using a unique bottom-up reconstitution approach, we engineer “blank-slate” cells to recreate patterns, such as morphogen gradients and planar polarity, in a petri dish. This approach allows us to observe and perturb communication across scales, from single molecules to hundreds of interacting cells, to reconstruct the regulatory logic of tissue patterning. ",
                               rows: 2,
                               cols: 1,
@@ -420,6 +421,7 @@
                                         href: "../assets/research/diffusion_assay.gif",
                                         width: 300,
                                         height: 225,
+                                        orientation: "right",
                                    },
                               ],
                          });
@@ -434,14 +436,14 @@
                                         src: "../assets/research/IRIS.png",
                                         alt: "IRIS workflow",
                                         width: 450,
-                                        height: 460
+                                        height: 460,
+                                        orientation: "right",
                                    },
                               ],
                          });
 
                          addSection({
                               title: "Stromal Patterning in Lung Development",
-                              meta: "How does the stroma influence the timing of lung development?",
                               desc: "During organ development, stromal tissues play a key role in shaping form and function, yet their patterning principles remain poorly understood. We investigate how diverse stromal cell types emerge and organize spatially in the developing lung, and how stromal-epithelial communication regulates the form and timing of lung morphogenesis. These insights will inform the development of more realistic organoid models.",
                               rows: 2,
                               cols: 1,
@@ -452,17 +454,18 @@
                                         href: "../assets/research/Lung_bifurcation.png",
                                         width: 300,
                                         height: 225,
+                                        orientation: "right",
                                    },
                                    {
                                         src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23fef7ff' width='400' height='400'/><text x='200' y='210' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>2x1 Image D</text></svg>",
                                         alt: "Placeholder D",
+                                        orientation: "right",
                                    },
                               ],
                          });
 
                          addSection({
                               title: "Spatial and Temporal Organization of Cell-Cell Communication during Tissue Stress",
-                              meta: "How does the immune system balance host protection and collateral damage at the onset of innate immune sensing?",
                               desc: "Adult organs experience diverse stresses and must coordinate adaptive responses across cell types. We hypothesize that tissues leverage spatial and temporal patterns of communication to accurately sense the level of stress and optimize stress responses accordingly. We have examined two types of stressors, viral infection and systemic stress mediated by epinephrine. In the case of infection, we uncovered a tiered immune-sensing design in barrier organs: epithelial cells have the lowest probability of activating pattern-recognition receptor pathways, while endothelial cells have the highest probability the probability (Nguyen et al., bioRxiv, 2025). We propose that this spatial design helps balancing host protection with collateral damage caused by immune activation.",
                               rows: 2,
                               cols: 1,
@@ -470,10 +473,12 @@
                                    {
                                         src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23fef7ff' width='400' height='400'/><text x='200' y='210' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>2x1 Image D</text></svg>",
                                         alt: "Placeholder A",
+                                        orientation: "right",
                                    },
                                    {
                                         src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23fef7ff' width='400' height='400'/><text x='200' y='210' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>2x1 Image D</text></svg>",
                                         alt: "Placeholder B",
+                                        orientation: "right",
                                    },
                               ],
                          });

@@ -130,6 +130,31 @@
                     display: none;
                }
 
+               /* Table styles for Not Pictured Members */
+               .members-table {
+                    width: 100%;
+                    border-collapse: separate;
+                    border-spacing: 0;
+                    margin-top: 1rem;
+                    background: rgba(255, 255, 255, 0.95);
+                    border-radius: 10px;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+                    overflow: hidden;
+               }
+               .members-table th, .members-table td {
+                    text-align: left;
+                    padding: 1rem;
+                    border-bottom: 1px solid #eee;
+               }
+               .members-table th {
+                    font-weight: 700;
+                    background-color: #f9f9f9;
+                    border-bottom: 2px solid #ddd;
+               }
+               .members-table tr:last-child td {
+                    border-bottom: none;
+               }
+
                /* Responsive */
                @media (max-width: 768px) {
                     .member,
@@ -178,6 +203,10 @@
                     <nav class="header__nav">
                          <ul class="header__nav-list">
                               <li><a href="home.html">Home</a></li>
+                              <li><a href="research.html">Research</a></li>
+                              <li><a href="home.html#news">Lab News</a></li>
+                              <li><a href="about.html">About Us</a></li>
+                              <li><a href="publications.html">Publications</a></li>
                          </ul>
                     </nav>
                </div>
@@ -192,6 +221,63 @@
                <section class="section" id="alumni">
                     <h2>Alumni</h2>
                     <div id="alumni-list" aria-live="polite"></div>
+               </section>
+
+               <section class="section" id="not-pictured">
+                    <h2>Not Pictured Members</h2>
+                    <table class="members-table">
+                         <thead>
+                              <tr>
+                                   <th>Name</th>
+                                   <th>Position</th>
+                                   <th>Time in Lab</th>
+                                   <th>Current Position</th>
+                              </tr>
+                         </thead>
+                         <tbody id="not-pictured-list">
+                              <tr>
+                                   <td>Michael Pineda</td>
+                                   <td>Technical Assistant</td>
+                                   <td>2019-2021</td>
+                                   <td>MD student at Harvard Medical School </td>
+                              </tr>
+
+                              <tr>
+                                   <td>Julia Kim</td>
+                                   <td>Technical Assistant</td>
+                                   <td>2019-2021</td>
+                                   <td>Graduate student at UCSF</td>
+                              </tr>
+
+                              <tr>
+                                   <td>Albert Qin</td>
+                                   <td>MIT UROP (Physics/Math)</td>
+                                   <td>2020-2022</td>
+                                   <td>PhD in Physics, Princeton</td>
+                              </tr>
+
+                              <tr>
+                                   <td>Laura Xia</td>
+                                   <td>MIT UROP (Biological Engineering)</td>
+                                   <td>2023</td>
+                                   <td>Undergraduate, MIT Biological Engineering</td>
+                              </tr>
+
+                              <tr>
+                                   <td>Miri Adler</td>
+                                   <td>Visiting Scientist</td>
+                                   <td>2021-2022</td>
+                                   <td>Assistant Professor, the Hebrew University of Jerusalem</td>
+                              </tr>
+
+                              <tr>
+                                   <td>Chaitra Agrahar</td>
+                                   <td>Visiting Scientist</td>
+                                   <td>2022</td>
+                                   <td>Computational Scientist, Altos Labs</td>
+                              </tr>
+                         </tbody>
+                    </table>
                </section>
           </main>
 
@@ -241,13 +327,6 @@
                                    beforeMit: "Brandeis University",
                                    interests: "How do extracellular protein interactions regulate specificity of cell communication? ",
                                    social: {}
-                              },
-                              { 
-                                   name: "Gavin Schlissel", 
-                                   img: "Gavin.jpeg", 
-                                   position: "Postdoctoral Associate",
-                                   beforeMit: "PhD, UC Berkeley",
-                                   interests: "How do signaling proteins travel between cells?"
                               },
                               { 
                                    name: "Laura Resteghini", 
@@ -422,10 +501,21 @@
                          const alumniList = document.getElementById("alumni-list");
                          const alumni = [
                               { 
+                                   name: "Gavin Schlissel", 
+                                   img: "Gavin.jpeg", 
+                                   now: "Assistant Professor, Stanford Chemical & Systems Biology"
+                              },
+                              { 
                                    name: "Diep Nguyen", 
                                    img: "Diep.jpg", 
                                    now: "Postdoctoral Associate at Memorial Sloan Kettering Cancer Center, Rudensky Lab", 
-                              }
+                              },
+                              { 
+                                   name: "Claire Lu", 
+                                   img: "Claire.jpg", 
+                                   now: "Software Engineer at Databricks", 
+                              },
+
                          ];
 
                          alumni.forEach((m, idx) => {
