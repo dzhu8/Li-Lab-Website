@@ -140,6 +140,8 @@
                     border-radius: 10px;
                     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
                     overflow: hidden;
+                    position: relative;
+                    z-index: 20;
                }
                .members-table th, .members-table td {
                     text-align: left;
@@ -374,7 +376,11 @@
                                    img: "patrick.jpg",
                                    position: "Postdoctoral Associate",
                                    beforeMit: "PhD, The Hebrew University of Jerusalem",
-                                   interests: ""
+                                   interests: "",
+                                   social: {
+                                        gmail: "plim13@mit.edu",
+                                        scholar: "https://scholar.google.com/citations?user=kpWSaLcAAAAJ&hl=en"
+                                   }
                               },
                               { name: "Lauren Tso" },
                               { 
@@ -387,11 +393,11 @@
                               },
                               { 
                                    name: "Leah Wallach",
-                                   img: "Leah.jpg",
+                                   img: "Leah.png",
                                    position: "PhD Student",
                                    program: "MIT Biology",
                                    beforeMit: "University of Chicago",
-                                   interests: ""
+                                   interests: "How do complex patterns like planar cell polarity break symmetry and coordinate?"
                               },
                               { 
                                    name: "Daniel Zhu", 
