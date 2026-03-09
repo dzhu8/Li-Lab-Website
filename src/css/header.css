@@ -80,7 +80,19 @@
      padding: 8px 16px;
      border-radius: 8px;
      transition: all 0.3s ease;
-     display: block;
+     display: flex;
+     align-items: center;
+}
+
+/* Icon (either inline SVG or image path) placed to the left of text */
+.nav-icon,
+.header__nav-list a .nav-icon {
+     margin-right: 12px;
+     flex-shrink: 0;
+     display: inline-block;
+     vertical-align: middle;
+     width: 20px;
+     height: 20px;
 }
 .header__nav-list a:hover {
      background-color: #c1c4c7;
@@ -102,7 +114,14 @@
      cursor: pointer;
      transition: all 0.3s ease;
      text-decoration: none;
-     display: inline-block;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+}
+
+.header__join-button .join-btn .nav-icon {
+     margin-right: 12px;
+     flex-shrink: 0;
 }
 .header__join-button .join-btn:hover {
      background-color: #ff5252;
@@ -213,16 +232,6 @@
      .header__join-button {
           display: none; /* Hide from header strip */
      }
-     
-     /* Optional: Add join button to the nav list via JS or HTML if needed, 
-        but for now we'll just hide it or maybe the user wants it in the dropdown.
-        The user said "buttons in the top toolbar should convert to an accordion dropdown".
-        I'll assume the join button should also be accessible. 
-        I'll add a class to show it in the nav if I move it there, 
-        but since I can't easily move DOM elements with just CSS, 
-        I'll rely on the user adding it to the list or I'll add it to the list in HTML 
-        and hide it on desktop.
-     */
 }
 .main-content {
      margin-top: 80px;

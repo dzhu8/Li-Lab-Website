@@ -105,7 +105,15 @@ $join-button-hover: #ff5252;
                     padding: 8px 16px;
                     border-radius: 8px;
                     transition: all 0.3s ease;
-                    display: block;
+                    display: flex;
+                    align-items: center;
+
+                    .nav-icon {
+                         margin-right: 8px;
+                         flex-shrink: 0;
+                         display: inline-block;
+                         vertical-align: middle;
+                    }
 
                     &:hover {
                          background-color: $hover-color;
@@ -132,7 +140,14 @@ $join-button-hover: #ff5252;
                cursor: pointer;
                transition: all 0.3s ease;
                text-decoration: none;
-               display: inline-block;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+
+               .nav-icon {
+                    margin-right: 8px;
+                    flex-shrink: 0;
+               }
 
                &:hover {
                     background-color: $join-button-hover;

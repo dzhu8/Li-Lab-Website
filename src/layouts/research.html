@@ -118,6 +118,7 @@
                     justify-content: center;
                }
                .topic-images img,
+               .topic-images video,
                .topic-images object,
                .topic-images embed {
                     width: auto; /* let intrinsic/inline width determine size */
@@ -125,6 +126,7 @@
                     object-fit: cover;
                     display: block;
                     max-width: 100%;
+                    border-radius: 10px;
                }
                .topic-images a {
                     display: block;
@@ -137,7 +139,8 @@
                     outline: none;
                     box-shadow: none;
                }
-               .topic-images a img:focus {
+               .topic-images a img:focus,
+               .topic-images a video:focus {
                     outline: none;
                }
                .topic-text {
@@ -250,6 +253,26 @@
                               const m = frag.querySelector(".sec-meta");
                               const d = frag.querySelector(".sec-desc");
 
+                              const isVideoSource = (value) => /\.mp4($|[?#])/i.test(String(value || ""));
+                              const applyMediaSizing = (media, info) => {
+                                   if (info.width !== undefined && info.width !== null) {
+                                        media.style.width =
+                                             typeof info.width === "number"
+                                                  ? info.width + "px"
+                                                  : String(info.width);
+                                   }
+                                   if (info.height !== undefined && info.height !== null) {
+                                        media.style.height =
+                                             typeof info.height === "number"
+                                                  ? info.height + "px"
+                                                  : String(info.height);
+                                   }
+                                   if (info.aspectRatio) {
+                                        media.style.aspectRatio = String(info.aspectRatio);
+                                        media.style.objectFit = "contain";
+                                   }
+                              };
+
                               if (opts.bgImage) {
                                    wrapper.style.backgroundImage = `url('${opts.bgImage}')`;
                               }
@@ -280,29 +303,24 @@
                                         a.href = href;
                                         a.target = "_blank";
                                         a.rel = "noopener";
-                                        const img = document.createElement("img");
-                                        img.src = src;
-                                        img.alt = alt;
-                                        // Allow per-image sizing: width/height can be number (px) or string (e.g. '50%','200px')
-                                        if (info.width !== undefined && info.width !== null) {
-                                             img.style.width =
-                                                  typeof info.width === "number"
-                                                       ? info.width + "px"
-                                                       : String(info.width);
+                                        if (isVideoSource(src)) {
+                                             const video = document.createElement("video");
+                                             video.src = src;
+                                             video.setAttribute("aria-label", alt);
+                                             video.autoplay = true;
+                                             video.loop = true;
+                                             video.muted = true;
+                                             video.playsInline = true;
+                                             video.preload = "metadata";
+                                             applyMediaSizing(video, info);
+                                             a.appendChild(video);
+                                        } else {
+                                             const img = document.createElement("img");
+                                             img.src = src;
+                                             img.alt = alt;
+                                             applyMediaSizing(img, info);
+                                             a.appendChild(img);
                                         }
-                                        if (info.height !== undefined && info.height !== null) {
-                                             img.style.height =
-                                                  typeof info.height === "number"
-                                                       ? info.height + "px"
-                                                       : String(info.height);
-                                        }
-                                        // Optional modern CSS property for aspect ratio (e.g. '16/9' or '4/3')
-                                        if (info.aspectRatio) {
-                                             img.style.aspectRatio = String(info.aspectRatio);
-                                             // If aspectRatio is set, prefer object-fit: contain so it doesn't crop unexpectedly
-                                             img.style.objectFit = "contain";
-                                        }
-                                        a.appendChild(img);
                                         cell.appendChild(a);
                                    } else {
                                         // Fallback placeholder (SVG data URI)
@@ -312,19 +330,7 @@
                                         img.alt = "Placeholder";
                                         img.src =
                                              "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%23f5f7fa'/><text x='200' y='160' text-anchor='middle' font-family='Arial' font-size='16' fill='%23666'>Placeholder</text></svg>";
-                                        // Apply explicit sizing if provided in info for placeholder
-                                        if (info.width !== undefined && info.width !== null) {
-                                             img.style.width =
-                                                  typeof info.width === "number"
-                                                       ? info.width + "px"
-                                                       : String(info.width);
-                                        }
-                                        if (info.height !== undefined && info.height !== null) {
-                                             img.style.height =
-                                                  typeof info.height === "number"
-                                                       ? info.height + "px"
-                                                       : String(info.height);
-                                        }
+                                        applyMediaSizing(img, info);
                                         a.appendChild(img);
                                         cell.appendChild(a);
                                    }
@@ -335,7 +341,7 @@
                               // requestAnimationFrame(() => sizeImageContainer(images, cols));
                               // Also recompute when images load (asynchronous intrinsic sizes)
                               /*
-                              images.querySelectorAll("img,object,embed").forEach((media) => {
+                              images.querySelectorAll("img,video,object,embed").forEach((media) => {
                                    if (media.tagName.toLowerCase() === "img") {
                                         media.addEventListener("load", () => sizeImageContainer(images, cols), {
                                              once: true,
@@ -364,23 +370,25 @@
                                    // Determine per-column widths by scanning the first row with images
                                    const columnWidths = new Array(cols).fill(0);
                                    cells.forEach((cell, idx) => {
-                                        const img = cell.querySelector("img,object,embed");
+                                        const media = cell.querySelector("img,video,object,embed");
                                         let w = 0;
-                                        if (img) {
-                                             // Prefer explicit inline width style or attribute; fallback to natural width or bounding width
+                                        if (media) {
+                                             // Prefer explicit inline width style or attribute; fallback to intrinsic or rendered width
                                              const styleW =
-                                                  img.style.width && img.style.width.endsWith("px")
-                                                       ? parseFloat(img.style.width)
+                                                  media.style.width && media.style.width.endsWith("px")
+                                                       ? parseFloat(media.style.width)
                                                        : null;
-                                             const attrW = img.getAttribute("width")
-                                                  ? parseFloat(img.getAttribute("width"))
+                                             const attrW = media.getAttribute("width")
+                                                  ? parseFloat(media.getAttribute("width"))
                                                   : null;
-                                             const naturalW =
-                                                  img.naturalWidth && !isNaN(img.naturalWidth)
-                                                       ? img.naturalWidth
-                                                       : null;
-                                             const boundW = img.getBoundingClientRect().width || 0;
-                                             w = styleW || attrW || naturalW || boundW;
+                                             const intrinsicW =
+                                                  media.tagName.toLowerCase() === "video"
+                                                       ? media.videoWidth || null
+                                                       : media.naturalWidth && !isNaN(media.naturalWidth)
+                                                         ? media.naturalWidth
+                                                         : null;
+                                             const boundW = media.getBoundingClientRect().width || 0;
+                                             w = styleW || attrW || intrinsicW || boundW;
                                         } else {
                                              w = cell.getBoundingClientRect().width || 0;
                                         }
@@ -408,10 +416,10 @@
                               cols: 1,
                               images: [
                                    {
-                                        src: "../assets/research/sender-receiver.png",
-                                        alt: "Gradient assay cartoon",
-                                        href: "../assets/research/sender-receiver.png",
-                                        width: 150,
+                                        src: "../assets/research/SHHsend_receive_movie.sm02.mp4",
+                                        alt: "SHH senders and receivers in fluorescence microscopy",
+                                        href: "../assets/research/SHHsend_receive_movie.sm02.mp4",
+                                        width: 400,
                                         height: 225,
                                         orientation: "right",
                                    },
@@ -419,7 +427,7 @@
                                         src: "../assets/research/diffusion_assay.gif",
                                         alt: "Gradient assay GIF",
                                         href: "../assets/research/diffusion_assay.gif",
-                                        width: 300,
+                                        width: 400,
                                         height: 225,
                                         orientation: "right",
                                    },
