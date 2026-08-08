@@ -191,7 +191,7 @@
 
                /* About Section - dark pill */
                .about-section {
-                    padding: 5rem clamp(2rem, 4vw, 4rem);
+                    padding: 3.75rem clamp(2rem, 4vw, 4rem) 5rem;
                }
 
                .about-section::before {
@@ -212,8 +212,12 @@
                     text-align: center;
                }
 
+               /* Section headings drop the browser's default top margin, which
+                  scales with font-size and otherwise adds an unpredictable
+                  ~40px on top of the pill's own padding. */
                .about-section h2 {
                     font-size: clamp(2rem, 4vw, 3rem);
+                    margin-top: 0;
                     margin-bottom: 1rem;
                     color: white;
                }
@@ -281,7 +285,7 @@
 
                /* Highlighted Publication Section - dark pill */
                .publications-section {
-                    padding: 5rem clamp(2rem, 5vw, 5rem);
+                    padding: 3.75rem clamp(2rem, 5vw, 5rem) 5rem;
                }
 
                .publications-container {
@@ -292,8 +296,9 @@
 
                .publications-section h2 {
                     font-size: clamp(2rem, 4vw, 3rem);
+                    margin-top: 0;
                     margin-bottom: 3rem;
-                    color: var(--accent-color);
+                    color: #fff;
                }
 
                /* First page of the paper, with its summary beneath so the text
@@ -414,7 +419,7 @@
 
                /* News Section - dark pill */
                .news-section {
-                    padding: 5rem clamp(2rem, 5vw, 5rem);
+                    padding: 3.75rem clamp(2rem, 5vw, 5rem) 5rem;
                }
 
                .news-container {
@@ -426,16 +431,57 @@
 
                .news-section h2 {
                     font-size: clamp(2rem, 4vw, 3rem);
+                    margin-top: 0;
                     margin-bottom: 1rem;
-                    color: var(--accent-color);
+                    color: #fff;
+                    text-align: center;
                }
 
+               /* Single scrolling row of a fixed height: cards keep a fixed
+                  track width and stretch to fill the row, so it scrolls
+                  sideways only. overflow-y must be hidden explicitly - a
+                  classic horizontal scrollbar eats into the row's height and
+                  would otherwise raise a vertical scrollbar alongside it. The
+                  vertical padding leaves room for the card hover lift. */
                .news-grid {
                     display: flex;
-                    flex-wrap: wrap;
-                    justify-content: center;
+                    flex-wrap: nowrap;
                     gap: 2rem;
                     margin-top: 3rem;
+                    height: 520px;
+                    box-sizing: border-box;
+                    padding: 0.5rem 0.25rem 1rem;
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                    overscroll-behavior-x: contain;
+                    scroll-snap-type: x proximity;
+                    -webkit-overflow-scrolling: touch;
+                    scrollbar-width: thin;
+                    scrollbar-color: rgba(255, 255, 255, 0.35) rgba(255, 255, 255, 0.08);
+               }
+
+               .news-grid:focus-visible {
+                    outline: 2px solid var(--accent-color);
+                    outline-offset: 4px;
+                    border-radius: 12px;
+               }
+
+               .news-grid::-webkit-scrollbar {
+                    height: 8px;
+               }
+
+               .news-grid::-webkit-scrollbar-track {
+                    background: rgba(255, 255, 255, 0.08);
+                    border-radius: 4px;
+               }
+
+               .news-grid::-webkit-scrollbar-thumb {
+                    background: rgba(255, 255, 255, 0.35);
+                    border-radius: 4px;
+               }
+
+               .news-grid::-webkit-scrollbar-thumb:hover {
+                    background: rgba(255, 255, 255, 0.5);
                }
 
                .news-card {
@@ -443,9 +489,8 @@
                     border-radius: 10px;
                     overflow: hidden;
                     transition: transform 0.3s ease;
-                    width: min-content;
-                    min-width: 300px;
-                    max-width: 100%;
+                    flex: 0 0 min(340px, 78vw);
+                    scroll-snap-align: start;
                }
 
                .news-card:hover {
@@ -459,7 +504,10 @@
                }
 
                .news-image img {
-                    height: auto;
+                    width: 100%;
+                    height: 220px;
+                    object-fit: cover;
+                    display: block;
                }
 
                .news-content {
@@ -739,11 +787,13 @@
                <!-- Hero Section -->
                <section class="hero pill pill--dark">
                     <div class="hero-content">
-                         <h1>Cell-cell communication & Biological Patterns.</h1>
+                         <h1>Multicellular Information Processing</h1>
                          <p class="hero-description">
-                              We integrate synthetic biology, developmental biology, biophysics and systems biology to reveal
-                              how cell-cell communication gives rise to spatial and temporal biological patterns that underlie
-                              the fundamental organization of life.
+                              Living tissues are nature’s most sophisticated information-processing systems. They continuously sense, 
+                              propagate, and compute information to build organs, maintain physiological homeostasis, and adapt to 
+                              changing environments. Our laboratory combines synthetic biology, quantitative biology, and computational 
+                              modeling to uncover the principles of multicellular information processing—and to make living tissues 
+                              predictable and ultimately programmable.
                          </p>
                          <a href="#research" class="btn-primary">More about our Science</a>
                     </div>
@@ -850,21 +900,49 @@
                     <div class="news-container">
                          <h2>Latest News</h2>
 
-                         <div class="news-grid">
+                         <div class="news-grid" role="region" aria-label="Latest news" tabindex="0">
                               <article class="news-card">
                                    <div class="news-image">
-                                        <img src="../assets/home_gallery/Diep_defense.jpg" alt="Diep defense" style="height: 250px; width: 400px" />
+                                        <img src="../assets/home_gallery/tour_de_breakfast.jpg" alt="TDB" />
                                    </div>
                                    <div class="news-content">
-                                        <div class="news-date">Oct 10, 2025</div>
-                                        <h3>Congrats to Diep Nguyen on a successful defense!</h3>
-                                        <p>She gains the honor of being the first PhD student to graduate from the lab.</p>
+                                        <div class="news-date">June 29, 2026</div>
+                                        <h3>Fourth annual Tour de Breakfast</h3>
+                                        <p>A walking tour of all of the best brunch spots that Cambridge has to offer. Or at least those easily reachable from Broadway.
+                                             Check out our matching hats!
+                                        </p>
                                    </div>
                               </article>
 
                               <article class="news-card">
                                    <div class="news-image">
-                                        <img src="../assets/home_gallery/GBBO_bracket_winner.jpg" alt="GBBO" style="height: 250px; width: 300px" />
+                                        <img src="" alt="TDB" />
+                                   </div>
+                                   <div class="news-content">
+                                        <div class="news-date">March 26, 2026</div>
+                                        <h3>Congrats to Nicholas Hutchins on a successful defense!</h3>
+                                        <p>Not half a year after Diep, Nicholas is the second PhD student to graduate from the lab, and we wish him
+                                             the best in his next position!</p>
+                                   </div>
+                              </article>
+
+
+                              <article class="news-card">
+                                   <div class="news-image">
+                                        <img src="../assets/home_gallery/Diep_defense.jpg" alt="Diep defense" />
+                                   </div>
+                                   <div class="news-content">
+                                        <div class="news-date">Oct 10, 2025</div>
+                                        <h3>Congrats to Diep Nguyen on a successful defense!</h3>
+                                        <p>She gains the honor of being the first PhD student to graduate from the lab, and we wish her
+                                             the best in her postdoc!
+                                        </p>
+                                   </div>
+                              </article>
+
+                              <article class="news-card">
+                                   <div class="news-image">
+                                        <img src="../assets/home_gallery/GBBO_bracket_winner.jpg" alt="GBBO" />
                                    </div>
                                    <div class="news-content">
                                         <div class="news-date">Nov 10, 2025</div>
