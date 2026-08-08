@@ -279,7 +279,7 @@
                     color: #cccccc;
                }
 
-               /* Publications Section - light pill */
+               /* Highlighted Publication Section - dark pill */
                .publications-section {
                     padding: 5rem clamp(2rem, 5vw, 5rem);
                }
@@ -296,62 +296,120 @@
                     color: var(--accent-color);
                }
 
-               .publications-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-                    gap: 3rem;
+               /* First page of the paper, with its summary beneath so the text
+                  gets the full width of the pill */
+               .highlight-pub {
                     margin-top: 3rem;
                }
 
-               .publications-card {
-                    background: #f8fafc;
-                    padding: 2.5rem;
-                    border-radius: 15px;
-                    position: relative;
+               /* Wider than a full page and cropped short: the PDF is loaded
+                  fit-to-width, so the frame shows the top of page 1 at a
+                  readable size rather than the whole page shrunk to fit. */
+               .highlight-pub__viewer {
+                    width: 100%;
+                    max-width: 900px;
+                    margin: 0 auto;
+                    aspect-ratio: 3 / 2;
+                    background: #fff;
+                    border-radius: 12px;
                     overflow: hidden;
-                    transition:
-                         transform 0.3s ease,
-                         box-shadow 0.3s ease;
+                    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
                }
 
-               .publications-card:hover {
-                    transform: translateY(-5px);
-                    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+               .highlight-pub__text {
+                    max-width: 900px;
+                    margin: 2.5rem auto 0;
                }
 
-               .publications-card::before {
-                    content: "";
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    height: 4px;
-                    background: linear-gradient(90deg, var(--accent-color), #4facfe);
+               .highlight-pub__desktop,
+               .highlight-pub__desktop a {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
                }
 
-               .publications-card h3 {
-                    font-size: 1.25rem;
-                    margin-bottom: 1rem;
-                    color: var(--primary-color);
+               .highlight-pub__desktop iframe {
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                    display: block;
                }
 
-               .publications-card p {
-                    color: var(--text-light);
-                    line-height: 1.6;
-                    font-size: 1.0rem;
+               /* Mobile browsers mostly refuse to render a PDF in an iframe, so
+                  they get a tappable card that opens the file instead. */
+               .highlight-pub__mobile {
+                    display: none;
+                    width: 100%;
+                    height: 100%;
                }
 
-               .publications-icon {
-                    width: 60px;
-                    height: 60px;
-                    margin: 0 auto 1.5rem;
-                    background: linear-gradient(135deg, var(--accent-color), #4facfe);
-                    border-radius: 50%;
+               .highlight-pub__mobile a {
                     display: flex;
+                    flex-direction: column;
                     align-items: center;
                     justify-content: center;
-                    color: white;
-                    font-size: 1.5rem;
+                    width: 100%;
+                    height: 100%;
+                    background: #f0f0f0;
+                    color: #555;
+                    text-decoration: none;
+                    text-align: center;
+                    padding: 1rem;
+                    box-sizing: border-box;
+               }
+
+               .highlight-pub__mobile-icon {
+                    font-size: 4rem;
+                    margin-bottom: 0.5rem;
+               }
+
+               .highlight-pub h3 {
+                    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+                    line-height: 1.3;
+                    margin: 0 0 0.75rem;
+                    color: #fff;
+               }
+
+               .highlight-pub__meta {
+                    color: #b9c8d8;
+                    font-size: 0.95rem;
+                    margin: 0 0 0.25rem;
+               }
+
+               .highlight-pub__authors {
+                    color: #d5d5d5;
+                    font-size: 0.95rem;
+                    margin: 0 0 1rem;
+               }
+
+               .highlight-pub__desc {
+                    color: #ccc;
+                    line-height: 1.6;
+                    margin: 0;
+               }
+
+               .highlight-pub__link {
+                    color: var(--accent-color);
+                    text-decoration: none;
+                    font-weight: 600;
+               }
+
+               .highlight-pub__link:hover {
+                    text-decoration: underline;
+               }
+
+               @media (max-width: 1200px) {
+                    .highlight-pub__viewer {
+                         max-width: 420px;
+                    }
+
+                    .highlight-pub__desktop {
+                         display: none;
+                    }
+
+                    .highlight-pub__mobile {
+                         display: block;
+                    }
                }
 
                /* News Section - dark pill */
@@ -432,31 +490,6 @@
 
                .read-more:hover {
                     text-decoration: underline;
-               }
-
-               /* CTA Section - light pill */
-               .cta-section {
-                    padding: 4rem clamp(2rem, 5vw, 5rem);
-                    background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
-                    text-align: center;
-               }
-
-               .cta-container {
-                    max-width: 800px;
-                    margin: 0 auto;
-               }
-
-               .cta-section h2 {
-                    font-size: clamp(1.5rem, 3vw, 2.5rem);
-                    margin-bottom: 1rem;
-                    color: var(--primary-color);
-               }
-
-               .cta-section .subtitle {
-                    color: var(--accent-color);
-                    font-weight: 600;
-                    margin-bottom: 1rem;
-                    font-size: 1.5rem;
                }
 
                /* Footer - blends into the page background */
@@ -654,16 +687,16 @@
                     loop
                     playsinline
                     preload="auto"
-                    poster="../assets/home_gallery/background_shh_composite_poster.jpg"
+                    poster="../assets/home_gallery/background_animation_composite_poster.jpg"
                >
                     <source
-                         src="../assets/home_gallery/background_shh_composite_loop.mp4"
+                         src="../assets/home_gallery/background_animation_composite_loop.mp4"
                          type="video/mp4"
                     />
                </video>
                <img
                     class="page-background__fallback"
-                    src="../assets/home_gallery/background_shh_composite_poster.jpg"
+                    src="../assets/home_gallery/background_animation_composite_poster.jpg"
                     alt=""
                />
           </div>
@@ -750,21 +783,59 @@
                </section>
 
                <!-- Papers Section -->
-               <section class="publications-section pill pill--light" id="publications">
+               <section class="publications-section pill pill--dark" id="publications">
                     <div class="publications-container">
-                         <h2>Highlighted Publications</h2>
+                         <h2>Highlighted Publication</h2>
 
-                         <div class="publications-grid">
-                              <div class="publications-card">
-                                   <div class="publications-icon"><div class="hedgehog-icon"><img src="../assets/home_gallery/Hedgehog.png" alt="Icon" style="width: 80px; height: 80px;"></div></div>
-                                   <h3>Diffusion barriers imposed by tissue topology shape Hedgehog morphogen gradients</h3>
-                                   <p>Using single-molecule imaging, we determined that Sonic hedgehog transitioned between membrane-confined and unconfined states aided by SCUBE1, identifying a mechanism by which morphogen diffusion is controlled.</p>
+                         <div class="highlight-pub">
+                              <div class="highlight-pub__viewer">
+                                   <div class="highlight-pub__desktop">
+                                        <a
+                                             href="../assets/papers/schlissel-et-al-2024.pdf#toolbar=0&amp;navpanes=0&amp;statusbar=0"
+                                             target="_blank"
+                                             rel="noopener"
+                                        >
+                                             <iframe
+                                                  src="../assets/papers/schlissel-et-al-2024.pdf#page=1&amp;view=FitH&amp;zoom=page-width&amp;toolbar=0&amp;navpanes=0&amp;statusbar=0"
+                                                  title="Diffusion barriers imposed by tissue topology shape Hedgehog morphogen gradients (PDF)"
+                                             >
+                                                  PDF preview not available
+                                             </iframe>
+                                        </a>
+                                   </div>
+
+                                   <div class="highlight-pub__mobile">
+                                        <a
+                                             href="../assets/papers/schlissel-et-al-2024.pdf"
+                                             target="_blank"
+                                             rel="noopener"
+                                        >
+                                             <span class="highlight-pub__mobile-icon">📄</span>
+                                             <span>Hedgehog diffusion (PDF)</span>
+                                        </a>
+                                   </div>
                               </div>
 
-                              <div class="publications-card">
-                                   <div class="publications-icon"><div class="iris-icon"><img src="../assets/home_gallery/IRIS.png" alt="Icon" style="width: 80px; height: 80px;"></div></div>
-                                   <h3>Reconstructing signaling histories of single cells via perturbation screens and transfer learning</h3>
-                                   <p>We developed an integrated experimental-computational framework that learns morphogen signaling response signatures from a high-throughput <em>in vitro</em> perturbation atlas and infers combinatorial signaling activities in <em>in vivo</em> cell types.</p>
+                              <div class="highlight-pub__text">
+                                   <h3>Diffusion barriers imposed by tissue topology shape Hedgehog morphogen gradients</h3>
+                                   <p class="highlight-pub__meta">
+                                        PNAS, July 15, 2024
+                                        (<a
+                                             class="highlight-pub__link"
+                                             href="https://pubmed.ncbi.nlm.nih.gov/39190357/"
+                                             target="_blank"
+                                             rel="noopener"
+                                             >PubMed: 39190357</a
+                                        >)
+                                   </p>
+                                   <p class="highlight-pub__authors">
+                                        Gavin Schlissel, Miram Meziane, Domenic Narducci, Anders S. Hansen, Pulin Li
+                                   </p>
+                                   <p class="highlight-pub__desc">
+                                        Using single-molecule imaging, we determined that Sonic hedgehog transitioned between
+                                        membrane-confined and unconfined states aided by SCUBE1, identifying a mechanism by
+                                        which morphogen diffusion is controlled.
+                                   </p>
                               </div>
                          </div>
 
@@ -817,14 +888,6 @@
                     </div>
                </section>
 
-               <!-- CTA Section -->
-               <section class="cta-section pill pill--light">
-                    <div class="cta-container">
-                         <p class="subtitle">We're Recruiting!</p>
-                         <h2>Description.</h2>
-                         <a href="#join" class="btn-primary">Join our Lab</a>
-                    </div>
-               </section>
           </main>
 
           <!-- Footer -->

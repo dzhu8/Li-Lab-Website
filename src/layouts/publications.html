@@ -35,18 +35,19 @@
                     border-bottom: 2px solid #eee;
                     padding-bottom: 0.5rem;
                }
-               /* Publications layout */
-               .pub {
+               /* Publications layout: two entries per row, image above its text */
+               .pub-list {
                     display: grid;
-                    grid-template-columns: 800px 1fr;
-                    gap: 2rem;
-                    align-items: center;
-                    margin: 2rem 0;
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                    gap: 3rem 2.5rem;
+                    margin-top: 2rem;
                }
-               /* Default image container: 800x800 (square thumbnails) */
+               .pub {
+                    margin: 0;
+               }
                .pub-image {
-                    width: 800px;
-                    height: 800px;
+                    width: 100%;
+                    height: 400px;
                     background: #ffffff;
                     display: flex;
                     align-items: center;
@@ -55,6 +56,7 @@
                     font-size: 14px;
                     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
                     overflow: hidden;
+                    margin-bottom: 1.25rem;
                }
                /* Ensure images or embedded objects fill the container without distortion */
                .pub-image img,
@@ -83,7 +85,7 @@
                .pub-year {
                     position: relative;
                }
-               .pub-year .pub {
+               .pub-year .pub-list {
                     margin-left: 3.2rem;
                }
 
@@ -101,61 +103,24 @@
                     text-decoration: underline;
                }
 
-               /* PDF View Logic */
-               .pub-desktop-view {
-                    display: block;
-                    width: 100%;
-                    height: 100%;
-               }
-               /* Ensure anchor inside fills the view */
-               .pub-desktop-view a {
-                    display: block;
-                    width: 100%;
-                    height: 100%;
-               }
-
-               .pub-mobile-view {
-                    display: none;
-                    width: 100%;
-                    height: 100%;
-                    align-items: center;
-                    justify-content: center;
-                    background: #f0f0f0;
-                    text-align: center;
-                    padding: 1rem;
-                    box-sizing: border-box;
-               }
-
                @media (max-width: 1000px) {
-                    .pub {
+                    /* Single column, and drop the offset */
+                    .pub-list {
                          grid-template-columns: 1fr;
+                    }
+                    .pub {
                          text-align: center;
                     }
-                    /* On small screens make the thumbnail wider and keep it square */
                     .pub-image {
-                         width: 80%;
-                         height: auto;
-                         aspect-ratio: 1 / 1;
-                         margin: 0 auto;
+                         height: 300px;
                     }
-                    /* Remove offset on small screens */
-                    .pub-year .pub {
+                    .pub-year .pub-list {
                          margin-left: 0;
                     }
                     
                     /* Mobile Menu Styles (copied from header.css/home.html logic if not present in header.css) */
                     /* Since header.css handles the nav styles, we just need the toggle button styles if not in header.css */
                     /* We added .header__toggle to header.css, so it should work if linked. */
-               }
-
-               /* Switch to mobile view (icon) only on very small screens */
-               @media (max-width: 1200px) {
-                    .pub-desktop-view {
-                         display: none;
-                    }
-                    .pub-mobile-view {
-                         display: flex;
-                    }
                }
           </style>
      </head>
@@ -233,6 +198,12 @@
                                    h3.textContent = year;
                                    sec.appendChild(h3);
 
+                                   // Entries live in their own grid so the year heading
+                                   // is not itself a column
+                                   const list = document.createElement("div");
+                                   list.className = "pub-list";
+                                   sec.appendChild(list);
+
                                    // Insert in descending order (higher year first)
                                    const existing = Array.from(container.querySelectorAll(".pub-year"));
                                    let inserted = false;
@@ -278,80 +249,35 @@
                               if (authorsEl2) authorsEl2.textContent = opts.authors || "";
                               if (dateEl2) dateEl2.textContent = "";
                               if (descEl2) descEl2.textContent = opts.desc || "";
-                              // Render thumbnail: prefer opts.imgUrl (image), otherwise if opts.pdf is provided show first page of PDF
+                              // Render thumbnail: an image when opts.imgUrl is given, otherwise an
+                              // empty container awaiting artwork. The whole container links to the
+                              // paper when opts.pdf is provided.
                               if (imgEl2) {
                                    // clear existing placeholder content
                                    imgEl2.textContent = "";
                                    const imgUrl = opts.imgUrl ? String(opts.imgUrl).trim() : "";
                                    const pdf = opts.pdf ? String(opts.pdf).trim() : "";
 
-                                   // Create Desktop View Container
-                                   const desktopDiv = document.createElement("div");
-                                   desktopDiv.className = "pub-desktop-view";
-
-                                   // Create Mobile View Container
-                                   const mobileDiv = document.createElement("div");
-                                   mobileDiv.className = "pub-mobile-view";
-
-                                   if (imgUrl) {
-                                        // If explicit image provided, use it for both
+                                   let holder = imgEl2;
+                                   if (pdf) {
+                                        // The template marks the container decorative; a focusable
+                                        // link inside it must not be hidden from screen readers.
+                                        imgEl2.removeAttribute("aria-hidden");
                                         const a = document.createElement("a");
-                                        a.href = pdf || "#";
+                                        a.href = pdf;
                                         a.target = "_blank";
                                         a.rel = "noopener";
+                                        a.setAttribute("aria-label", opts.title || "View publication PDF");
+                                        imgEl2.appendChild(a);
+                                        holder = a;
+                                   }
+
+                                   if (imgUrl) {
                                         const im = document.createElement("img");
                                         im.src = imgUrl;
                                         im.alt = opts.title || "Publication image";
-                                        a.appendChild(im);
-                                        
-                                        desktopDiv.appendChild(a);
-                                        mobileDiv.appendChild(a.cloneNode(true));
-                                   } else if (pdf) {
-                                        // Desktop: Iframe
-                                        const a = document.createElement("a");
-                                        // Hide built-in PDF UI in the click-through as well
-                                        a.href = pdf + "#toolbar=0&navpanes=0&statusbar=0";
-                                        a.target = "_blank";
-                                        a.rel = "noopener";
-                                        const iframe = document.createElement("iframe");
-                                        // include #page=1 where supported
-                                        iframe.src = pdf + "#page=1&toolbar=0&navpanes=0&statusbar=0";
-                                        iframe.width = "100%";
-                                        iframe.height = "100%";
-                                        iframe.style.border = "none";
-                                        iframe.innerHTML = "PDF preview not available";
-                                        a.appendChild(iframe);
-                                        desktopDiv.appendChild(a);
-
-                                        // Mobile: Placeholder/Text (simulating "image of first page" as best as possible without generation)
-                                        const mobileLink = document.createElement("a");
-                                        mobileLink.href = pdf;
-                                        mobileLink.target = "_blank";
-                                        mobileLink.rel = "noopener";
-                                        mobileLink.style.textDecoration = "none";
-                                        mobileLink.style.color = "#555";
-                                        mobileLink.style.display = "flex";
-                                        mobileLink.style.flexDirection = "column";
-                                        mobileLink.style.alignItems = "center";
-                                        mobileLink.style.justifyContent = "center";
-                                        mobileLink.style.width = "100%";
-                                        mobileLink.style.height = "100%";
-
-                                        const mobileContent = document.createElement("div");
-                                        mobileContent.innerHTML = `
-                                             <div style="font-size: 4rem; margin-bottom: 0.5rem;">📄</div>
-                                             <div style="font-weight: 500;">${opts.imgText || "View PDF"}</div>
-                                        `;
-                                        mobileLink.appendChild(mobileContent);
-                                        mobileDiv.appendChild(mobileLink);
-                                   } else {
-                                        // Fallback
-                                        desktopDiv.textContent = opts.imgText || "Image Placeholder";
-                                        mobileDiv.textContent = opts.imgText || "Image Placeholder";
+                                        holder.appendChild(im);
                                    }
-                                   
-                                   imgEl2.appendChild(desktopDiv);
-                                   imgEl2.appendChild(mobileDiv);
                               }
 
                               // Embed link (PubMed or URL) parenthesized into the meta line if provided
@@ -392,7 +318,7 @@
                                         metaEl2.appendChild(parenClose);
                                    }
                               }
-                              targetSection.appendChild(pubEl2);
+                              targetSection.querySelector(".pub-list").appendChild(pubEl2);
                          };
 
                          // Helper: add a citation-style publication

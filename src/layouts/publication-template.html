@@ -24,16 +24,17 @@
 
 <style>
      /* Minimal styles to match publications page */
-     .pub {
+     .pub-list {
           display: grid;
-          grid-template-columns: 800px 1fr;
-          gap: 2rem;
-          align-items: center;
-          margin: 2rem 0;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 3rem 2.5rem;
+     }
+     .pub {
+          margin: 0;
      }
      .pub-image {
-          width: 800px;
-          height: 800px;
+          width: 100%;
+          height: 400px;
           background: #ffffff;
           display: flex;
           align-items: center;
@@ -42,6 +43,7 @@
           font-size: 14px;
           box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
           overflow: hidden;
+          margin-bottom: 1.25rem;
      }
      .pub-text .pub-title {
           margin: 0 0 0.5rem 0;
@@ -65,16 +67,15 @@
      .pub-link__a:hover {
           text-decoration: underline;
      }
-     @media (max-width: 768px) {
-          .pub {
+     @media (max-width: 1000px) {
+          .pub-list {
                grid-template-columns: 1fr;
+          }
+          .pub {
                text-align: center;
           }
           .pub-image {
-               width: 80%;
-               height: auto;
-               aspect-ratio: 1 / 1;
-               margin: 0 auto;
+               height: 300px;
           }
      }
 
