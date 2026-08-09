@@ -47,7 +47,9 @@
                }
                .pub-image {
                     width: 100%;
-                    height: 400px;
+                    /* A floor, not a fixed height: an uncropped image taller than this
+                       grows the box rather than being cut off. */
+                    min-height: 400px;
                     background: #ffffff;
                     display: flex;
                     align-items: center;
@@ -58,20 +60,22 @@
                     overflow: hidden;
                     margin-bottom: 1.25rem;
                }
-               /* Ensure images or embedded objects fill the container without distortion */
+               /* Same sizing criteria as the research page: fill the container's width and
+                  let height follow, so the whole image shows at its natural aspect ratio. */
                .pub-image img,
                .pub-image object,
                .pub-image embed {
-                    width: 100%;
-                    height: 100%;
                     display: block;
-                    object-fit: cover; /* use contain if you prefer letterboxing instead of cropping */
+                    width: 100%; /* fill the card... */
+                    height: auto; /* ...and let height follow, preserving aspect ratio */
+                    max-width: 100%;
+                    margin-left: auto; /* right-justified if anything keeps it narrower */
+                    object-fit: contain;
                }
-               /* Ensure the anchor wrapper fills the container so its child can cover */
+               /* The anchor wrapper spans the container so its child can fill it */
                .pub-image > a {
-                    width: 100%;
-                    height: 100%;
                     display: block;
+                    width: 100%;
                }
                .pub-title {
                     margin: 0 0 0.5rem 0;
@@ -112,7 +116,7 @@
                          text-align: center;
                     }
                     .pub-image {
-                         height: 300px;
+                         min-height: 300px;
                     }
                     .pub-year .pub-list {
                          margin-left: 0;

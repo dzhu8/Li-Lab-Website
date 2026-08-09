@@ -1,14 +1,15 @@
 <template id="research-section-template">
      <section class="research-topic-wrapper">
           <div class="research-card">
+               <h2 class="sec-title">Section Title</h2>
+               <p class="sec-meta">Subtitle or meta line</p>
                <div class="topic-grid">
                     <div class="topic-images" style="--rows: 1; --cols: 1">
                          <!-- Image cells are injected here by research.html -->
                     </div>
                     <div class="topic-text">
-                         <h3 class="sec-title">Section Title</h3>
-                         <p class="sec-meta">Subtitle or meta line</p>
-                         <p class="sec-desc">Section description goes here. This will be replaced by page script.</p>
+                         <!-- Rendered from the Markdown block referenced by addSection({ body: ... }) -->
+                         <div class="sec-desc"></div>
                     </div>
                </div>
           </div>
