@@ -377,7 +377,10 @@
                               const m = frag.querySelector(".sec-meta");
                               const d = frag.querySelector(".sec-desc");
 
-                              const isVideoSource = (value) => /\.mp4($|[?#])/i.test(String(value || ""));
+                              // A .mp4/.webm/.ogv source becomes a looping <video>; anything else
+                              // (including animated .gif) is an <img>.
+                              const isVideoSource = (value) =>
+                                   /\.(mp4|webm|ogv)($|[?#])/i.test(String(value || ""));
                               const applyMediaSizing = (media, info) => {
                                    if (info.width !== undefined && info.width !== null) {
                                         media.style.width =

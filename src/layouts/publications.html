@@ -63,6 +63,7 @@
                /* Same sizing criteria as the research page: fill the container's width and
                   let height follow, so the whole image shows at its natural aspect ratio. */
                .pub-image img,
+               .pub-image video,
                .pub-image object,
                .pub-image embed {
                     display: block;
@@ -71,11 +72,6 @@
                     max-width: 100%;
                     margin-left: auto; /* right-justified if anything keeps it narrower */
                     object-fit: contain;
-               }
-               /* The anchor wrapper spans the container so its child can fill it */
-               .pub-image > a {
-                    display: block;
-                    width: 100%;
                }
                .pub-title {
                     margin: 0 0 0.5rem 0;
@@ -190,6 +186,10 @@
                          const pubTmpl = tmplDoc.querySelector("#publication-template");
                          const citationTmpl = tmplDoc.querySelector("#citation-template");
 
+                         // A .mp4/.webm/.ogv source becomes a looping <video>; anything else
+                         // (including animated .gif) is an <img>. Same rule as the research page.
+                         const isVideoSource = (value) => /\.(mp4|webm|ogv)($|[?#])/i.test(String(value || ""));
+
                          // Helper: ensure a section for the year exists (create or find)
                          const ensureYearSection = (year) => {
                               year = Number(year);
@@ -226,7 +226,8 @@
 
                          // Helper: add a publication object to a year section using the template
                          const addPublication = (opts) => {
-                              // opts: { year, title, journal, authors, date, desc, imgText }
+                              // opts: { year, title, journal, authors, desc, imgUrl, pmid, link }
+                              //   imgUrl — image or .mp4/.webm/.ogv animation for the thumbnail
                               const year = opts.year || 2025;
                               const targetSection = ensureYearSection(year);
                               const clone2 = pubTmpl.content.cloneNode(true);
@@ -253,34 +254,30 @@
                               if (authorsEl2) authorsEl2.textContent = opts.authors || "";
                               if (dateEl2) dateEl2.textContent = "";
                               if (descEl2) descEl2.textContent = opts.desc || "";
-                              // Render thumbnail: an image when opts.imgUrl is given, otherwise an
-                              // empty container awaiting artwork. The whole container links to the
-                              // paper when opts.pdf is provided.
+                              // Render thumbnail: an image or animation when opts.imgUrl is given,
+                              // otherwise an empty container awaiting artwork.
                               if (imgEl2) {
                                    // clear existing placeholder content
                                    imgEl2.textContent = "";
                                    const imgUrl = opts.imgUrl ? String(opts.imgUrl).trim() : "";
-                                   const pdf = opts.pdf ? String(opts.pdf).trim() : "";
-
-                                   let holder = imgEl2;
-                                   if (pdf) {
-                                        // The template marks the container decorative; a focusable
-                                        // link inside it must not be hidden from screen readers.
-                                        imgEl2.removeAttribute("aria-hidden");
-                                        const a = document.createElement("a");
-                                        a.href = pdf;
-                                        a.target = "_blank";
-                                        a.rel = "noopener";
-                                        a.setAttribute("aria-label", opts.title || "View publication PDF");
-                                        imgEl2.appendChild(a);
-                                        holder = a;
-                                   }
 
                                    if (imgUrl) {
-                                        const im = document.createElement("img");
-                                        im.src = imgUrl;
-                                        im.alt = opts.title || "Publication image";
-                                        holder.appendChild(im);
+                                        if (isVideoSource(imgUrl)) {
+                                             const vid = document.createElement("video");
+                                             vid.src = imgUrl;
+                                             vid.setAttribute("aria-label", opts.title || "Publication animation");
+                                             vid.autoplay = true;
+                                             vid.loop = true;
+                                             vid.muted = true;
+                                             vid.playsInline = true;
+                                             vid.preload = "metadata";
+                                             imgEl2.appendChild(vid);
+                                        } else {
+                                             const im = document.createElement("img");
+                                             im.src = imgUrl;
+                                             im.alt = opts.title || "Publication image";
+                                             imgEl2.appendChild(im);
+                                        }
                                    }
                               }
 
@@ -370,28 +367,40 @@
                          // Add publications for 2026
                          addPublication({
                               year: 2026,
+                              title: "A tissue-scale strategy for sensing threats in barrier organs",
+                              journal: "Cell Systems",
+                              authors: "Diep H. Nguyen, Jiakun Tian, Sean-Luc Shanahan, Connie Kangni Wang, Tyler Jacks, Xiao Wang, Pulin Li",
+                              date: "July 15, 2026",
+                              desc: "Here, by analyzing influenza infection in the lung using single-molecule imaging and spatial transcriptomics, we discovered a tiered threat-sensing strategy at the tissue scale, where the probability of detecting and responding to infection is lowest in the outermost epithelia and highest in the inner stroma. This strategy emerges from spatially graded PRR expression that results in cell-type-specific probabilities of threat-sensing across the tissue, a design broadly adopted by barrier organs. Selectively increasing PRR expression in lung epithelia in vivo exacerbated tissue damage upon inflammatory challenge. These results reveal a spatially tiered strategy to tolerate threats restricted within the epithelia, and yet enable progressively potent immune responses as threats invade deeper into the tissue.",
+                              imgText: "Tiered sensing",
+                              imgUrl: "../assets/papers/images/2025_Nguyen_threat_sensing.png",
+                              pmid: "42140193"
+                         });
+
+                         addPublication({
+                              year: 2026,
+                              title: "Discovering what is possible: How synthetic biology illuminates development",
+                              journal: "Cell Systems",
+                              authors: "Nicholas T. Hutchins, Alexandra Cao, Pulin Li",
+                              date: "June 04, 2026",
+                              desc: "This perspective examines how such bottom-up approaches have elucidated general principles and causal mechanisms of multicellular organization. We argue that synthetic systems, though simplified, provide powerful platforms to test the limits of developmental potential, disentangle causal relationships, and inform predictive models. With rapid advances in genomic engineering, imaging, and computational modeling, leveraging these engineered systems to discover what is possible holds transformative promise for understanding what is happening in nature.",
+                              imgText: "Review",
+                              imgUrl: "../assets/papers/images/2026_Hutchins_Cao_Cell_Systems_review.png",
+                              pmid: "42242210"
+                         });
+
+                         addPublication({
+                              year: 2026,
                               title: "Mechanistic tradeoffs between local and long-range signaling activity in natural and synthetic morphogens",
                               journal: "bioRxiv",
                               authors: "Gavin Schlissel, Anders S. Hansen, Pulin Li",
                               date: "February 9, 2026",
                               desc: "Hedgehog family morphogens have dual-lipid modifications: a palmitate and cholesterol. Here, we isolated the distinct contribution of each lipid modification to Hedgehog diffusion and signaling potency, finding that the palmitate promotes receptor engagement while the cholesterol confines secreted morphogens at the cell surface, enriching ligands locally at the cost of restricting long-range diffusion. This points to a tradeoff between signaling potency and gradient formation for Hedgehog-family morphogens.",
                               imgText: "Hedgehog modifications",
-                              pdf: "../assets/papers/schlissel-et-al-2026.pdf",
+                              imgUrl: "../assets/papers/images/2024_Schlissel_PNAS.mp4"
                          });
 
                          // Add publications for 2025
-                         addPublication({
-                              year: 2025,
-                              title: "A tissue-scale strategy for sensing threats in barrier organs",
-                              journal: "bioRxiv",
-                              authors: "Diep H. Nguyen, Jiakun Tian, Sean-Luc Shanahan, Connie Kangni Wang, Tyler Jacks, Xiao Wang, Pulin Li",
-                              date: "March 19, 2025",
-                              desc: "Here, by analyzing influenza infection in the lung using single-molecule imaging and spatial transcriptomics, we discovered a tiered threat-sensing strategy at the tissue scale, where the probability of detecting and responding to infection is lowest in the outermost epithelia and highest in the inner stroma. This strategy emerges from spatially graded PRR expression that results in cell-type-specific probabilities of threat-sensing across the tissue, a design broadly adopted by barrier organs. Selectively increasing PRR expression in lung epithelia in vivo exacerbated tissue damage upon inflammatory challenge. These results reveal a spatially tiered strategy to tolerate threats restricted within the epithelia, and yet enable progressively potent immune responses as threats invade deeper into the tissue.",
-                              imgText: "Tiered sensing",
-                              pdf: "../assets/papers/nguyen-et-al-2025.pdf",
-                              pmid: "40166266"
-                         });
-
                          addPublication({
                               year: 2025,
                               title: "Reconstructing signaling histories of single cells via perturbation screens and transfer learning",
@@ -400,7 +409,6 @@
                               date: "March 17, 2025",
                               desc: "Here, we present an integrated experimental-computational framework that learns signaling response signatures from a high-throughput in vitro perturbation atlas and infers combinatorial signaling activities in in vivo cell types. We generated signaling perturbation atlas across diverse cell types/states through multiplexed sequential combinatorial screens on human pluripotent stem cells. Using the atlas to train IRIS, a neural networkbased model, and predicting on mouse embryo scRNAseq atlas, we discovered global features of combinatorial signaling code usage over time, identified biologically meaningful heterogeneity of signaling states within each cell type, and reconstructed signaling histories along diverse cell lineages.",
                               imgText: "IRIS",
-                              pdf: "../assets/papers/hutchins-et-al-2025.pdf",
                               pmid: "40166200"
                          });
 
@@ -411,8 +419,8 @@
                               journal: "PNAS",
                               authors: "Gavin Schlissel, Miram Meziane, Domenic Narducci, Anders S. Hansen, Pulin Li",
                               date: "July 15, 2024",
-                              desc: "Here,we used single-molecule imaging in reconstituted morphogen gradients and in tissue explants to determine that Hedgehog diffused extracellularly as a monomer, and rapidly transitioned between membrane-confined and -unconfined states. SCUBE1 expanded Hedgehog gradients by accelerating the transition rates between states without affecting the relative abundance of molecules in each state, supporting a opology-limited diffusion model inwhich cell–cell gaps create diffusion barriers, which Hedgehog can only overcome bypassing through a membrane-unconfined state aided by SCUBE1.",
-                              pdf: "../assets/papers/schlissel-et-al-2024.pdf",
+                              desc: "Here,we used single-molecule imaging in reconstituted morphogen gradients and in tissue explants to determine that Hedgehog diffused extracellularly as a monomer, and rapidly transitioned between membrane-confined and -unconfined states. SCUBE1 expanded Hedgehog gradients by accelerating the transition rates between states without affecting the relative abundance of molecules in each state, supporting a topology-limited diffusion model in which cell–cell gaps create diffusion barriers, which Hedgehog can only overcome bypassing through a membrane-unconfined state aided by SCUBE1.",
+                              imgUrl: "../assets/papers/images/schlissel_2024.png",
                               imgText: "Hedgehog diffusion",
                               pmid: "39190357",
                          });
