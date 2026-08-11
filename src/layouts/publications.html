@@ -5,9 +5,15 @@
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>Li Lab | Publications</title>
           <link rel="stylesheet" href="../css/header.css" />
+          <script src="../app/nav.js" defer></script>
           <style>
                body {
-                    font-family: "Avenir Next", sans-serif;
+                    font-family:
+                         "Avenir Next",
+                         -apple-system,
+                         BlinkMacSystemFont,
+                         Roboto,
+                         sans-serif;
                     margin: 0;
                     padding: 0;
                     color: #222;
@@ -101,12 +107,24 @@
                     color: #666;
                     font-size: 0.95rem;
                }
-               .pub-link__a {
+               .pub-link__a,
+               .citation-link {
                     color: #0b66c3;
                     text-decoration: none;
                }
-               .pub-link__a:hover {
+               .pub-link__a:hover,
+               .citation-link:hover {
                     text-decoration: underline;
+               }
+
+               /* Citation-style entries, used by the two list sections below the
+                  year-grouped highlights. */
+               .citation-entry {
+                    margin-bottom: 1.5rem;
+                    line-height: 1.4;
+               }
+               .citation-content {
+                    margin: 0;
                }
 
                @media (max-width: 1000px) {
@@ -123,10 +141,6 @@
                     .pub-year .pub-list {
                          margin-left: 0;
                     }
-                    
-                    /* Mobile Menu Styles (copied from header.css/home.html logic if not present in header.css) */
-                    /* Since header.css handles the nav styles, we just need the toggle button styles if not in header.css */
-                    /* We added .header__toggle to header.css, so it should work if linked. */
                }
           </style>
      </head>
@@ -240,24 +254,17 @@
                               if (!pubEl2) return;
                               const titleEl2 = pubEl2.querySelector(".pub-title");
                               const metaEl2 = pubEl2.querySelector(".pub-meta");
-                              const journalEl2 = pubEl2.querySelector(".pub-journal");
                               const authorsEl2 = pubEl2.querySelector(".pub-authors");
-                              const dateEl2 = pubEl2.querySelector(".pub-date");
                               const descEl2 = pubEl2.querySelector(".pub-desc");
                               const imgEl2 = pubEl2.querySelector(".pub-image");
                               if (titleEl2) titleEl2.textContent = opts.title || "Untitled publication";
-                              // Build a meta line: journal, date
+                              // Build a meta line: journal, date — either part may be absent
                               const journalText = (opts.journal || "").trim();
                               const dateText = (opts.date || "").trim();
                               if (metaEl2) {
-                                   if (journalText && dateText) metaEl2.textContent = journalText + ", " + dateText;
-                                   else if (journalText) metaEl2.textContent = journalText;
-                                   else if (dateText) metaEl2.textContent = dateText;
-                                   else metaEl2.textContent = "";
+                                   metaEl2.textContent = [journalText, dateText].filter(Boolean).join(", ");
                               }
-                              if (journalEl2) journalEl2.textContent = "";
                               if (authorsEl2) authorsEl2.textContent = opts.authors || "";
-                              if (dateEl2) dateEl2.textContent = "";
                               if (descEl2) descEl2.textContent = opts.desc || "";
                               // Render thumbnail: an image or animation when opts.imgUrl is given,
                               // otherwise an empty container awaiting artwork.
@@ -289,40 +296,24 @@
                               // Embed link (PubMed or URL) parenthesized into the meta line if provided
                               const pmid = opts.pmid ? String(opts.pmid).trim() : "";
                               const link = opts.link ? String(opts.link).trim() : "";
-                              if (metaEl2) {
-                                   // remove any existing trailing link node if present (defensive)
-                                   const existingLinkSpan = metaEl2.querySelector(".pub-meta-link");
-                                   if (existingLinkSpan) existingLinkSpan.remove();
-                                   if (pmid || link) {
-                                        const sep = document.createTextNode(" ");
-                                        const parenOpen = document.createTextNode("(");
-                                        const parenClose = document.createTextNode(")");
-                                        const linkSpan = document.createElement("span");
-                                        linkSpan.className = "pub-meta-link";
-                                        if (pmid) {
-                                             const a = document.createElement("a");
-                                             a.href =
-                                                  "https://pubmed.ncbi.nlm.nih.gov/" + encodeURIComponent(pmid) + "/";
-                                             a.target = "_blank";
-                                             a.rel = "noopener";
-                                             a.textContent = "PubMed: " + pmid;
-                                             a.className = "pub-link__a";
-                                             linkSpan.appendChild(a);
-                                        } else {
-                                             const a = document.createElement("a");
-                                             a.href = link;
-                                             a.target = "_blank";
-                                             a.rel = "noopener";
-                                             a.textContent = "Link";
-                                             a.className = "pub-link__a";
-                                             linkSpan.appendChild(a);
-                                        }
-                                        // append ' (Link)'
-                                        metaEl2.appendChild(sep);
-                                        metaEl2.appendChild(parenOpen);
-                                        metaEl2.appendChild(linkSpan);
-                                        metaEl2.appendChild(parenClose);
+                              if (metaEl2 && (pmid || link)) {
+                                   const a = document.createElement("a");
+                                   a.className = "pub-link__a";
+                                   a.target = "_blank";
+                                   a.rel = "noopener";
+                                   if (pmid) {
+                                        a.href = "https://pubmed.ncbi.nlm.nih.gov/" + encodeURIComponent(pmid) + "/";
+                                        a.textContent = "PubMed: " + pmid;
+                                   } else {
+                                        a.href = link;
+                                        a.textContent = "Link";
                                    }
+                                   const linkSpan = document.createElement("span");
+                                   linkSpan.className = "pub-meta-link";
+                                   linkSpan.appendChild(a);
+
+                                   // append ' (PubMed: 12345)'
+                                   metaEl2.append(" (", linkSpan, ")");
                               }
                               targetSection.querySelector(".pub-list").appendChild(pubEl2);
                          };
@@ -377,7 +368,6 @@
                               authors: "Diep H. Nguyen, Jiakun Tian, Sean-Luc Shanahan, Connie Kangni Wang, Tyler Jacks, Xiao Wang, Pulin Li",
                               date: "July 15, 2026",
                               desc: "Here, by analyzing influenza infection in the lung using single-molecule imaging and spatial transcriptomics, we discovered a tiered threat-sensing strategy at the tissue scale, where the probability of detecting and responding to infection is lowest in the outermost epithelia and highest in the inner stroma. This strategy emerges from spatially graded PRR expression that results in cell-type-specific probabilities of threat-sensing across the tissue, a design broadly adopted by barrier organs. Selectively increasing PRR expression in lung epithelia in vivo exacerbated tissue damage upon inflammatory challenge. These results reveal a spatially tiered strategy to tolerate threats restricted within the epithelia, and yet enable progressively potent immune responses as threats invade deeper into the tissue.",
-                              imgText: "Tiered sensing",
                               imgUrl: "../assets/papers/images/2025_Nguyen_threat_sensing.png",
                               pmid: "42140193"
                          });
@@ -389,7 +379,6 @@
                               authors: "Nicholas T. Hutchins, Alexandra Cao, Pulin Li",
                               date: "June 04, 2026",
                               desc: "This perspective examines how such bottom-up approaches have elucidated general principles and causal mechanisms of multicellular organization. We argue that synthetic systems, though simplified, provide powerful platforms to test the limits of developmental potential, disentangle causal relationships, and inform predictive models. With rapid advances in genomic engineering, imaging, and computational modeling, leveraging these engineered systems to discover what is possible holds transformative promise for understanding what is happening in nature.",
-                              imgText: "Review",
                               imgUrl: "../assets/papers/images/2026_Hutchins_Cao_Cell_Systems_review.png",
                               pmid: "42242210"
                          });
@@ -401,7 +390,6 @@
                               authors: "Miram Meziane, Mackenzie P.H. Litz, Prashant Chandrasekaran, David Frank, Pulin Li",
                               date: "May 12, 2026",
                               desc: "Using the developing mouse lung, we identified a mesenchymal progenitor population that generates endothelial cells de novo and incorporates them into the expanding vasculature, contributing to the pulmonary endothelium as a source distinct from the endothelial cells of the major blood vessels. Live imaging and single-cell tracking showed that these progenitors are highly motile, migrating as they integrate into existing vascular networks.",
-                              imgText: "Endo",
                               imgUrl: "../assets/papers/images/2026_Meziane_bioRxiv.png",
                               pmid: "42182321"
                          });
@@ -413,7 +401,6 @@
                               authors: "Leah A. Wallach, Connor D. Thomas, Pulin Li",
                               date: "February 25, 2026",
                               desc: "Planar cell polarity (PCP) describes the organization and alignment of tissues, yet how this is initiated across initially symmetric tissues remains unknown. We reconstituted tissue-scale polarity emergence ex vivo using an engineered epithelial system, finding that a collective migration cue induces front-back enrichment of CELSR junctions to establish polarity. A migration-onset wave consistently precedes the polarity-initiation wave, indicating that individual cells directly interpret the global cue rather than acquire polarity through intercellular relay.",
-                              imgText: "PCP",
                               imgUrl: "../assets/papers/images/2026_Wallach_bioRxiv.mp4",
                               pmid: "42099431"
                          });
@@ -425,7 +412,6 @@
                               authors: "Gavin Schlissel, Anders S. Hansen, Pulin Li",
                               date: "February 9, 2026",
                               desc: "Hedgehog family morphogens have dual-lipid modifications: a palmitate and cholesterol. Here, we isolated the distinct contribution of each lipid modification to Hedgehog diffusion and signaling potency, finding that the palmitate promotes receptor engagement while the cholesterol confines secreted morphogens at the cell surface, enriching ligands locally at the cost of restricting long-range diffusion. This points to a tradeoff between signaling potency and gradient formation for Hedgehog-family morphogens.",
-                              imgText: "Hedgehog modifications",
                               imgUrl: "../assets/papers/images/2024_Schlissel_PNAS.mp4",
                               pmid: "41727123"
                          });
@@ -438,7 +424,6 @@
                               authors: "Nicholas T. Hutchins, Miram Meziane, Claire Lu, Maisam Mitalipova, David Fischer, Pulin Li",
                               date: "March 17, 2025",
                               desc: "Here, we present an integrated experimental-computational framework that learns signaling response signatures from a high-throughput in vitro perturbation atlas and infers combinatorial signaling activities in in vivo cell types. We generated signaling perturbation atlas across diverse cell types/states through multiplexed sequential combinatorial screens on human pluripotent stem cells. Using the atlas to train IRIS, a neural networkbased model, and predicting on mouse embryo scRNAseq atlas, we discovered global features of combinatorial signaling code usage over time, identified biologically meaningful heterogeneity of signaling states within each cell type, and reconstructed signaling histories along diverse cell lineages.",
-                              imgText: "IRIS",
                               imgUrl: "../assets/papers/images/2025_Hutchins_bioRxiv.png",
                               pmid: "40166200"
                          });
@@ -452,7 +437,6 @@
                               date: "July 15, 2024",
                               desc: "Here,we used single-molecule imaging in reconstituted morphogen gradients and in tissue explants to determine that Hedgehog diffused extracellularly as a monomer, and rapidly transitioned between membrane-confined and -unconfined states. SCUBE1 expanded Hedgehog gradients by accelerating the transition rates between states without affecting the relative abundance of molecules in each state, supporting a topology-limited diffusion model in which cell–cell gaps create diffusion barriers, which Hedgehog can only overcome bypassing through a membrane-unconfined state aided by SCUBE1.",
                               imgUrl: "../assets/papers/images/schlissel_2024.png",
-                              imgText: "Hedgehog diffusion",
                               pmid: "39190357",
                          });
 
@@ -465,7 +449,6 @@
                               date: "May 4, 2018",
                               desc: "We combined cell-based in vitro gradient assays and mathematical modeling to analyze the spatial characteristics of the Sonic Hedgehog-sensing pathway. The inhibitory receptor PTCH sends an inhibitory signal when no ligand is bound, which is relieved by ligand binding. PTCH also regulates spatial distribution of the signal by sequestering the HH ligand. Furthermore, signaling through the receptor promotes synthesis of more inhibitory receptor. These characteristics help speed gradient formation and explain the robustness of the system to changes in the rate of morphogen production.",
                               imgUrl: "../assets/papers/images/2018_Li_Science.mp4",
-                              imgText: "Hedgehog gradients",
                               pmid: "29622726",
                          });
 
@@ -707,17 +690,6 @@
                          console.error("Failed to load publication template:", err);
                     }
                })();
-
-               // Mobile Menu Toggle
-               const mobileToggle = document.getElementById("mobile-menu-toggle");
-               const headerNav = document.getElementById("header-nav");
-
-               if (mobileToggle && headerNav) {
-                    mobileToggle.addEventListener("click", () => {
-                         mobileToggle.classList.toggle("active");
-                         headerNav.classList.toggle("active");
-                    });
-               }
           </script>
      </body>
 </html>

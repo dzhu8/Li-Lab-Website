@@ -1,4 +1,8 @@
-<!-- Reusable publication template -->
+<!-- Reusable publication markup.
+
+     publications.html fetches this file, parses it, and clones the templates
+     below. Only the <template> elements are read — a <style> block here would
+     be discarded, so all publication styling lives in publications.html. -->
 <template id="publication-template">
      <div class="pub">
           <div class="pub-image" aria-hidden="true">
@@ -6,10 +10,8 @@
           </div>
           <div class="pub-text">
                <h4 class="pub-title">Publication Title</h4>
-               <p class="pub-meta">
-                    <span class="pub-journal">Journal title</span><span class="sep">, </span
-                    ><span class="pub-date">Publication date</span>
-               </p>
+               <!-- Filled as a single "Journal, date (PubMed: ...)" line by addPublication(). -->
+               <p class="pub-meta"></p>
                <p class="pub-authors">Authors list</p>
                <p class="pub-desc">Short description or citation snippet goes here.</p>
           </div>
@@ -21,87 +23,3 @@
           <p class="citation-content"></p>
      </div>
 </template>
-
-<style>
-     /* Minimal styles to match publications page */
-     .pub-list {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 3rem 2.5rem;
-     }
-     .pub {
-          margin: 0;
-     }
-     .pub-image {
-          width: 100%;
-          height: 400px;
-          background: #ffffff;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #666;
-          font-size: 14px;
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-          overflow: hidden;
-          margin-bottom: 1.25rem;
-     }
-     .pub-text .pub-title {
-          margin: 0 0 0.5rem 0;
-     }
-     .pub-text .pub-desc {
-          margin: 0;
-          color: #444;
-     }
-     .pub-meta {
-          margin: 0 0 0.25rem 0;
-          color: #666;
-          font-size: 0.95rem;
-     }
-     .pub-link {
-          margin: 0.25rem 0 0 0;
-     }
-     .pub-link__a {
-          color: #0b66c3;
-          text-decoration: none;
-     }
-     .pub-link__a:hover {
-          text-decoration: underline;
-     }
-     @media (max-width: 1000px) {
-          .pub-list {
-               grid-template-columns: 1fr;
-          }
-          .pub {
-               text-align: center;
-          }
-          .pub-image {
-               height: 300px;
-          }
-     }
-
-     /* Make img or object fill the thumbnail */
-     .pub-image img,
-     .pub-image object,
-     .pub-image embed {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
-     }
-
-     /* Citation styles */
-     .citation-entry {
-          margin-bottom: 1.5rem;
-          line-height: 1.4;
-     }
-     .citation-content {
-          margin: 0;
-     }
-     .citation-link {
-          color: #0b66c3;
-          text-decoration: none;
-     }
-     .citation-link:hover {
-          text-decoration: underline;
-     }
-</style>

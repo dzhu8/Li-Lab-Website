@@ -5,6 +5,7 @@
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>Li Lab | Research</title>
           <link rel="stylesheet" href="../css/header.css" />
+          <script src="../app/nav.js" defer></script>
           <style>
                :root {
                     --accent-color: #0066cc;
@@ -60,7 +61,7 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    background-color: #fff; /* Default black screen */
+                    background-color: #fff;
                     background-size: cover;
                     background-position: center;
                     overflow: hidden;
@@ -128,10 +129,6 @@
                .topic-images a:focus {
                     outline: none;
                     box-shadow: none;
-               }
-               .topic-images a img:focus,
-               .topic-images a video:focus {
-                    outline: none;
                }
                /* Section heading and its optional subtitle. .subsection-title /
                   .subsection-subtitle are aliases so a hand-written block in the page
@@ -312,7 +309,12 @@
                               <p class="subtitle">@Whitehead Institute & MIT</p>
                          </div>
                     </div>
-                    <nav class="header__nav">
+                    <div class="header__toggle" id="mobile-menu-toggle">
+                         <span></span>
+                         <span></span>
+                         <span></span>
+                    </div>
+                    <nav class="header__nav" id="header-nav">
                          <ul class="header__nav-list">
                               <li><a href="home.html">Home</a></li>
                               <li><a href="research.html">Research</a></li>
