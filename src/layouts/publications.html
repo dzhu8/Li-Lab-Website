@@ -47,9 +47,11 @@
                }
                .pub-image {
                     width: 100%;
-                    /* A floor, not a fixed height: an uncropped image taller than this
-                       grows the box rather than being cut off. */
-                    min-height: 400px;
+                    /* Fixed box height, so every card is the same size. An image scaled to
+                       the card's width that ends up taller than this is centred by the flex
+                       rules below and clipped by overflow:hidden — i.e. cropped evenly from
+                       the top and bottom down to 480px. Shorter images are left alone. */
+                    height: 480px;
                     background: #ffffff;
                     display: flex;
                     align-items: center;
@@ -61,7 +63,8 @@
                     margin-bottom: 1.25rem;
                }
                /* Same sizing criteria as the research page: fill the container's width and
-                  let height follow, so the whole image shows at its natural aspect ratio. */
+                  let height follow, so the aspect ratio is never distorted. Anything that
+                  overflows the card's height is cropped, not squashed. */
                .pub-image img,
                .pub-image video,
                .pub-image object,
@@ -70,6 +73,9 @@
                     width: 100%; /* fill the card... */
                     height: auto; /* ...and let height follow, preserving aspect ratio */
                     max-width: 100%;
+                    /* Never shrink to fit the card's height: stay at the width-derived
+                       height and let the centred overflow be clipped top and bottom. */
+                    flex: 0 0 auto;
                     margin-left: auto; /* right-justified if anything keeps it narrower */
                     object-fit: contain;
                }
@@ -112,7 +118,7 @@
                          text-align: center;
                     }
                     .pub-image {
-                         min-height: 300px;
+                         height: 300px;
                     }
                     .pub-year .pub-list {
                          margin-left: 0;
@@ -145,7 +151,6 @@
                          <ul class="header__nav-list">
                               <li><a href="home.html">Home</a></li>
                               <li><a href="research.html">Research</a></li>
-                              <li><a href="home.html#news">Lab News</a></li>
                               <li><a href="about.html">About Us</a></li>
                               <li><a href="publications.html">Publications</a></li>
                          </ul>
@@ -391,13 +396,38 @@
 
                          addPublication({
                               year: 2026,
+                              title: "Integrative vasculogenesis unifies distinct endothelial sources in the developing lung",
+                              journal: "bioRxiv",
+                              authors: "Miram Meziane, Mackenzie P.H. Litz, Prashant Chandrasekaran, David Frank, Pulin Li",
+                              date: "May 12, 2026",
+                              desc: "Using the developing mouse lung, we identified a mesenchymal progenitor population that generates endothelial cells de novo and incorporates them into the expanding vasculature, contributing to the pulmonary endothelium as a source distinct from the endothelial cells of the major blood vessels. Live imaging and single-cell tracking showed that these progenitors are highly motile, migrating as they integrate into existing vascular networks.",
+                              imgText: "Endo",
+                              imgUrl: "../assets/papers/images/2026_Meziane_bioRxiv.png",
+                              pmid: "42182321"
+                         });
+
+                         addPublication({
+                              year: 2026,
+                              title: "Synthetic reconstitution of planar polarity initiation reveals collective migration as a symmetry-breaking cue",
+                              journal: "bioRxiv",
+                              authors: "Leah A. Wallach, Connor D. Thomas, Pulin Li",
+                              date: "February 25, 2026",
+                              desc: "Planar cell polarity (PCP) describes the organization and alignment of tissues, yet how this is initiated across initially symmetric tissues remains unknown. We reconstituted tissue-scale polarity emergence ex vivo using an engineered epithelial system, finding that a collective migration cue induces front-back enrichment of CELSR junctions to establish polarity. A migration-onset wave consistently precedes the polarity-initiation wave, indicating that individual cells directly interpret the global cue rather than acquire polarity through intercellular relay.",
+                              imgText: "PCP",
+                              imgUrl: "../assets/papers/images/2026_Wallach_bioRxiv.mp4",
+                              pmid: "42099431"
+                         });
+
+                         addPublication({
+                              year: 2026,
                               title: "Mechanistic tradeoffs between local and long-range signaling activity in natural and synthetic morphogens",
                               journal: "bioRxiv",
                               authors: "Gavin Schlissel, Anders S. Hansen, Pulin Li",
                               date: "February 9, 2026",
                               desc: "Hedgehog family morphogens have dual-lipid modifications: a palmitate and cholesterol. Here, we isolated the distinct contribution of each lipid modification to Hedgehog diffusion and signaling potency, finding that the palmitate promotes receptor engagement while the cholesterol confines secreted morphogens at the cell surface, enriching ligands locally at the cost of restricting long-range diffusion. This points to a tradeoff between signaling potency and gradient formation for Hedgehog-family morphogens.",
                               imgText: "Hedgehog modifications",
-                              imgUrl: "../assets/papers/images/2024_Schlissel_PNAS.mp4"
+                              imgUrl: "../assets/papers/images/2024_Schlissel_PNAS.mp4",
+                              pmid: "41727123"
                          });
 
                          // Add publications for 2025
@@ -409,6 +439,7 @@
                               date: "March 17, 2025",
                               desc: "Here, we present an integrated experimental-computational framework that learns signaling response signatures from a high-throughput in vitro perturbation atlas and infers combinatorial signaling activities in in vivo cell types. We generated signaling perturbation atlas across diverse cell types/states through multiplexed sequential combinatorial screens on human pluripotent stem cells. Using the atlas to train IRIS, a neural networkbased model, and predicting on mouse embryo scRNAseq atlas, we discovered global features of combinatorial signaling code usage over time, identified biologically meaningful heterogeneity of signaling states within each cell type, and reconstructed signaling histories along diverse cell lineages.",
                               imgText: "IRIS",
+                              imgUrl: "../assets/papers/images/2025_Hutchins_bioRxiv.png",
                               pmid: "40166200"
                          });
 
@@ -425,13 +456,58 @@
                               pmid: "39190357",
                          });
 
+                         // A publication from 2018
+                         addPublication({
+                              year: 2018,
+                              title: "Morphogen gradient reconstitution reveals Hedgehog pathway design principles",
+                              journal: "Science",
+                              authors: "Pulin Li, Joseph S Markson, Sheng Wang, Siheng Chen, Vipul Vachharajani, Michael B Elowitz",
+                              date: "May 4, 2018",
+                              desc: "We combined cell-based in vitro gradient assays and mathematical modeling to analyze the spatial characteristics of the Sonic Hedgehog-sensing pathway. The inhibitory receptor PTCH sends an inhibitory signal when no ligand is bound, which is relieved by ligand binding. PTCH also regulates spatial distribution of the signal by sequestering the HH ligand. Furthermore, signaling through the receptor promotes synthesis of more inhibitory receptor. These characteristics help speed gradient formation and explain the robustness of the system to changes in the rate of morphogen production.",
+                              imgUrl: "../assets/papers/images/2018_Li_Science.mp4",
+                              imgText: "Hedgehog gradients",
+                              pmid: "29622726",
+                         });
+
                          // Add Relevant-to-Current-Research Publications
                          addCurrentResearchPublication({
-                              authors: "Nguyen DH, Tian J, Shanahan S, Wang CK, Jacks T, Wang X, Li P",
+                              authors: "Nguyen DH, Tian J, Shanahan SL, Wang CK, Jacks T, Wang X, Li P",
                               title: "A tissue-scale strategy for sensing threats in barrier organs",
+                              journal: "Cell Syst.",
+                              year: "2026; 17(7):101611",
+                              pmid: "42140193"
+                         });
+
+                         addCurrentResearchPublication({
+                              authors: "Hutchins NT, Cao A, Li P",
+                              title: "Discovering what is possible: How synthetic biology illuminates development",
+                              journal: "Cell Syst.",
+                              year: "2026; 101619",
+                              pmid: "42242210"
+                         });
+
+                         addCurrentResearchPublication({
+                              authors: "Meziane M, Litz MPH, Chandrasekaran P, Frank D, Li P",
+                              title: "Integrative vasculogenesis unifies distinct endothelial sources in the developing lung",
                               journal: "bioRxiv",
-                              year: "2025",
-                              pmid: "40166266"
+                              year: "2026",
+                              pmid: "42182321"
+                         });
+
+                         addCurrentResearchPublication({
+                              authors: "Wallach LA, Thomas CD, Li P",
+                              title: "Synthetic reconstitution of planar polarity initiation reveals collective migration as a symmetry-breaking cue",
+                              journal: "bioRxiv",
+                              year: "2026",
+                              pmid: "42099431"
+                         });
+
+                         addCurrentResearchPublication({
+                              authors: "Schlissel G, Hansen AS, Li P",
+                              title: "Mechanistic tradeoffs between local and long-range signaling activity in natural and synthetic morphogens",
+                              journal: "bioRxiv",
+                              year: "2026",
+                              pmid: "41727123"
                          });
 
                          addCurrentResearchPublication({
@@ -446,7 +522,8 @@
                               authors: "Wallach LA, Thomas CD, Li P",
                               title: "Synthetically programming natural cell–cell communication pathways for tissue engineering",
                               journal: "Curr. Opin. Biomed. Eng.",
-                              year: "2024; 32: 100554"
+                              year: "2024; 32: 100554",
+                              pmid: "40655075"
                          });
 
                          addCurrentResearchPublication({
@@ -458,7 +535,7 @@
                          });
 
                          addCurrentResearchPublication({
-                              authors: "Collins ZM, Cha A., Qin A, Ishimatsu K, Tsai TYC, Swinburne IA, Li P, Megason SG",
+                              authors: "Collins ZM, Cha A, Qin A, Ishimatsu K, Tsai TYC, Swinburne IA, Li P, Megason SG",
                               title: "Scube2-Shh feedback loop links morphogen release and spread to morphogen signaling to enable scale invariant patterning of the ventral neural tube",
                               journal: "bioRxiv",
                               year: "2023",
@@ -466,7 +543,7 @@
                          });
 
                          addCurrentResearchPublication({
-                              authors: "Li X, Gordon P, Gaynes J, Fuller A, Ringuette R, Santiago C, Wallace V, Blackshaw S, Li P, Levine E",
+                              authors: "Li X, Gordon PJ, Gaynes JA, Fuller AW, Ringuette R, Santiago CP, Wallace V, Blackshaw S, Li P, Levine EM",
                               title: "Lhx2 is a progenitor-intrinsic modulator of Sonic Hedgehog signaling during early retinal neurogenesis",
                               journal: "eLife",
                               year: "2022; 11:e78342",

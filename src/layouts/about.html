@@ -206,7 +206,6 @@
                          <ul class="header__nav-list">
                               <li><a href="home.html">Home</a></li>
                               <li><a href="research.html">Research</a></li>
-                              <li><a href="home.html#news">Lab News</a></li>
                               <li><a href="about.html">About Us</a></li>
                               <li><a href="publications.html">Publications</a></li>
                          </ul>
@@ -322,6 +321,12 @@
                          // Added fields: position, program, beforeMit, interests, social: { gmail, linkedin, scholar, website }
                          const members = [
                               { 
+                                   name: "Pulin Li", 
+                                   img: "Pulin_Li.jpg",
+                                   position: "Member, Whitehead; Associate Professor of Biology, MIT",
+                                   beforeMit: "Postdoctoral fellow, Caltech; PhD, Harvard University"
+                              },
+                              { 
                                    name: "Alex Cao", 
                                    img: "Alex.jpg",
                                    position: "PhD Student",
@@ -367,11 +372,6 @@
                                    interests: "How do cells communicate and interpret sequential information?"
                               },
                               { 
-                                   name: "Pulin Li", 
-                                   img: "Pulin_Li.jpg",
-                                   position: "Principal Investigator"
-                              },
-                              { 
                                    name: "Patrick Lim", 
                                    img: "patrick.jpg",
                                    position: "Postdoctoral Associate",
@@ -382,7 +382,11 @@
                                         scholar: "https://scholar.google.com/citations?user=kpWSaLcAAAAJ&hl=en"
                                    }
                               },
-                              { name: "Lauren Tso" },
+                              { 
+                                   name: "Lauren Tso", 
+                                   position: "PhD Student",
+                                   program: "MIT Computational and Systems Biology"
+                              },
                               { 
                                    name: "Connor Thomas", 
                                    img: "Connor.jpg",
@@ -426,10 +430,25 @@
                                    position: "Postdoctoral Associate",
                                    beforeMit: "Yale University",
                                    interests: ""
+                              },
+                              {
+                                   name: "Sam Maffa",
+                                   position: "PhD Student",
+                                   program: "MIT Computational and Systems Biology"
+                              },
+                              {
+                                   name: "Jordan Lay",
+                                   position: "PhD Student",
+                                   program: "MIT Biology"
                               }
                          ];
 
-                         members.forEach((m, idx) => {
+                         // Renders one person card into `container`. Used for both current
+                         // members and alumni, so every field below is available to either list.
+                         // opts.labels overrides a field's label (alumni say "Former Position:"
+                         // rather than "Position:"); opts.photoAlt sets the fallback image alt.
+                         const renderMember = (m, container, opts) => {
+                              const labels = (opts && opts.labels) || {};
                               const clone = tmpl.content.cloneNode(true);
                               const wrapper = document.createElement("div");
                               // wrapper will receive member class
@@ -439,63 +458,52 @@
                               // fill in details
                               const nameEl = memberEl.querySelector(".member-name");
                               const photoInner = memberEl.querySelector(".member-photo__inner");
-                              
-                              // New fields
-                              const posEl = memberEl.querySelector(".member-position");
-                              const progEl = memberEl.querySelector(".member-program");
-                              const beforeEl = memberEl.querySelector(".member-before-mit");
-                              const nowEl = memberEl.querySelector(".member-now");
-                              const intEl = memberEl.querySelector(".member-interests");
-                              
+
+                              if (nameEl) nameEl.textContent = m.name || "";
+
+                              // Info rows: [selector, value, optional label override].
+                              // A row with no value hides itself entirely.
+                              const rows = [
+                                   [".member-position", m.position, labels.position],
+                                   [".member-program", m.program, labels.program],
+                                   [".member-before-mit", m.beforeMit, labels.beforeMit],
+                                   [".member-now", m.now, labels.now],
+                                   [".member-interests", m.interests, labels.interests]
+                              ];
+
+                              rows.forEach(([selector, value, labelOverride]) => {
+                                   const valueEl = memberEl.querySelector(selector);
+                                   if (!valueEl) return;
+                                   valueEl.textContent = value || "";
+                                   if (!value) {
+                                        valueEl.parentElement.style.display = "none";
+                                        return;
+                                   }
+                                   if (labelOverride) {
+                                        const labelEl = valueEl.parentElement.querySelector(".member-label");
+                                        if (labelEl) labelEl.textContent = labelOverride;
+                                   }
+                              });
+
                               // Social links
                               const gmailLink = memberEl.querySelector(".social-gmail");
                               const linkedinLink = memberEl.querySelector(".social-linkedin");
                               const scholarLink = memberEl.querySelector(".social-scholar");
                               const webLink = memberEl.querySelector(".social-website");
 
-                              if (nameEl) nameEl.textContent = m.name;
-                              
-                              if (posEl) {
-                                   posEl.textContent = m.position || "";
-                                   if (!m.position) posEl.parentElement.style.display = "none";
-                              }
-                              if (progEl) {
-                                   progEl.textContent = m.program || "";
-                                   if (!m.program) progEl.parentElement.style.display = "none";
-                              }
-                              if (beforeEl) {
-                                   beforeEl.textContent = m.beforeMit || "";
-                                   if (!m.beforeMit) beforeEl.parentElement.style.display = "none";
-                              }
-                              if (nowEl) {
-                                   nowEl.textContent = m.now || "";
-                                   if (!m.now) nowEl.parentElement.style.display = "none";
-                              }
-                              if (intEl) {
-                                   intEl.textContent = m.interests || "";
-                                   if (!m.interests) intEl.parentElement.style.display = "none";
-                              }
-
                               // Handle social links
-                              if (m.social) {
-                                   if (gmailLink && m.social.gmail) gmailLink.href = "mailto:" + m.social.gmail;
-                                   else if (gmailLink) gmailLink.style.display = "none";
+                              const social = m.social || {};
+                              if (gmailLink && social.gmail) gmailLink.href = "mailto:" + social.gmail;
+                              else if (gmailLink) gmailLink.style.display = "none";
 
-                                   if (linkedinLink && m.social.linkedin) linkedinLink.href = m.social.linkedin;
-                                   else if (linkedinLink) linkedinLink.style.display = "none";
+                              if (linkedinLink && social.linkedin) linkedinLink.href = social.linkedin;
+                              else if (linkedinLink) linkedinLink.style.display = "none";
 
-                                   if (scholarLink && m.social.scholar) scholarLink.href = m.social.scholar;
-                                   else if (scholarLink) scholarLink.style.display = "none";
+                              if (scholarLink && social.scholar) scholarLink.href = social.scholar;
+                              else if (scholarLink) scholarLink.style.display = "none";
 
-                                   if (webLink && m.social.website) webLink.href = m.social.website;
-                                   else if (webLink) webLink.style.display = "none";
-                              } else {
-                                   // Hide all if no social object
-                                   if (gmailLink) gmailLink.style.display = "none";
-                                   if (linkedinLink) linkedinLink.style.display = "none";
-                                   if (scholarLink) scholarLink.style.display = "none";
-                                   if (webLink) webLink.style.display = "none";
-                              }
+                              if (webLink && social.website) webLink.href = social.website;
+                              else if (webLink) webLink.style.display = "none";
 
                               if (photoInner) {
                                    // Insert an <img> element using the file from the assets/ folder.
@@ -503,7 +511,7 @@
                                    if (m.img) {
                                         const img = document.createElement("img");
                                         img.src = "../assets/" + m.img;
-                                        img.alt = m.name || "Member photo";
+                                        img.alt = m.name || (opts && opts.photoAlt) || "Member photo";
                                         img.width = 200;
                                         img.height = 200;
                                         img.style.borderRadius = "50%";
@@ -515,117 +523,47 @@
                               }
 
                               wrapper.appendChild(memberEl);
-                              currentList.appendChild(wrapper);
-                         });
+                              container.appendChild(wrapper);
+                         };
+
+                         members.forEach((m) => renderMember(m, currentList));
 
                          const alumniList = document.getElementById("alumni-list");
+                         // Alumni accept every field a current member does. The useful ones here:
+                         //   position: role held while in the lab, shown as "Former Position:"
+                         //   now:      where they are today
+                         //   social:   { gmail, linkedin, scholar, website } — any subset; omitted icons are hidden
+                         // program / beforeMit / interests are also available if you want them.
                          const alumni = [
-                              { 
-                                   name: "Gavin Schlissel", 
-                                   img: "Gavin.jpeg", 
-                                   now: "Assistant Professor, Stanford Chemical & Systems Biology"
+                              {
+                                   name: "Gavin Schlissel",
+                                   img: "Gavin.jpeg",
+                                   now: "Assistant Professor, Stanford Chemical & Systems Biology",
+                                   position: "Jane Coffin Childs Postdoctoral Fellow",
+                                   social: {
+                                        website: "https://schlissel-lab.org/"
+                                   }
                               },
-                              { 
-                                   name: "Diep Nguyen", 
-                                   img: "Diep.jpg", 
-                                   now: "Postdoctoral Associate at Memorial Sloan Kettering Cancer Center, Rudensky Lab", 
+                              {
+                                   name: "Diep Nguyen",
+                                   img: "Diep.jpg",
+                                   now: "Postdoctoral Associate at Memorial Sloan Kettering Cancer Center, Rudensky Lab",
+                                   position: "PhD Student",
+                                   social: {}
                               },
-                              { 
-                                   name: "Claire Lu", 
-                                   img: "Claire.jpg", 
-                                   now: "Software Engineer at Databricks", 
-                              },
-
+                              {
+                                   name: "Claire Lu",
+                                   img: "Claire.jpg",
+                                   now: "Software Engineer at Databricks",
+                                   position: "Master of Engineering student",
+                                   social: {}
+                              }
                          ];
 
-                         alumni.forEach((m, idx) => {
-                              const clone = tmpl.content.cloneNode(true);
-                              const wrapper = document.createElement("div");
-                              // wrapper will receive member class
-                              const memberEl = clone.querySelector(".member");
-                              if (!memberEl) return; // safety
-
-                              // fill in details
-                              const nameEl = memberEl.querySelector(".member-name");
-                              const photoInner = memberEl.querySelector(".member-photo__inner");
-                              
-                              // New fields
-                              const posEl = memberEl.querySelector(".member-position");
-                              const progEl = memberEl.querySelector(".member-program");
-                              const beforeEl = memberEl.querySelector(".member-before-mit");
-                              const nowEl = memberEl.querySelector(".member-now");
-                              const intEl = memberEl.querySelector(".member-interests");
-                              
-                              // Social links
-                              const gmailLink = memberEl.querySelector(".social-gmail");
-                              const linkedinLink = memberEl.querySelector(".social-linkedin");
-                              const scholarLink = memberEl.querySelector(".social-scholar");
-                              const webLink = memberEl.querySelector(".social-website");
-
-                              if (nameEl) nameEl.textContent = m.name;
-                              
-                              if (posEl) {
-                                   posEl.textContent = m.position || "";
-                                   if (!m.position) posEl.parentElement.style.display = "none";
-                              }
-                              if (progEl) {
-                                   progEl.textContent = m.program || "";
-                                   if (!m.program) progEl.parentElement.style.display = "none";
-                              }
-                              if (beforeEl) {
-                                   beforeEl.textContent = m.beforeMit || "";
-                                   if (!m.beforeMit) beforeEl.parentElement.style.display = "none";
-                              }
-                              if (nowEl) {
-                                   nowEl.textContent = m.now || "";
-                                   if (!m.now) nowEl.parentElement.style.display = "none";
-                              }
-                              if (intEl) {
-                                   intEl.textContent = m.interests || "";
-                                   if (!m.interests) intEl.parentElement.style.display = "none";
-                              }
-
-                              // Handle social links
-                              if (m.social) {
-                                   if (gmailLink && m.social.gmail) gmailLink.href = "mailto:" + m.social.gmail;
-                                   else if (gmailLink) gmailLink.style.display = "none";
-
-                                   if (linkedinLink && m.social.linkedin) linkedinLink.href = m.social.linkedin;
-                                   else if (linkedinLink) linkedinLink.style.display = "none";
-
-                                   if (scholarLink && m.social.scholar) scholarLink.href = m.social.scholar;
-                                   else if (scholarLink) scholarLink.style.display = "none";
-
-                                   if (webLink && m.social.website) webLink.href = m.social.website;
-                                   else if (webLink) webLink.style.display = "none";
-                              } else {
-                                   // Hide all if no social object
-                                   if (gmailLink) gmailLink.style.display = "none";
-                                   if (linkedinLink) linkedinLink.style.display = "none";
-                                   if (scholarLink) scholarLink.style.display = "none";
-                                   if (webLink) webLink.style.display = "none";
-                              }
-
-                              if (photoInner) {
-                                   // Insert an <img> element using the file from the assets/ folder.
-                                   photoInner.innerHTML = "";
-                                   if (m.img) {
-                                        const img = document.createElement("img");
-                                        img.src = "../assets/" + m.img;
-                                        img.alt = m.name || "Alumni photo";
-                                        img.width = 200;
-                                        img.height = 200;
-                                        img.style.borderRadius = "50%";
-                                        img.style.objectFit = "cover";
-                                        photoInner.appendChild(img);
-                                   } else {
-                                        photoInner.textContent = "200×200";
-                                   }
-                              }
-
-                              wrapper.appendChild(memberEl);
-                              alumniList.appendChild(wrapper);
-                         });
+                         alumni.forEach((m) => renderMember(m, alumniList, {
+                              photoAlt: "Alumni photo",
+                              labels: { position: "Former Position:" }
+                         }));
                     } catch (err) {
                          console.error("Failed to load member template:", err);
                     }
