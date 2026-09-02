@@ -4,8 +4,8 @@
           <meta charset="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>Li Lab | Publications</title>
-          <link rel="stylesheet" href="../css/header.css" />
-          <script src="../app/nav.js" defer></script>
+          <link rel="stylesheet" href="css/header.css" />
+          <script src="app/nav.js" defer></script>
           <!-- Runs before first paint so .reveal elements start hidden without a
                flash of fully-drawn content. -->
           <script>
@@ -182,9 +182,9 @@
           <header class="header">
                <div class="header__content">
                     <div class="header__logo">
-                         <div class="header__logo-circle">
-                              <span>Temp.<br />Logo</span>
-                         </div>
+                         <!-- Placeholder: swap this div for <img src="assets/logo.svg" alt="Li Lab logo" />
+                              once the real logo artwork exists. -->
+                         <div class="header__logo-circle"></div>
                          <div class="header__logo-text">
                               <h1>Li Lab</h1>
                               <p class="subtitle">@Whitehead Institute & MIT</p>
@@ -197,7 +197,7 @@
                     </div>
                     <nav class="header__nav" id="header-nav">
                          <ul class="header__nav-list">
-                              <li><a href="home.html">Home</a></li>
+                              <li><a href="index.html">Home</a></li>
                               <li><a href="research.html">Research</a></li>
                               <li><a href="about.html">About Us</a></li>
                               <li><a href="publications.html">Publications</a></li>
@@ -222,6 +222,45 @@
                     <div id="previous-publications-list"></div>
                </section>
           </main>
+
+          <!-- Site footer. Kept identical on every page; the Accessibility link is
+               required on all public MIT-affiliated sites. Styles live in css/header.css. -->
+          <footer class="footer">
+               <div class="footer-container">
+                    <div class="footer-section">
+                         <img
+                              src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='white' stroke-width='2'/><text x='50' y='55' text-anchor='middle' font-family='Arial' font-size='12' fill='white'>LL</text></svg>"
+                              alt="Li Lab Logo"
+                              style="width: 80px; margin-bottom: 1rem"
+                         />
+                    </div>
+
+                    <div class="footer-section">
+                         <h3>Contact</h3>
+                         <p><strong>Whitehead Institute &amp; MIT</strong></p>
+                         <p>455 Main Street</p>
+                         <p>Cambridge, MA 02142</p>
+                         <p>pli@wi.mit.edu</p>
+                    </div>
+
+                    <div class="footer-section">
+                         <h3>Quick Links</h3>
+                         <a href="index.html">Home</a>
+                         <a href="research.html">Research</a>
+                         <a href="about.html">About Us</a>
+                         <a href="publications.html">Publications</a>
+                         <a href="index.html#news">Latest News</a>
+                    </div>
+               </div>
+
+               <div class="footer-bottom">
+                    <p>
+                         © Li Lab 2026 | Designed by Daniel Zhu
+                         <span class="footer-sep">|</span>
+                         <a href="https://accessibility.mit.edu/">Accessibility</a>
+                    </p>
+               </div>
+          </footer>
 
           <script>
                // Float content in as it scrolls into view. The offset and
@@ -274,7 +313,7 @@
 
                     // Fetch publication template and use it for each entry
                     try {
-                         const tmplResp = await fetch("publication-template.html");
+                         const tmplResp = await fetch("templates/publication-template.html");
                          const tmplText = await tmplResp.text();
                          const parser = new DOMParser();
                          const tmplDoc = parser.parseFromString(tmplText, "text/html");
@@ -450,7 +489,7 @@
                               authors: "Diep H. Nguyen, Jiakun Tian, Sean-Luc Shanahan, Connie Kangni Wang, Tyler Jacks, Xiao Wang, Pulin Li",
                               date: "July 15, 2026",
                               desc: "Here, by analyzing influenza infection in the lung using single-molecule imaging and spatial transcriptomics, we discovered a tiered threat-sensing strategy at the tissue scale, where the probability of detecting and responding to infection is lowest in the outermost epithelia and highest in the inner stroma. This strategy emerges from spatially graded PRR expression that results in cell-type-specific probabilities of threat-sensing across the tissue, a design broadly adopted by barrier organs. Selectively increasing PRR expression in lung epithelia in vivo exacerbated tissue damage upon inflammatory challenge. These results reveal a spatially tiered strategy to tolerate threats restricted within the epithelia, and yet enable progressively potent immune responses as threats invade deeper into the tissue.",
-                              imgUrl: "../assets/papers/images/2025_Nguyen_threat_sensing.png",
+                              imgUrl: "assets/papers/images/2025_Nguyen_threat_sensing.png",
                               pmid: "42140193"
                          });
 
@@ -461,7 +500,7 @@
                               authors: "Nicholas T. Hutchins, Alexandra Cao, Pulin Li",
                               date: "June 04, 2026",
                               desc: "This perspective examines how such bottom-up approaches have elucidated general principles and causal mechanisms of multicellular organization. We argue that synthetic systems, though simplified, provide powerful platforms to test the limits of developmental potential, disentangle causal relationships, and inform predictive models. With rapid advances in genomic engineering, imaging, and computational modeling, leveraging these engineered systems to discover what is possible holds transformative promise for understanding what is happening in nature.",
-                              imgUrl: "../assets/papers/images/2026_Hutchins_Cao_Cell_Systems_review.png",
+                              imgUrl: "assets/papers/images/2026_Hutchins_Cao_Cell_Systems_review.png",
                               pmid: "42242210"
                          });
 
@@ -472,7 +511,7 @@
                               authors: "Miram Meziane, Mackenzie P.H. Litz, Prashant Chandrasekaran, David Frank, Pulin Li",
                               date: "May 12, 2026",
                               desc: "Using the developing mouse lung, we identified a mesenchymal progenitor population that generates endothelial cells de novo and incorporates them into the expanding vasculature, contributing to the pulmonary endothelium as a source distinct from the endothelial cells of the major blood vessels. Live imaging and single-cell tracking showed that these progenitors are highly motile, migrating as they integrate into existing vascular networks.",
-                              imgUrl: "../assets/papers/images/2026_Meziane_bioRxiv.png",
+                              imgUrl: "assets/papers/images/2026_Meziane_bioRxiv.png",
                               pmid: "42182321"
                          });
 
@@ -483,7 +522,7 @@
                               authors: "Leah A. Wallach, Connor D. Thomas, Pulin Li",
                               date: "February 25, 2026",
                               desc: "Planar cell polarity (PCP) describes the organization and alignment of tissues, yet how this is initiated across initially symmetric tissues remains unknown. We reconstituted tissue-scale polarity emergence ex vivo using an engineered epithelial system, finding that a collective migration cue induces front-back enrichment of CELSR junctions to establish polarity. A migration-onset wave consistently precedes the polarity-initiation wave, indicating that individual cells directly interpret the global cue rather than acquire polarity through intercellular relay.",
-                              imgUrl: "../assets/papers/images/2026_Wallach_bioRxiv.mp4",
+                              imgUrl: "assets/papers/images/2026_Wallach_bioRxiv.mp4",
                               pmid: "42099431"
                          });
 
@@ -494,7 +533,7 @@
                               authors: "Gavin Schlissel, Anders S. Hansen, Pulin Li",
                               date: "February 9, 2026",
                               desc: "Hedgehog family morphogens have dual-lipid modifications: a palmitate and cholesterol. Here, we isolated the distinct contribution of each lipid modification to Hedgehog diffusion and signaling potency, finding that the palmitate promotes receptor engagement while the cholesterol confines secreted morphogens at the cell surface, enriching ligands locally at the cost of restricting long-range diffusion. This points to a tradeoff between signaling potency and gradient formation for Hedgehog-family morphogens.",
-                              imgUrl: "../assets/papers/images/2026_Schlissel_SciAdvances.png",
+                              imgUrl: "assets/papers/images/2026_Schlissel_SciAdvances.png",
                               pmid: "41727123"
                          });
 
@@ -505,7 +544,7 @@
                               authors: "Mark Greenwood, Julia Drube, Carsten Hoffmann, Pulin Li",
                               date: "September 2, 2026",
                               desc: "Living organisms must sense and adapt to physiological demands of varying intensity; changes in hormone concentrations communicate these demands. However, sustained stimulation desensitizes signaling, and how cells maintain hormone responsiveness in spite of this is unclear. Using epinephrine, we show that oscillatory (not constant) hormone concentrations enabled receptor resensitization when hormone levels fell, preserving alertness to subsequent stress and tunability across intensities.",
-                              imgUrl: "../assets/papers/images/2026_Greenwood_bioRxiv.png",
+                              imgUrl: "assets/papers/images/2026_Greenwood_bioRxiv.png",
                          });
 
                          // Add publications for 2025
@@ -516,7 +555,7 @@
                               authors: "Nicholas T. Hutchins, Miram Meziane, Claire Lu, Maisam Mitalipova, David Fischer, Pulin Li",
                               date: "March 17, 2025",
                               desc: "Here, we present an integrated experimental-computational framework that learns signaling response signatures from a high-throughput in vitro perturbation atlas and infers combinatorial signaling activities in in vivo cell types. We generated signaling perturbation atlas across diverse cell types/states through multiplexed sequential combinatorial screens on human pluripotent stem cells. Using the atlas to train IRIS, a neural networkbased model, and predicting on mouse embryo scRNAseq atlas, we discovered global features of combinatorial signaling code usage over time, identified biologically meaningful heterogeneity of signaling states within each cell type, and reconstructed signaling histories along diverse cell lineages.",
-                              imgUrl: "../assets/papers/images/2025_Hutchins_bioRxiv.png",
+                              imgUrl: "assets/papers/images/2025_Hutchins_bioRxiv.png",
                               pmid: "40166200"
                          });
 
@@ -528,7 +567,7 @@
                               authors: "Gavin Schlissel, Miram Meziane, Domenic Narducci, Anders S. Hansen, Pulin Li",
                               date: "July 15, 2024",
                               desc: "Here,we used single-molecule imaging in reconstituted morphogen gradients and in tissue explants to determine that Hedgehog diffused extracellularly as a monomer, and rapidly transitioned between membrane-confined and -unconfined states. SCUBE1 expanded Hedgehog gradients by accelerating the transition rates between states without affecting the relative abundance of molecules in each state, supporting a topology-limited diffusion model in which cell–cell gaps create diffusion barriers, which Hedgehog can only overcome bypassing through a membrane-unconfined state aided by SCUBE1.",
-                              imgUrl: "../assets/papers/images/2024_Schlissel_PNAS.mp4",
+                              imgUrl: "assets/papers/images/2024_Schlissel_PNAS.mp4",
                               pmid: "39190357",
                          });
 
@@ -540,7 +579,7 @@
                               authors: "Pulin Li, Joseph S Markson, Sheng Wang, Siheng Chen, Vipul Vachharajani, Michael B Elowitz",
                               date: "May 4, 2018",
                               desc: "We combined cell-based in vitro gradient assays and mathematical modeling to analyze the spatial characteristics of the Sonic Hedgehog-sensing pathway. The inhibitory receptor PTCH sends an inhibitory signal when no ligand is bound, which is relieved by ligand binding. PTCH also regulates spatial distribution of the signal by sequestering the HH ligand. Furthermore, signaling through the receptor promotes synthesis of more inhibitory receptor. These characteristics help speed gradient formation and explain the robustness of the system to changes in the rate of morphogen production.",
-                              imgUrl: "../assets/papers/images/2018_Li_Science.mp4",
+                              imgUrl: "assets/papers/images/2018_Li_Science.mp4",
                               pmid: "29622726",
                          });
 

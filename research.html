@@ -4,8 +4,8 @@
           <meta charset="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>Li Lab | Research</title>
-          <link rel="stylesheet" href="../css/header.css" />
-          <script src="../app/nav.js" defer></script>
+          <link rel="stylesheet" href="css/header.css" />
+          <script src="app/nav.js" defer></script>
           <style>
                :root {
                     --accent-color: #0066cc;
@@ -314,9 +314,9 @@
           <header class="header">
                <div class="header__content">
                     <div class="header__logo">
-                         <div class="header__logo-circle">
-                              <span>Temp.<br />Logo</span>
-                         </div>
+                         <!-- Placeholder: swap this div for <img src="assets/logo.svg" alt="Li Lab logo" />
+                              once the real logo artwork exists. -->
+                         <div class="header__logo-circle"></div>
                          <div class="header__logo-text">
                               <h1>Li Lab</h1>
                               <p class="subtitle">@Whitehead Institute & MIT</p>
@@ -329,7 +329,7 @@
                     </div>
                     <nav class="header__nav" id="header-nav">
                          <ul class="header__nav-list">
-                              <li><a href="home.html">Home</a></li>
+                              <li><a href="index.html">Home</a></li>
                               <li><a href="research.html">Research</a></li>
                               <li><a href="about.html">About Us</a></li>
                               <li><a href="publications.html">Publications</a></li>
@@ -348,6 +348,45 @@
                <div id="research-sections"></div>
           </main>
 
+          <!-- Site footer. Kept identical on every page; the Accessibility link is
+               required on all public MIT-affiliated sites. Styles live in css/header.css. -->
+          <footer class="footer">
+               <div class="footer-container">
+                    <div class="footer-section">
+                         <img
+                              src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='white' stroke-width='2'/><text x='50' y='55' text-anchor='middle' font-family='Arial' font-size='12' fill='white'>LL</text></svg>"
+                              alt="Li Lab Logo"
+                              style="width: 80px; margin-bottom: 1rem"
+                         />
+                    </div>
+
+                    <div class="footer-section">
+                         <h3>Contact</h3>
+                         <p><strong>Whitehead Institute &amp; MIT</strong></p>
+                         <p>455 Main Street</p>
+                         <p>Cambridge, MA 02142</p>
+                         <p>pli@wi.mit.edu</p>
+                    </div>
+
+                    <div class="footer-section">
+                         <h3>Quick Links</h3>
+                         <a href="index.html">Home</a>
+                         <a href="research.html">Research</a>
+                         <a href="about.html">About Us</a>
+                         <a href="publications.html">Publications</a>
+                         <a href="index.html#news">Latest News</a>
+                    </div>
+               </div>
+
+               <div class="footer-bottom">
+                    <p>
+                         © Li Lab 2026 | Designed by Daniel Zhu
+                         <span class="footer-sep">|</span>
+                         <a href="https://accessibility.mit.edu/">Accessibility</a>
+                    </p>
+               </div>
+          </footer>
+
           <script>
                /* Pull a section's body copy from its <template id="body-<key>"> block. */
                const sectionBody = (key) => {
@@ -364,7 +403,7 @@
                     try {
                          // Load the section template. "no-cache" still allows a 304, but forces
                          // revalidation so edits to the template aren't masked by a cached copy.
-                         const tmplResp = await fetch("research-section-template.html", {
+                         const tmplResp = await fetch("templates/research-section-template.html", {
                               cache: "no-cache",
                          });
                          const tmplText = await tmplResp.text();
@@ -477,9 +516,9 @@
                               cols: 1,
                               images: [
                                    {
-                                        src: "../assets/research/Lab-website-01.png",
+                                        src: "assets/research/Lab-website-01.png",
                                         alt: "Schematic for gradient & PCP work",
-                                        href: "../assets/research/Lab-website-01.png",
+                                        href: "assets/research/Lab-website-01.png",
                                    },
                               ],
                          });
@@ -491,9 +530,9 @@
                               cols: 1,
                               images: [
                                    {
-                                        src: "../assets/research/Lab-website-02.png",
+                                        src: "assets/research/Lab-website-02.png",
                                         alt: "Schematic for mesenchyme & tissue work",
-                                        href: "../assets/research/Lab-website-02.png"
+                                        href: "assets/research/Lab-website-02.png"
                                    },
                               ],
                          });
@@ -505,9 +544,9 @@
                               cols: 1,
                               images: [
                                    {
-                                        src: "../assets/research/Lab-website-03.png",
+                                        src: "assets/research/Lab-website-03.png",
                                         alt: "Schematic for computational methodology",
-                                        href: "../assets/research/Lab-website-03.png",
+                                        href: "assets/research/Lab-website-03.png",
                                    },
                               ],
                          });

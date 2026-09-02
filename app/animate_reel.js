@@ -1,12 +1,12 @@
 // Configuration
 const config = {
-     reelImagePath: '../assets/lab_members_gallery/film_reel_asset.jpg',
+     reelImagePath: 'assets/lab_members_gallery/film_reel_asset.jpg',
      frameImagePaths: [
-          '../assets/lab_members_gallery/Highlight_1.jpg',
-          '../assets/lab_members_gallery/Highlight_2.jpg',
-          '../assets/lab_members_gallery/Highlight_3.jpg',
-          '../assets/lab_members_gallery/Highlight_4.jpg',
-          '../assets/lab_members_gallery/Highlight_5.jpg',
+          'assets/lab_members_gallery/Highlight_1.jpg',
+          'assets/lab_members_gallery/Highlight_2.jpg',
+          'assets/lab_members_gallery/Highlight_3.jpg',
+          'assets/lab_members_gallery/Highlight_4.jpg',
+          'assets/lab_members_gallery/Highlight_5.jpg',
      ],
      scrollSpeed: 0.4, // pixels per frame
      containerHeight: 1200, // pixels

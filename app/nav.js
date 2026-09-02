@@ -1,6 +1,6 @@
 // Mobile menu toggle for the fixed header.
 //
-// Every page in src/layouts/ carries its own copy of the header markup (there is
+// Every page at the repo root carries its own copy of the header markup (there is
 // no build step to share it), but the behaviour attached to it lives here so the
 // four pages cannot drift apart. Requires #mobile-menu-toggle and #header-nav in
 // the page; does nothing if either is missing.

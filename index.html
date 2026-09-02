@@ -1,27 +1,983 @@
 <!doctype html>
 <html lang="en">
      <head>
-          <meta charset="utf-8" />
-          <title>Redirecting to Home</title>
-          <!-- Immediate meta refresh to the actual homepage -->
-          <meta http-equiv="refresh" content="0; url=src/layouts/home.html" />
-          <meta name="robots" content="noindex" />
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>Li Lab | Home</title>
+          <meta name="description" content="The Li Lab is ... ." />
+          <link rel="stylesheet" href="css/header.css" />
+          <script src="app/nav.js" defer></script>
+          <!-- Runs before first paint so .reveal elements start hidden without a
+               flash of fully-drawn content. -->
           <script>
-               // JavaScript fallback for older browsers / to ensure a hard redirect
-               (function () {
-                    var target = "src/layouts/home.html";
-                    try {
-                         window.location.replace(target);
-                    } catch (e) {
-                         window.location.href = target;
-                    }
-               })();
+               document.documentElement.classList.add("js");
           </script>
+          <style>
+               :root {
+                    --primary-color: #000;
+                    --accent-color: #0066cc;
+                    --text-dark: #333;
+                    --header-height: 80px;
+               }
+
+               body {
+                    font-family:
+                         "Avenir Next",
+                         -apple-system,
+                         BlinkMacSystemFont,
+                         Roboto,
+                         sans-serif;
+                    line-height: 1.6;
+                    color: var(--text-dark);
+                    margin: 0;
+                    padding: 0;
+                    background: #000;
+               }
+
+               /* Fixed full-page background layer: the SHH sender/receiver
+                  timelapse, dimmed so it reads as texture behind the content. */
+               .page-background {
+                    position: fixed;
+                    inset: 0;
+                    z-index: -1;
+                    background: #000;
+                    overflow: hidden;
+               }
+
+               .page-background video,
+               .page-background img {
+                    position: absolute;
+                    inset: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    /* The footage is already mostly black with sparse bright
+                       cells, so it takes a higher opacity than a busy photo
+                       would before it reads at all. */
+                    opacity: 0.55;
+               }
+
+               /* Static frame shown instead of the video when the viewer has
+                  asked for reduced motion. */
+               .page-background__fallback {
+                    display: none;
+               }
+
+               @media (prefers-reduced-motion: reduce) {
+                    .page-background video {
+                         display: none;
+                    }
+                    .page-background__fallback {
+                         display: block;
+                    }
+               }
+
+               /* Floating pill containers for each page section */
+               .pill {
+                    width: 100%;
+                    max-width: 1300px;
+                    margin: 0 auto;
+                    border-radius: 48px;
+                    overflow: hidden;
+                    position: relative;
+                    box-sizing: border-box;
+                    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+                    scroll-margin-top: calc(var(--header-height) + 2rem);
+               }
+
+               /* Frosted glass: translucent enough that the timelapse reads as a
+                  soft colored glow through the panel. */
+               .pill--dark {
+                    background: linear-gradient(135deg, rgba(20, 20, 20, 0.74) 0%, rgba(42, 42, 42, 0.68) 100%);
+                    backdrop-filter: blur(22px) saturate(1.25);
+                    -webkit-backdrop-filter: blur(22px) saturate(1.25);
+                    border: 1px solid rgba(255, 255, 255, 0.14);
+                    color: white;
+                    box-shadow:
+                         0 0 40px rgba(255, 255, 255, 0.05),
+                         0 24px 60px rgba(0, 0, 0, 0.5);
+               }
+
+               /* The default black button disappears on the dark pills */
+               .pill--dark .btn-primary {
+                    background: #fff;
+                    color: #111;
+               }
+
+               .pill--dark .btn-primary:hover {
+                    background: #e6e6e6;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+               }
+
+               /* Hero Section - single dark pill, copy left / specimen right */
+               .hero {
+                    min-height: min(82vh, 880px);
+                    display: flex;
+                    align-items: center;
+                    padding: 3rem 0 3rem clamp(2rem, 4vw, 4.5rem);
+               }
+
+               .hero-content {
+                    max-width: 600px;
+                    flex: 0 0 50%;
+                    box-sizing: border-box;
+                    padding-right: 4rem;
+                    z-index: 1;
+               }
+
+               .hero h1 {
+                    font-size: clamp(2.5rem, 6vw, 4rem);
+                    font-weight: 700;
+                    margin-bottom: 1.5rem;
+                    line-height: 1.2;
+                    color: #fff;
+               }
+
+               .hero h1 em {
+                    font-style: italic;
+                    font-weight: 400;
+               }
+
+               .hero-description {
+                    font-size: 1.25rem;
+                    color: #cfcfcf;
+                    margin-bottom: 2rem;
+                    line-height: 1.6;
+               }
+
+               .hero-image {
+                    position: absolute;
+                    top: 0;
+                    left: 52%;
+                    bottom: 0;
+                    right: 0;
+                    display: flex;
+                    align-items: stretch;
+               }
+
+               .hero-image img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    /* Uses the alpha cut of the source PNG rather than
+                       mix-blend-mode: screen. Blending cannot see through this pill's
+                       backdrop-filter, which flattened the frosted effect into a
+                       visible rectangle wherever the image sat. Real transparency has
+                       no such isolation problem. */
+               }
+
+               .btn-primary {
+                    background: var(--primary-color);
+                    color: white;
+                    padding: 16px 32px;
+                    text-decoration: none;
+                    font-weight: 600;
+                    display: inline-block;
+                    transition: all 0.3s ease;
+                    border: none;
+                    cursor: pointer;
+                    border-radius: 8px;
+               }
+
+               .btn-primary:hover {
+                    background: #333;
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+               }
+
+               /* About Section - dark pill */
+               .about-section {
+                    padding: 3.75rem clamp(2rem, 4vw, 4rem) 5rem;
+               }
+
+               .about-section::before {
+                    content: "";
+                    position: absolute;
+                    top: -50%;
+                    right: -10%;
+                    width: 300px;
+                    height: 300px;
+                    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="none" stroke="%23666666" stroke-width="2" opacity="0.5"/><path d="M60,100 Q100,60 140,100 T220,100" stroke="%23555555" stroke-width="1" fill="none" opacity="0.7"/></svg>')
+                         center/contain no-repeat;
+                    opacity: 0.3;
+               }
+
+               .about-container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    text-align: center;
+               }
+
+               /* Section headings drop the browser's default top margin, which
+                  scales with font-size and otherwise adds an unpredictable
+                  ~40px on top of the pill's own padding. */
+               .about-section h2 {
+                    font-size: clamp(2rem, 4vw, 3rem);
+                    margin-top: 0;
+                    margin-bottom: 1rem;
+                    color: white;
+               }
+
+               .about-section .subtitle {
+                    font-size: 1.1rem;
+                    color: var(--accent-color);
+                    font-weight: 600;
+                    margin-bottom: 2rem;
+               }
+
+               .about-content {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 2rem;
+                    margin-top: 3rem;
+               }
+
+               .about-images {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 2rem;
+                    justify-content: center;
+               }
+
+               /* Default image styles */
+               .about-images img {
+                    width: 300px;
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: 10px;
+                    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
+               }
+
+               /* Add these new classes for individual control */
+               .about-images .img-large {
+                    width: 550px;
+               }
+
+               .about-images .img-small {
+                    width: 200px;
+               }
+
+               .about-button {
+                    text-align: center;
+               }
+
+               /* Highlighted Publication Section - dark pill */
+               .publications-section {
+                    padding: 3.75rem clamp(2rem, 5vw, 5rem) 5rem;
+               }
+
+               .publications-container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    text-align: center;
+               }
+
+               .publications-section h2 {
+                    font-size: clamp(2rem, 4vw, 3rem);
+                    margin-top: 0;
+                    margin-bottom: 3rem;
+                    color: #fff;
+               }
+
+               /* First page of the paper, with its summary beneath so the text
+                  gets the full width of the pill */
+               .highlight-pub {
+                    margin-top: 3rem;
+               }
+
+               /* Wider than a full page and cropped short: the PDF is loaded
+                  fit-to-width, so the frame shows the top of page 1 at a
+                  readable size rather than the whole page shrunk to fit. */
+               .highlight-pub__viewer {
+                    width: 100%;
+                    max-width: 900px;
+                    margin: 0 auto;
+                    aspect-ratio: 3 / 2;
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+               }
+
+               .highlight-pub__text {
+                    max-width: 900px;
+                    margin: 2.5rem auto 0;
+               }
+
+               .highlight-pub__desktop,
+               .highlight-pub__desktop a {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+               }
+
+               .highlight-pub__desktop iframe {
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                    display: block;
+               }
+
+               /* Mobile browsers mostly refuse to render a PDF in an iframe, so
+                  they get a tappable card that opens the file instead. */
+               .highlight-pub__mobile {
+                    display: none;
+                    width: 100%;
+                    height: 100%;
+               }
+
+               .highlight-pub__mobile a {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    height: 100%;
+                    background: #f0f0f0;
+                    color: #555;
+                    text-decoration: none;
+                    text-align: center;
+                    padding: 1rem;
+                    box-sizing: border-box;
+               }
+
+               .highlight-pub__mobile-icon {
+                    font-size: 4rem;
+                    margin-bottom: 0.5rem;
+               }
+
+               .highlight-pub h3 {
+                    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+                    line-height: 1.3;
+                    margin: 0 0 0.75rem;
+                    color: #fff;
+               }
+
+               .highlight-pub__meta {
+                    color: #b9c8d8;
+                    font-size: 0.95rem;
+                    margin: 0 0 0.25rem;
+               }
+
+               .highlight-pub__authors {
+                    color: #d5d5d5;
+                    font-size: 0.95rem;
+                    margin: 0 0 1rem;
+               }
+
+               .highlight-pub__desc {
+                    color: #ccc;
+                    line-height: 1.6;
+                    margin: 0;
+               }
+
+               .highlight-pub__link {
+                    color: var(--accent-color);
+                    text-decoration: none;
+                    font-weight: 600;
+               }
+
+               .highlight-pub__link:hover {
+                    text-decoration: underline;
+               }
+
+               @media (max-width: 1200px) {
+                    .highlight-pub__viewer {
+                         max-width: 420px;
+                    }
+
+                    .highlight-pub__desktop {
+                         display: none;
+                    }
+
+                    .highlight-pub__mobile {
+                         display: block;
+                    }
+               }
+
+               /* News Section - dark pill */
+               .news-section {
+                    padding: 3.75rem clamp(2rem, 5vw, 5rem) 5rem;
+               }
+
+               .news-container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    position: relative;
+                    z-index: 1;
+               }
+
+               .news-section h2 {
+                    font-size: clamp(2rem, 4vw, 3rem);
+                    margin-top: 0;
+                    margin-bottom: 1rem;
+                    color: #fff;
+                    text-align: center;
+               }
+
+               /* Single scrolling row of a fixed height: cards keep a fixed
+                  track width and stretch to fill the row, so it scrolls
+                  sideways only. overflow-y must be hidden explicitly - a
+                  classic horizontal scrollbar eats into the row's height and
+                  would otherwise raise a vertical scrollbar alongside it. The
+                  vertical padding leaves room for the card hover lift. */
+               .news-grid {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    gap: 2rem;
+                    margin-top: 3rem;
+                    height: 520px;
+                    box-sizing: border-box;
+                    padding: 0.5rem 0.25rem 1rem;
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                    overscroll-behavior-x: contain;
+                    scroll-snap-type: x proximity;
+                    -webkit-overflow-scrolling: touch;
+                    scrollbar-width: thin;
+                    scrollbar-color: rgba(255, 255, 255, 0.35) rgba(255, 255, 255, 0.08);
+               }
+
+               .news-grid:focus-visible {
+                    outline: 2px solid var(--accent-color);
+                    outline-offset: 4px;
+                    border-radius: 12px;
+               }
+
+               .news-grid::-webkit-scrollbar {
+                    height: 8px;
+               }
+
+               .news-grid::-webkit-scrollbar-track {
+                    background: rgba(255, 255, 255, 0.08);
+                    border-radius: 4px;
+               }
+
+               .news-grid::-webkit-scrollbar-thumb {
+                    background: rgba(255, 255, 255, 0.35);
+                    border-radius: 4px;
+               }
+
+               .news-grid::-webkit-scrollbar-thumb:hover {
+                    background: rgba(255, 255, 255, 0.5);
+               }
+
+               .news-card {
+                    background: rgba(255, 255, 255, 0.05);
+                    border-radius: 10px;
+                    overflow: hidden;
+                    transition: transform 0.3s ease;
+                    flex: 0 0 min(340px, 78vw);
+                    scroll-snap-align: start;
+               }
+
+               .news-card:hover {
+                    transform: translateY(-5px);
+               }
+
+               /* The gradient is the placeholder for a card with no photo yet, so
+                  the box has to hold the same height an image would give it. */
+               .news-image {
+                    background: linear-gradient(135deg, #4facfe 0%, var(--accent-color) 100%);
+                    position: relative;
+                    display: flex;
+                    min-height: 220px;
+               }
+
+               .news-image img {
+                    width: 100%;
+                    height: 220px;
+                    object-fit: cover;
+                    display: block;
+               }
+
+               .news-content {
+                    padding: 1.5rem;
+               }
+
+               .news-date {
+                    color: var(--accent-color);
+                    font-size: 0.9rem;
+                    margin-bottom: 0.5rem;
+               }
+
+               .news-card h3 {
+                    margin-bottom: 1rem;
+                    color: white;
+               }
+
+               .news-card p {
+                    color: #ccc;
+                    margin-bottom: 1rem;
+               }
+
+               .read-more {
+                    color: var(--accent-color);
+                    text-decoration: none;
+                    font-weight: 600;
+               }
+
+               .read-more:hover {
+                    text-decoration: underline;
+               }
+
+               /* Scroll-triggered reveal
+                  Anything marked .reveal starts offset and transparent and
+                  floats up when it scrolls into view (see the IntersectionObserver
+                  at the bottom of the page). Gated on the .js class so the content
+                  stays visible if the script never runs - otherwise a JS failure
+                  would leave the page blank. */
+               .js .reveal {
+                    opacity: 0;
+                    transform: translateY(30px);
+                    transition:
+                         opacity 0.6s ease-out,
+                         transform 0.6s ease-out;
+                    transition-delay: var(--reveal-delay, 0s);
+               }
+
+               .js .reveal.is-visible {
+                    opacity: 1;
+                    transform: none;
+               }
+
+               /* Stagger for siblings that come into view together */
+               .reveal--d1 {
+                    --reveal-delay: 0.12s;
+               }
+
+               .reveal--d2 {
+                    --reveal-delay: 0.24s;
+               }
+
+               .reveal--d3 {
+                    --reveal-delay: 0.36s;
+               }
+
+               @media (prefers-reduced-motion: reduce) {
+                    .js .reveal {
+                         opacity: 1;
+                         transform: none;
+                         transition: none;
+                    }
+               }
+
+               /* Override main-content margin from header.css;
+                  stacks the floating pills with the background showing between them */
+               .main-content {
+                    margin-top: 0;
+                    padding: calc(var(--header-height) + 2.5rem) clamp(1rem, 3vw, 3rem) 2.5rem;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2.5rem;
+               }
+
+               /* Mobile / narrow-viewport styles */
+               @media (max-width: 1600px) {
+                    .about-images {
+                         flex-direction: column;
+                         gap: 1rem;
+                         align-items: center;
+                    }
+
+                    .pill {
+                         border-radius: 32px;
+                    }
+
+                    .main-content {
+                         padding: calc(var(--header-height) + 1.5rem) 1rem 1.5rem;
+                         gap: 1.5rem;
+                    }
+
+                    /* Hero pill: image fills the pill, frosted content card floats on top */
+                    .hero {
+                         padding: 0;
+                         min-height: 80vh;
+                         display: flex;
+                         flex-direction: column;
+                         justify-content: center;
+                    }
+
+                    .hero-image {
+                         position: absolute;
+                         top: 0;
+                         left: 0;
+                         width: 100%;
+                         height: 100%;
+                         z-index: 0;
+                    }
+
+                    .hero-image img {
+                         object-fit: cover;
+                         object-position: center;
+                    }
+
+                    .hero-content {
+                         position: relative;
+                         z-index: 1;
+                         flex: 0 0 auto;
+                         width: 85%;
+                         max-width: 500px;
+                         margin: 0 auto;
+                         padding: 2rem;
+                         background: rgba(15, 15, 15, 0.72);
+                         backdrop-filter: blur(12px);
+                         -webkit-backdrop-filter: blur(12px);
+                         border: 1px solid rgba(255, 255, 255, 0.12);
+                         border-radius: 20px;
+                         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+                         text-align: center;
+                    }
+
+                    .hero h1 {
+                         font-size: 2rem;
+                         margin-bottom: 1rem;
+                    }
+
+                    .hero-description {
+                         font-size: 1rem;
+                         margin-bottom: 1.5rem;
+                         color: #d5d5d5;
+                    }
+               }
+          </style>
      </head>
      <body>
-          <p>
-               Redirecting to <a href="src/layouts/home.html">home</a>. If you are not redirected automatically, click
-               the link.
-          </p>
+          <div class="page-background" aria-hidden="true">
+               <!-- DECORATIVE ARTWORK, NOT DATA. Derived from
+                    assets/research/SHHsend_receive_movie.sm02.enhanced.mp4, then
+                    (a) ping-ponged so the loop has no visible seam,
+                    (b) composited with duplicated, rotated and rescaled copies of
+                        two of the sender cells to populate the frame edges, which
+                        are the only part left uncovered by the content pills,
+                    (c) cleared of the original cells in the lower third, leaving two
+                        placed cells on the left and one on the right, and
+                    (d) recolored: the lone lower-right cell is a RED SENDER remapped
+                        to cyan, so it reads as a receiver but is not one, and
+                    (e) had the cyan receiver cluster slid ~170px down the y-axis,
+                        since over half of it sat above the viewport crop line.
+                    Cell positions, counts and colors here are invented, and the
+                    spatial relationship between senders and receivers is no longer
+                    the measured one. Do not reuse this file for any figure or
+                    analysis - use the research/ source. -->
+               <video
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    preload="auto"
+                    poster="assets/home_gallery/background_animation_composite_poster.jpg"
+               >
+                    <source
+                         src="assets/home_gallery/background_animation_composite_loop.mp4"
+                         type="video/mp4"
+                    />
+               </video>
+               <img
+                    class="page-background__fallback"
+                    src="assets/home_gallery/background_animation_composite_poster.jpg"
+                    alt=""
+               />
+          </div>
+
+          <header class="header">
+               <div class="header__content">
+                    <div class="header__logo">
+                         <!-- Placeholder: swap this div for <img src="assets/logo.svg" alt="Li Lab logo" />
+                              once the real logo artwork exists. -->
+                         <div class="header__logo-circle"></div>
+                         <div class="header__logo-text">
+                              <h1>Li Lab</h1>
+                              <p class="subtitle">@Whitehead Institute & MIT</p>
+                         </div>
+                    </div>
+                    <div class="header__toggle" id="mobile-menu-toggle">
+                         <span></span>
+                         <span></span>
+                         <span></span>
+                    </div>
+                    <nav class="header__nav" id="header-nav">
+                         <ul class="header__nav-list">
+                              <li><a href="index.html">Home</a></li>
+                              <li><a href="research.html">Research</a></li>
+                              <li><a href="about.html">About Us</a></li>
+                              <li><a href="publications.html">Publications</a></li>
+                              <li>
+                                   <a href="https://github.com/orgs/Pulin-Li-Lab" class="nav-link" target="_blank" rel="noopener">
+                                        <img class="nav-icon" src="assets/icons/github.svg" alt="GitHub" width="20" height="20" />
+                                        GitHub
+                                   </a>
+                              </li>
+                         </ul>
+                    </nav>
+               </div>
+          </header>
+
+          <main class="main-content">
+               <!-- Hero Section -->
+               <section class="hero pill pill--dark">
+                    <div class="hero-content reveal">
+                         <h1>Multicellular Information Processing</h1>
+                         <p class="hero-description">
+                              Living tissues are among nature’s most sophisticated information-processing systems. 
+                              Their multicellular organization creates capabilities unavailable to individual cells: 
+                              information can propagate across space, be distributed among specialized cell types, and 
+                              be integrated collectively to coordinate tissue-level behaviors. Our lab seeks to uncover 
+                              and compare the principles by which multicellular systems solve diverse 
+                              information-processing problems. We do so by reconstructing multicellular systems 
+                              synthetically and quantitatively interrogating information processing in native tissues. 
+                              Our long-term goal is to move from describing multicellular behavior to predicting and 
+                              ultimately programming it.
+                         </p>
+                         <a href="research.html" class="btn-primary">More about our Science</a>
+                    </div>
+
+                    <div class="hero-image reveal reveal--d1">
+                         <img
+                              src="assets/home_gallery/lung_image_alpha.png"
+                              alt="Fluorescence image of a branching lung explant"
+                         />
+                    </div>
+               </section>
+
+               <!-- About Section -->
+               <section class="about-section pill pill--dark" id="about">
+                    <div class="about-container">
+                         <h2 class="reveal">Team</h2>
+
+                         <div class="about-content">
+                              <div class="about-images">
+                                   <img
+                                        class="img-large reveal reveal--d1"
+                                        src="assets/home_gallery/Lab_pic_1.png"
+                                        alt="Lab Photo 1"
+                                   />
+                                   <img
+                                        class="img-large reveal reveal--d2"
+                                        src="assets/home_gallery/WI_retreat.jpg"
+                                        alt="Lab Photo 2"
+                                   />
+                              </div>
+
+                              <div class="about-button reveal reveal--d3">
+                                   <a href="about.html" class="btn-primary">More About Us!</a>
+                              </div>
+                         </div>
+                    </div>
+               </section>
+
+               <!-- Papers Section -->
+               <section class="publications-section pill pill--dark" id="publications">
+                    <div class="publications-container">
+                         <h2 class="reveal">Highlighted Publication</h2>
+
+                         <div class="highlight-pub">
+                              <div class="highlight-pub__viewer reveal reveal--d1">
+                                   <div class="highlight-pub__desktop">
+                                        <a
+                                             href="assets/papers/schlissel-et-al-2024.pdf#toolbar=0&amp;navpanes=0&amp;statusbar=0"
+                                             target="_blank"
+                                             rel="noopener"
+                                        >
+                                             <iframe
+                                                  src="assets/papers/schlissel-et-al-2024.pdf#page=1&amp;view=FitH&amp;zoom=page-width&amp;toolbar=0&amp;navpanes=0&amp;statusbar=0"
+                                                  title="Diffusion barriers imposed by tissue topology shape Hedgehog morphogen gradients (PDF)"
+                                             >
+                                                  PDF preview not available
+                                             </iframe>
+                                        </a>
+                                   </div>
+
+                                   <div class="highlight-pub__mobile">
+                                        <a
+                                             href="assets/papers/schlissel-et-al-2024.pdf"
+                                             target="_blank"
+                                             rel="noopener"
+                                        >
+                                             <span class="highlight-pub__mobile-icon">📄</span>
+                                             <span>Hedgehog diffusion (PDF)</span>
+                                        </a>
+                                   </div>
+                              </div>
+
+                              <div class="highlight-pub__text reveal reveal--d2">
+                                   <h3>Diffusion barriers imposed by tissue topology shape Hedgehog morphogen gradients</h3>
+                                   <p class="highlight-pub__meta">
+                                        PNAS, July 15, 2024
+                                        (<a
+                                             class="highlight-pub__link"
+                                             href="https://pubmed.ncbi.nlm.nih.gov/39190357/"
+                                             target="_blank"
+                                             rel="noopener"
+                                             >PubMed: 39190357</a
+                                        >)
+                                   </p>
+                                   <p class="highlight-pub__authors">
+                                        Gavin Schlissel, Miram Meziane, Domenic Narducci, Anders S. Hansen, Pulin Li
+                                   </p>
+                                   <p class="highlight-pub__desc">
+                                        Using single-molecule imaging, we determined that Sonic hedgehog transitioned between
+                                        membrane-confined and unconfined states aided by SCUBE1, identifying a mechanism by
+                                        which morphogen diffusion is controlled.
+                                   </p>
+                              </div>
+                         </div>
+
+                         <div class="reveal reveal--d3" style="text-align: center; margin-top: 3rem">
+                              <a href="publications.html" class="btn-primary">See the full list of publications</a>
+                         </div>
+                    </div>
+               </section>
+
+               <!-- Latest News Section -->
+               <section class="news-section pill pill--dark" id="news">
+                    <div class="news-container">
+                         <h2 class="reveal">Latest News</h2>
+
+                         <div class="news-grid" role="region" aria-label="Latest news" tabindex="0">
+                              <article class="news-card reveal">
+                                   <div class="news-image">
+                                        <img src="assets/home_gallery/tour_de_breakfast.jpg" alt="Lab members on the annual Tour de Breakfast" />
+                                   </div>
+                                   <div class="news-content">
+                                        <div class="news-date">June 29, 2026</div>
+                                        <h3>Fourth annual Tour de Breakfast</h3>
+                                        <p>A walking tour of all of the best brunch spots that Cambridge has to offer. Or at least those easily reachable from Broadway.
+                                             Check out our matching hats!
+                                        </p>
+                                   </div>
+                              </article>
+
+                              <article class="news-card reveal reveal--d1">
+                                   <!-- No photo yet: the gradient placeholder stands in. -->
+                                   <div class="news-image">
+                                        <img src="assets/home_gallery/Nicholas_defense_party.jpg" alt="Nicholas's post-defense party" />
+                                   </div>
+                                   <div class="news-content">
+                                        <div class="news-date">March 26, 2026</div>
+                                        <h3>Congrats to Nicholas Hutchins on a successful defense!</h3>
+                                        <p>Not half a year after Diep, Nicholas is the second PhD student to graduate from the lab, and we wish him
+                                             the best in his next position!</p>
+                                   </div>
+                              </article>
+
+
+                              <article class="news-card reveal reveal--d2">
+                                   <div class="news-image">
+                                        <img src="assets/home_gallery/Diep_defense.jpg" alt="Diep Nguyen at her thesis defense" />
+                                   </div>
+                                   <div class="news-content">
+                                        <div class="news-date">Oct 10, 2025</div>
+                                        <h3>Congrats to Diep Nguyen on a successful defense!</h3>
+                                        <p>She gains the honor of being the first PhD student to graduate from the lab, and we wish her
+                                             the best in her postdoc!
+                                        </p>
+                                   </div>
+                              </article>
+
+                              <article class="news-card reveal reveal--d3">
+                                   <div class="news-image">
+                                        <img src="assets/home_gallery/GBBO_bracket_winner.jpg" alt="Winner of the lab's Great British Bake Off bracket" />
+                                   </div>
+                                   <div class="news-content">
+                                        <div class="news-date">Nov 10, 2025</div>
+                                        <h3>Congrats to Lauren Tso for winning the Great British Bakeoff bracket tournament!</h3>
+                                        <p>Jasmine Mitchell believer from day 1.</p>
+                                   </div>
+                              </article>
+
+                              <!-- 
+                              <article class="news-card">
+                                   <div class="news-image"></div>
+                                   <div class="news-content">
+                                        <div class="news-date">Apr 18, 2025</div>
+                                        <h3>Headline 2</h3>
+                                        <p>Description.</p>
+                                        <a href="#" class="read-more">Read More →</a>
+                                   </div>
+                              </article>
+                              -->
+                         </div>
+                    </div>
+               </section>
+
+          </main>
+
+          <!-- Site footer. Kept identical on every page; the Accessibility link is
+               required on all public MIT-affiliated sites. Styles live in css/header.css. -->
+          <footer class="footer">
+               <div class="footer-container">
+                    <div class="footer-section">
+                         <img
+                              src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='white' stroke-width='2'/><text x='50' y='55' text-anchor='middle' font-family='Arial' font-size='12' fill='white'>LL</text></svg>"
+                              alt="Li Lab Logo"
+                              style="width: 80px; margin-bottom: 1rem"
+                         />
+                    </div>
+
+                    <div class="footer-section">
+                         <h3>Contact</h3>
+                         <p><strong>Whitehead Institute &amp; MIT</strong></p>
+                         <p>455 Main Street</p>
+                         <p>Cambridge, MA 02142</p>
+                         <p>pli@wi.mit.edu</p>
+                    </div>
+
+                    <div class="footer-section">
+                         <h3>Quick Links</h3>
+                         <a href="index.html">Home</a>
+                         <a href="research.html">Research</a>
+                         <a href="about.html">About Us</a>
+                         <a href="publications.html">Publications</a>
+                         <a href="index.html#news">Latest News</a>
+                    </div>
+               </div>
+
+               <div class="footer-bottom">
+                    <p>
+                         © Li Lab 2026 | Designed by Daniel Zhu
+                         <span class="footer-sep">|</span>
+                         <a href="https://accessibility.mit.edu/">Accessibility</a>
+                    </p>
+               </div>
+          </footer>
+
+          <script>
+               // Smooth scrolling for same-page anchor links
+               document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+                    anchor.addEventListener("click", function (e) {
+                         const target = document.querySelector(this.getAttribute("href"));
+                         if (!target) return; // let the browser handle it rather than swallowing the click
+                         e.preventDefault();
+                         target.scrollIntoView({
+                              behavior: "smooth",
+                              block: "start",
+                         });
+                    });
+               });
+
+               // Float each section's contents in as they scroll into view.
+               // The offset/transition lives in CSS on .reveal; this only flips
+               // the .is-visible switch, once per element.
+               const revealTargets = document.querySelectorAll(".reveal");
+
+               if ("IntersectionObserver" in window) {
+                    const observer = new IntersectionObserver(
+                         (entries) => {
+                              entries.forEach((entry) => {
+                                   if (!entry.isIntersecting) return;
+                                   entry.target.classList.add("is-visible");
+                                   observer.unobserve(entry.target); // reveal is one-way
+                              });
+                         },
+                         { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+                    );
+
+                    revealTargets.forEach((el) => observer.observe(el));
+               } else {
+                    revealTargets.forEach((el) => el.classList.add("is-visible"));
+               }
+          </script>
      </body>
 </html>

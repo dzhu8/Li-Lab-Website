@@ -4,13 +4,13 @@ This is the website for the Li Lab at Whitehead Institute & MIT.
 
 ## Adding Lab Members and Alumni
 
-To add current lab members or alumni to the About page (`layouts/about.html`):
+To add current lab members or alumni to the About page (`about.html`):
 
 1. **Prepare the photo** (optional):
    - Place a photo file (e.g., `john.jpg`) in the `assets/` folder.
 
 2. **Edit the About page**:
-   - Open `layouts/about.html`.
+   - Open `about.html`.
 
 3. **For Current Members**:
    - Find the `members` array in the JavaScript section (around line 70-90 as of 11/16/2025).
@@ -38,17 +38,17 @@ const members = [
 
 ## Adding Publications
 
-There are two ways to add publications to the Publications page (`src/layouts/publications.html`):
+There are two ways to add publications to the Publications page (`publications.html`):
 
 ### Method 1: Manual Addition
 
-To add publications to the Publications page (`src/layouts/publications.html`):
+To add publications to the Publications page (`publications.html`):
 
 1. **Prepare the PDF** (optional but recommended):
-   - Save the publication PDF to `src/assets/papers/` (e.g., `smith-2024.pdf`)
+   - Save the publication PDF to `assets/papers/` (e.g., `smith-2024.pdf`)
 
 2. **Edit the Publications page**:
-   - Open `src/layouts/publications.html`
+   - Open `publications.html`
    - Find the comment `// Add publications here` (around line 220 as of 11/16/2025)
 
 3. **Add a publication entry**:
@@ -62,8 +62,8 @@ To add publications to the Publications page (`src/layouts/publications.html`):
        authors: 'Smith J, Doe A, Li P', // Author list (comma-separated)
        date: 'March 15, 2024',        // Publication date
        desc: 'Brief description or abstract excerpt...', // Description
-       pdf: '../assets/papers/smith-2024.pdf',  // Path to PDF (optional)
-       imgUrl: '../assets/papers/smith-2024-thumbnail.jpg', // Thumbnail image (optional)
+       pdf: 'assets/papers/smith-2024.pdf',  // Path to PDF (optional)
+       imgUrl: 'assets/papers/smith-2024-thumbnail.jpg', // Thumbnail image (optional)
        pmid: '12345678',              // PubMed ID (optional, use pmid OR link)
        link: 'https://doi.org/...'    // DOI or other URL (optional, use pmid OR link)
    });
@@ -95,7 +95,7 @@ To add publications to the Publications page (`src/layouts/publications.html`):
        authors: 'Gavin Schlissel, Miram Meziane, Domenic Narducci, Anders S. Hansen, Pulin Li',
        date: 'July 15, 2024',
        desc: 'Here, we used single-molecule imaging in reconstituted morphogen gradients...',
-       pdf: '../assets/papers/schlissel-et-al-2024.pdf',
+       pdf: 'assets/papers/schlissel-et-al-2024.pdf',
        pmid: '39190357'
    });
    ```
@@ -118,11 +118,11 @@ To add publications to the Publications page (`src/layouts/publications.html`):
 
 ### Method 2: Using the Google Scholar Fetcher Tool (Note this isn't really polished yet)
 
-The Google Scholar fetcher tool (`src/app/fetch_scholar_publications.js`) helps you discover and retrieve publication information from Google Scholar.
+The Google Scholar fetcher tool (`app/fetch_scholar_publications.js`) helps you discover and retrieve publication information from Google Scholar.
 
 1. **Install required dependencies**:
    ```bash
-   cd src/app
+   cd app
    npm install
    npx playwright install chromium
    ```
@@ -146,7 +146,7 @@ The Google Scholar fetcher tool (`src/app/fetch_scholar_publications.js`) helps 
    - The browser window opens the publication details page where you can find download links, DOI, etc.
 
 4. **After finding a paper to add**:
-   - Download the PDF and save it to `src/assets/papers/` (e.g., `author-year.pdf`)
+   - Download the PDF and save it to `assets/papers/` (e.g., `author-year.pdf`)
    - Note the publication details (title, authors, journal, date, DOI)
    - Follow Method 1 above to manually add it to the website
 

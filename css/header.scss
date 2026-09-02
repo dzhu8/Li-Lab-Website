@@ -44,22 +44,19 @@ $join-button-hover: #ff5252;
           align-items: center;
           margin-right: 60px;
 
+          // Placeholder holding the space the lab logo will occupy. Painted the
+          // same shade as the header itself so it reads as empty header, not a
+          // missing image. Replace the div with an <img> once artwork exists.
           &-circle {
                width: 60px;
                height: 60px;
-               //border: 2px solid $primary-blue;
+               background: $header-background;
+               box-sizing: border-box;
                border-radius: 50%;
                display: flex;
                align-items: center;
                justify-content: center;
                margin-right: 20px;
-
-               span {
-                    font-size: 10px;
-                    color: $text-color;
-                    text-align: center;
-                    line-height: 1.2;
-               }
           }
 
           &-text {
@@ -176,10 +173,6 @@ $join-button-hover: #ff5252;
                     width: 50px;
                     height: 50px;
                     margin-right: 15px;
-
-                    span {
-                         font-size: 8px;
-                    }
                }
 
                &-text {
@@ -251,4 +244,78 @@ $join-button-hover: #ff5252;
 // Smooth scrolling for anchor links
 html {
      scroll-behavior: smooth;
+}
+
+// Site footer
+// Shared by every page so the required Accessibility link (and the contact
+// details beside it) cannot drift between them. Dark band matching the header,
+// which reads correctly on both the black home page and the light
+// research/about/publications pages.
+.footer {
+     background: #161616;
+     color: #fff;
+     padding: 3rem 6vw 2rem;
+     font-family:
+          "Avenir Next",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+
+     &-container {
+          max-width: 1200px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 2rem;
+
+          @media (max-width: 768px) {
+               grid-template-columns: 1fr;
+               text-align: center;
+          }
+     }
+
+     &-section {
+          h3 {
+               margin-bottom: 1rem;
+               color: #fff;
+          }
+
+          p,
+          a {
+               color: #ccc;
+               text-decoration: none;
+               margin-bottom: 0.5rem;
+               display: block;
+          }
+
+          a:hover {
+               color: #fff;
+          }
+     }
+
+     &-bottom {
+          max-width: 1200px;
+          margin: 2rem auto 0;
+          padding-top: 2rem;
+          border-top: 1px solid #333;
+          text-align: center;
+          color: #888;
+
+          a {
+               color: #ccc;
+               text-decoration: none;
+
+               &:hover {
+                    color: #fff;
+                    text-decoration: underline;
+               }
+          }
+
+          .footer-sep {
+               margin: 0 0.5rem;
+               color: #555;
+          }
+     }
 }
