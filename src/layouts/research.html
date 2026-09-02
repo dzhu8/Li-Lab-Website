@@ -260,44 +260,54 @@
 
           <template id="body-processing">
                <p>
-                    Individual cells can sense and process signals, but tissues must integrate information across many 
-                    interacting cell types to generate coordinated responses. We seek to understand how multicellular 
-                    systems transform molecular signals into collective behaviors that drive morphogenesis, maintain 
-                    physiological homeostasis, and adapt to changing environmental conditions. A major focus of our 
-                    laboratory is epithelial–mesenchymal communication, a fundamental organizing unit shared by most organs.
+                    Individual cells can sense and process signals, but tissues must integrate information across many interacting cell 
+                    types to make coordinated decisions. We investigate how multicellular systems integrate information across many cells 
+                    to <b>measure and respond to quantitative variables</b>, such as developmental time and physiological demand. 
                </p>
                <p>
-                   <strong>Computing developmental time</strong>. Developing organs must determine when to transition between 
-                   successive morphogenetic programs, yet how multicellular tissues measure developmental time remains poorly 
-                   understood. We investigate this question through epithelial-mesenchymal interactions in the developing lung. 
-                   We also study how <a href="https://www.biorxiv.org/content/10.64898/2026.05.08.723805v1">endothelial</a> and 
-                   other stromal cell types emerge sequentially and self-organize during this developmental program. By combining 
-                   live imaging, quantitative analysis, and single-cell genomics, we seek to uncover principles by which 
-                   multicellular systems compute developmental time to orchestrate organ formation. These studies will inform the 
-                   development of more physiologically realistic organoid models.
+                   <strong>Computing developmental time</strong>. Developing organs must execute morphogenetic programs in the correct sequence 
+                   and at the right time, yet how tissues measure time to trigger these transitions remains poorly understood. Using the 
+                   developing lung, we investigate how epithelial–mesenchymal interactions generate and interpret temporal information. 
+                   Combining quantitative live imaging, single-cell genomics, and genetic perturbation, we revealed that mesenchymal tissue 
+                   dynamics control the timing of transitions between distinct morphogenetic phases. Our ongoing work seeks to further understand 
+                   how multicellular interactions generate the developmental timer.  
                </p>
                <p>
-                   <strong>Computing physiological demand</strong>. Tissues must continuously adjust their responses to changing 
-                   physiological demands, from infection to endocrine stress. We investigate how diverse cell types collectively 
-                   encode the magnitude of physiological signals to generate appropriately scaled tissue responses. Current projects 
-                   examine how <a href="https://pubmed.ncbi.nlm.nih.gov/42140193/">barrier tissues collectively assess infection 
-                    severity</a> and how endocrine systems faithfully encode and decode physiological demands such as stress. 
+                   <strong>Computing physiological demand</strong>. Mature tissues face a related problem: they must determine not only what 
+                   physiological challenge they face, but how strongly to respond. During viral infection, for example, tissues must calibrate 
+                   immune activation to infection severity while avoiding detrimental overactivation. We discovered that 
+                   <a href="https://pubmed.ncbi.nlm.nih.gov/42140193/">viral infection severity</a> is collectively encoded by multiple cell types 
+                   that are spatially patterned in barrier organs, such as the lung and intestine. Together, these spatially patterned cell types 
+                   convert infection severity into a graded tissue response, with the fraction of infected cells activating viral-sensing pathways 
+                   scaling with infection severity. Endocrine systems face a related problem over time: during sustained stress, target cells must 
+                   remain sensitive to changes in stress magnitude. <a href="https://www.biorxiv.org/content/10.64898/2026.08.28.747949v1">Our work</a>
+                   reveals how temporal patterns of hormone signaling enable endocrine systems to track changing physiological demands and coordinate 
+                   appropriately scaled responses across diverse target cell types. 
                </p>
           </template>
 
           <template id="body-computation">
                <p>
-                    A long-term goal of our laboratory is to transform multicellular biology into a predictive engineering 
-                    discipline. We seek to establish quantitative frameworks that make multicellular information processing 
-                    predictable and ultimately programmable. To achieve this, we integrate synthetic biology, large-scale 
-                    perturbation, quantitative measurements, and machine learning to discover predictive representations 
-                    and build quantitative models linking signaling dynamics to cellular states and tissue behaviors. One 
-                    example is <a href="https://pubmed.ncbi.nlm.nih.gov/40166200/">IRIS</a> (Intracellular Response to Infer 
-                    Signaling Activity), a computational framework that learns conserved transcriptional “fingerprints” of 
-                    signaling responses from perturbation atlases and reconstructs the signaling states and histories of 
-                    individual cells directly from native tissues. Ultimately, we envision predictive models that enable 
-                    the rational engineering of tissue organization, regeneration, adaptive tissue functions, and next-generation 
-                    cell-based therapies.
+                    Tissue states emerge from signaling interactions among many cells across space and time. While we seek to understand how these 
+                    interactions propagate and collectively process information, we also tackle the inverse problem: can the hidden signaling 
+                    interactions that produced a tissue state be reconstructed from the states of its individual cells? We integrate synthetic biology, 
+                    high-throughput perturbation, quantitative measurements, and machine learning to learn relationships between signaling dynamics and 
+                    cell-state transitions. Ultimately, we aim to use these relationships to predict and engineer tissue states.
+               </p>
+               <p>
+                    <strong>Reconstruction</strong>. We initially focus on embryonic development, with the goal of reconstructing the spatiotemporal 
+                    signaling activities that give rise to diverse cell states in mouse and human embryos. <a href="https://pubmed.ncbi.nlm.nih.gov/40166200/">IRIS</a> (Intracellular Response to Infer Signaling Activity) is a computational framework that learns conserved transcriptional “fingerprints” 
+                    of signaling responses from our hESC-based perturbation atlases and uses them to reconstruct the signaling states and histories of 
+                    individual cells directly from native tissues. Because these signaling-response relationships transfer across diverse cell types, 
+                    IRIS provides a framework for reconstructing signaling histories across the heterogeneous cell populations that compose native tissues. 
+               </p>
+               <p>
+                    <strong>Engineering</strong>. We use IRIS and other computation-guided approaches to discover signaling logic that drives cell-fate 
+                    decisions and guide stem-cell differentiation. One test case is to reconstruct the signaling logic that drives the sequential emergence of diverse 
+                    <a href="https://www.biorxiv.org/content/10.64898/2026.05.08.723805v1">stromal cell types</a> during organ development, and use these 
+                    principles to generate cell types that remain missing from most organoid models. We envision extending this approach toward the 
+                    rational engineering of tissue organization, regeneration, and adaptive tissue functions.
+
                </p>
           </template>
 
@@ -332,13 +342,7 @@
                <div class="research-topic-wrapper" id="research-intro">
                     <div class="research-card">
                          <h1 class="page-title">Our Research</h1>
-                         <p class="page-subtitle">The transition from single cells to multicellular organisms fundamentally expanded the
-                              ways biological systems process information. Individual cells <a href="https://pubmed.ncbi.nlm.nih.gov/31249008/">encode information</a> through the identity, strength, temporal 
-                              dynamics, and combinations of signaling pathways. Multicellular organization creates entirely new information-processing 
-                              capabilities: information can be propagated across space, distributed among specialized cell types, and transformed through 
-                              interactions among neighboring cells. These collective properties allow tissues to generate behaviors that no individual cell 
-                              could achieve alone, from building organs during development to adapting to changing physiological demands. Our laboratory seeks
-                              to uncover the principles of multicellular information processing through three interconnected research themes.</p>
+                         <p class="page-subtitle">The transition from single cells to multicellular organisms fundamentally expanded the ways biological systems process information, enabling tissues to generate behaviors that no individual cell could achieve alone—from building organs during development to adapting to changing physiological demands. Our lab uses experimentally tractable systems to investigate how different multicellular systems solve these information-processing problems and to uncover principles that can generalize across related biological contexts. Specifically, we ask three interconnected questions: how information propagates across tissues, how diverse cells collectively compute information to make tissue-level decisions, and whether these processes can be reconstructed, predicted, and engineered.</p>
                     </div>
                </div>
                <div id="research-sections"></div>
